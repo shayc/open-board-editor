@@ -2,11 +2,11 @@
 
 # Open-Board Editor
 
-A progressive web app for editing and viewing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used within [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to help non-verbal people with speech impairments (Autism, ALS, etc.) to communicate with others by activating buttons to produce speech and sound.
+A progressive web app for viewing and editing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used in [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to help non-verbal people with speech impairment (Autism, ALS, etc.) to communicate by activating pictures that produce speech and sound.
 
-## Warning: Not Production Ready.
+## ⚠ Warning: Work-in-Progress.
 
-If you're looking for a production ready, battle-tested AAC web app, you should checkout [Cboard](https://github.com/cboard-org/cboard) instead.
+If you're looking for a production ready, battle-tested AAC web app, checkout [Cboard](https://github.com/cboard-org/cboard) instead.
 
 ## Features
 
@@ -14,7 +14,7 @@ If you're looking for a production ready, battle-tested AAC web app, you should 
 - Mobile friendly
 - Keyboard navigation (tab, arrow keys, etc.)
 - Supports multiple languages (including RTL)
-- Import and export .obf/.obz files
+- Import and export `.obf`/`.obz` files
 - Theme support
 - Completly free, [MIT license](LICENSE)
 
@@ -54,11 +54,11 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Storybook
 
-Storybook is an open source tool for building UI components and pages in isolation
+[Storybook](https://storybook.js.org/docs/react/get-started/introduction) is an open source tool for building UI components and pages in isolation
 
 ### `npm run start:storybook`
 
-Starts [Storybook](https://storybook.js.org/docs/react/get-started/introduction) locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
+Starts Storybook locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
 
 ### `npm run build:storybook`
 
@@ -72,7 +72,7 @@ Runs plop and shows an interactive menu of generators to pick from.
 
 ### `npm run extract-intl`
 
-Runs the I18N extraction script to merge translation messages defined in `.messages.js` files to `src/i18n/extracted-messages/{lang-code}.json`.
+Runs the I18N extraction script that scans for `.messages.js` files, extract and merge their content to `src/i18n/extracted-messages/{lang-code}.json`.
 
 ### Analyze Build Size
 
