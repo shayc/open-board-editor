@@ -44,7 +44,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `npm run test:integration`
 
+Launches the browser integration test runner.
+
 ### `npm run test:integrationWithWatch`
+
+Launches the browser integration test runner in the interactive watch mode.
 
 ### `npm run build`
 
