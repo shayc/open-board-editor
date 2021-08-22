@@ -4,7 +4,7 @@
 
 A progressive web app for editing and viewing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used within [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to help non-verbal people with speech impairments (Autism, ALS, etc.) to communicate with others by activating buttons to produce speech and sound.
 
-## Warning: Not Ready for Production.
+## Warning: Not Production Ready.
 
 If you're looking for a production ready, battle-tested AAC web app, you should checkout [Cboard](https://github.com/cboard-org/cboard) instead.
 
@@ -45,6 +45,18 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Storybook
+
+Storybook is an open source tool for building UI components and pages in isolation
+
+### `npm run start:storybook`
+
+Starts [Storybook](https://storybook.js.org/docs/react/get-started/introduction) locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
+
+### `npm run build:storybook`
+
+Builds Storybook as a static web application to the `storybook-static` folder.
+
 ## Additional Scripts
 
 ### `npm run plop`
@@ -55,13 +67,7 @@ Runs plop and shows an interactive menu of generators to pick from.
 
 Runs the I18N extraction script to merge translation messages defined in `.messages.js` files to `src/i18n/extracted-messages/{lang-code}.json`.
 
-### `npm run start:storybook`
-
-Starts [Storybook](https://storybook.js.org/docs/react/get-started/introduction) locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
-
-### `npm run build:storybook`
-
-### Analyze the App's Build Size
+### Analyze Build Size
 
 ```sh
 npm run build
@@ -70,15 +76,11 @@ npm run analyze
 
 ### Advanced Configuration
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://facebook.github.io/create-react-app/docs/advanced-configuration
 
 ## Technical Details
 
 Built with [React](https://reactjs.org/) and [Fluent UI](https://www.microsoft.com/design/fluent/#/web).
 Uses the browser's Speech Synthesis API to generate speech, IndexedDB to store boards and LocalStorage to store user preferences.
 
-### Speech Synthesis API
-
-The application uses the browser's [Speech Synthesis API](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis) to generate speech. Different voices (and languages) are available depending on the operating system (OS). In most OS You can install additional voices. Some browsers (e.g. Chrome) come with an additional set of voices.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
