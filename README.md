@@ -84,7 +84,7 @@ Runs the I18N extraction script that scans for `.messages.js` files, extract and
 
 ### Analyze Build Size
 
-```sh
+```bash
 npm run build
 npm run analyze
 ```
