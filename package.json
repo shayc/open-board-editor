@@ -65,9 +65,11 @@
     "babel-loader": "~8.1.0",
     "babel-plugin-react-intl": "^8.2.25",
     "husky": "^7.0.1",
+    "jest-puppeteer": "^5.0.4",
     "lint-staged": "^11.1.2",
     "plop": "^2.7.4",
     "prettier": "2.3.2",
+    "puppeteer": "^10.2.0",
     "react-is": "^17.0.2",
     "react-test-renderer": "^17.0.2",
     "shelljs": "^0.8.4",
@@ -76,17 +78,28 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:storybook": "start-storybook --port 6006 --static-dir public",
     "build": "react-scripts build",
+    "build:storybook": "build-storybook --static-dir public",
     "test": "react-scripts test",
+    "test:integration": "jest -c integration/jest.config.js",
+    "test:integrationWithWatch": "jest -c integration/jest.config.js --watch",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "extract-intl": "node ./internals/scripts/extract-intl.js",
     "plop": "plop",
-    "start:storybook": "start-storybook --port 6006 --static-dir public",
-    "build:storybook": "build-storybook --static-dir public",
     "prepare": "husky install"
   },
   "eslintConfig": {
+    "env": {
+      "jest": true
+    },
+    "globals": {
+      "page": true,
+      "browser": true,
+      "context": true,
+      "jestPuppeteer": true
+    },
     "extends": [
       "react-app",
       "react-app/jest",
