@@ -1,0 +1,19 @@
+.root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actionList {
+  padding: 0;
+  list-style: none;
+  align-items: center;
+}

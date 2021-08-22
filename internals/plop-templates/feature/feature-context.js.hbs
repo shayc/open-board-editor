@@ -1,0 +1,34 @@
+import React, { useState, useMemo, useContext } from 'react';
+
+const {{properCase name}}Context = React.createContext(null);
+
+function {{properCase name}}Provider(props) {
+  const { children } = props;
+
+  const [{{camelCase name}}, set{{properCase name}}] = useState();
+
+  const context = useMemo(() => {
+    return {
+      set{{properCase name}},
+      {{camelCase name}},
+    };
+  }, [{{camelCase name}}]);
+
+  return (
+    <{{properCase name}}Context.Provider value={context}>
+      {children}
+    </{{properCase name}}Context.Provider>
+  );
+}
+
+function use{{properCase name}}() {
+  const context = useContext({{properCase name}}Context);
+
+  if (!context) {
+    throw new Error(`use{{properCase name}} must be used within a {{properCase name}}Provider`);
+  }
+
+  return context;
+}
+
+export { {{properCase name}}Provider, use{{properCase name}} };

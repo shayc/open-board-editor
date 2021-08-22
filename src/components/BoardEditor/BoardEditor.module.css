@@ -1,0 +1,60 @@
+.root {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.selectionZone {
+  height: 100%;
+}
+
+.tileContainer {
+  height: 100%;
+  position: relative;
+}
+
+.placeholderContainer {
+  height: 100%;
+}
+
+.tileControls {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tileContainer:hover .tileControls {
+  display: block;
+}
+
+.isTileControlsHidden {
+  display: none;
+}
+
+.isTileControlsSelected {
+  background: rgba(51, 51, 51, 0.2);
+}
+
+.tileControlButton {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: initial;
+}
+
+.tileSelectToggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}

@@ -1,0 +1,29 @@
+.root {
+  width: 0;
+  flex: 1 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.root:empty {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.root::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 0, 0, 0.25);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.isOver::after {
+  opacity: 1;
+}

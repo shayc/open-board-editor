@@ -1,0 +1,35 @@
+import PropTypes from 'prop-types';
+{{#if wantMessages}}
+import { FormattedMessage } from 'react-intl';
+{{/if}}
+
+{{#if wantMessages}}
+import messages from './{{properCase name}}.messages';
+{{/if}}
+import styles from './{{properCase name}}.module.css';
+
+function {{properCase name}}(props) {
+  const { children } = props;
+
+  return (
+    <div className={styles.root}>
+      {{#if wantMessages}}
+      <h2>
+        <FormattedMessage {...messages.title} />
+      </h2>
+      {{/if}}
+      {children}
+    </div>
+  );
+}
+
+{{properCase name}}.propTypes = {
+  /**
+   * React children
+   *
+   * @ignore
+   */
+  children: PropTypes.node
+};
+
+export default {{properCase name}};

@@ -1,0 +1,68 @@
+.root {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  background: transparent;
+  border: 4px solid transparent;
+  border-radius: 6px;
+  display: flex;
+  position: relative;
+  font: inherit;
+  color: #000;
+  cursor: inherit;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+.root:empty {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.root:focus-visible {
+  outline: var(--black) solid 3px;
+  outline-offset: 3px;
+}
+
+button.root::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  bottom: -4px;
+  right: -4px;
+  z-index: 1;
+  opacity: 0;
+}
+
+.root:not(:disabled):hover::before {
+  background: rgba(51, 51, 51, 0.2);
+  opacity: 1;
+}
+
+.root:active::before {
+  background: rgba(51, 51, 51, 0.3);
+  opacity: 1;
+}
+
+.isntClickable {
+  cursor: default;
+}
+
+.isntClickable::before {
+  opacity: 0 !important;
+}
+
+.isFolder::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 1rem solid transparent;
+  border-bottom: 1rem solid transparent;
+  border-left: 1rem solid #000;
+  transform-origin: center right;
+  transform: translateY(-1rem) rotate(-45deg);
+  z-index: 1;
+}

@@ -1,0 +1,43 @@
+.root {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.item {
+  flex: 1;
+  min-width: 144px;
+  max-width: 288px;
+  margin-inline-end: 24px;
+}
+
+.itemButton {
+  padding: 0;
+  border: none;
+  background: var(--neutralLight);
+  color: inherit;
+  display: block;
+}
+
+.itemImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: contain;
+}
+
+.itemText {
+  margin-top: 0.5rem;
+}
+
+.itemAuthor {
+  color: var(--neutralPrimaryAlt);
+}
+
+.itemAuthorLink {
+  text-decoration: none;
+  color: inherit;
+}

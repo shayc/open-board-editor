@@ -1,0 +1,9 @@
+.root {
+  height: 100%;
+  min-height: 0;
+  user-select: none;
+}
+
+.focusZone {
+  height: 100%;
+}

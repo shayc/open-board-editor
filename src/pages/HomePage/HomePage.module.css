@@ -1,0 +1,17 @@
+.root {
+}
+
+.section {
+  padding: 2rem 0;
+  background-color: var(--neutralLighterAlt);
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+}
+
+.container {
+  width: 90%;
+  max-width: 1140px;
+  margin: 0 auto;
+}

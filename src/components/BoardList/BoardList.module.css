@@ -1,0 +1,63 @@
+.root {
+  height: 100%;
+  background: var(--neutralLighterAlt);
+  color: var(--black);
+
+  --bar-height: 2.75rem;
+}
+
+.filterBar {
+  height: var(--bar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.searchBox {
+  flex: 1;
+}
+
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  border-block-end: 1px solid var(--themeLighterAlt);
+}
+
+.selectAllButton {
+  width: 48px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  outline: 0;
+  cursor: pointer;
+}
+
+.selectAllButton:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: -2px;
+}
+
+.title {
+  padding: 0 8px 0 12px;
+}
+
+.container {
+  /* TODO: fix hard-coded 104px */
+  max-height: calc(100% - 104px);
+  overflow-y: auto;
+}
+
+@media (hover) {
+  .row:not(:hover) .rowActions {
+    display: none;
+  }
+}
+
+.checkboxCell {
+  display: flex;
+  align-items: center;
+}

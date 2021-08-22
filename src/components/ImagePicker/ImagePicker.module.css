@@ -1,0 +1,26 @@
+.root {
+  display: flex;
+  height: 88px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  background: var(--neutralLight);
+}
+
+.button {
+  padding: 3px;
+  border: none;
+  background: none;
+  scroll-snap-align: start;
+}
+
+.button:focus-visible {
+  outline: var(--black) solid 3px;
+  outline-offset: -3px;
+}
+
+.image {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}

@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  height: 100%;
+}
+
+.button {
+  min-width: 44px;
+  min-height: 44px;
+  height: 100%;
+  flex: 1;
+}

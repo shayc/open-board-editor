@@ -1,0 +1,44 @@
+{{#if memo}}
+import { memo } from 'react';
+{{/if}}
+{{#if wantMessages}}
+import { FormattedMessage } from 'react-intl';
+{{/if}}
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+{{#if wantMessages}}
+import messages from './{{properCase name}}.messages';
+{{/if}}
+import styles from './{{properCase name}}.module.css';
+
+function {{properCase name}}(props) {
+  const { children, className } = props;
+
+  const rootClassName = clsx(className, styles.root);
+
+  return (
+    <div className={rootClassName}>
+      {{#if wantMessages}}
+      <FormattedMessage {...messages.header} />
+      {{/if}}
+
+      {children}
+    </div>
+  );
+}
+
+{{properCase name}}.propTypes = {
+  /**
+   * React children
+   *
+   * @ignore
+   */
+  children: PropTypes.node,
+};
+
+{{#if memo}}
+export default memo({{ properCase name }});
+{{else}}
+export default {{properCase name}};
+{{/if}}
+
