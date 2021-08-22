@@ -18,6 +18,13 @@ If you're looking for a production ready, battle-tested AAC web app, you should 
 - Theme support
 - Completly free, [MIT license](LICENSE)
 
+## Technical Details
+
+Built with [React](https://reactjs.org/) and [Fluent UI](https://www.microsoft.com/design/fluent/#/web).
+Uses the browser's Speech Synthesis API to generate speech, IndexedDB to store boards and LocalStorage to store user preferences.
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -77,10 +84,3 @@ npm run analyze
 ### Advanced Configuration
 
 https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-## Technical Details
-
-Built with [React](https://reactjs.org/) and [Fluent UI](https://www.microsoft.com/design/fluent/#/web).
-Uses the browser's Speech Synthesis API to generate speech, IndexedDB to store boards and LocalStorage to store user preferences.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
