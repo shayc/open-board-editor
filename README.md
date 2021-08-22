@@ -2,7 +2,7 @@
 
 # Open-Board Editor
 
-A progressive web app for viewing and editing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used by [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to enable non-verbal people with speech impairment (Autism, ALS, etc.) to communicate by activating pictures that generate speech and sound.
+A progressive web app for viewing and editing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used in [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to enable non-verbal people with speech impairment (Autism, ALS, etc.) to communicate by activating pictures that generate speech and sound.
 
 ## ⚠ Warning: Work-in-Progress.
 
