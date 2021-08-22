@@ -2,7 +2,11 @@
 
 # Open-Board Editor
 
-A progressive web app for editing and viewing [Open Board Format](https://www.openboardformat.org/) (OBF) files. OBF files are used within [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to help non-verbal people (with Autism, ALS, etc.) to communicate with others by clicking on pictures to produce speech and sound.
+A progressive web app for editing and viewing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used within [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to help non-verbal people with speech impairments (Autism, ALS, etc.) to communicate with others by activating buttons to produce speech and sound.
+
+## Warning: Not Ready for Production.
+
+If you're looking for a production ready, battle-tested AAC web app, you should checkout [Cboard](https://github.com/cboard-org/cboard) instead.
 
 ## Features
 
@@ -57,7 +61,7 @@ Starts [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
 
 ### `npm run build-storybook`
 
-### Analyze the app's build size
+### Analyze the App's Build Size
 
 ```sh
 npm run build
