@@ -55,11 +55,11 @@ Runs plop and shows an interactive menu of generators to pick from.
 
 Runs the I18N extraction script to merge translation messages defined in `.messages.js` files to `src/i18n/extracted-messages/{lang-code}.json`.
 
-### `npm run storybook`
+### `npm run start:storybook`
 
 Starts [Storybook](https://storybook.js.org/docs/react/get-started/introduction) locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
 
-### `npm run build-storybook`
+### `npm run build:storybook`
 
 ### Analyze the App's Build Size
 
