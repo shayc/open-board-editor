@@ -28,6 +28,8 @@ import {
   BoardCommandBar,
   GridSizeSelect,
   SelectedBoardsPage,
+  SettingsButton,
+  ViewButton,
 } from '../../components';
 
 import globalSymbols from '../../api/pictograms/global-symbols';
@@ -59,7 +61,6 @@ const defaultColors = [
 ];
 
 function BoardEditorPage(props) {
-  const { actions } = props;
   const intl = useIntl();
   const { boardId } = useParams();
   const history = useHistory();
@@ -351,7 +352,14 @@ function BoardEditorPage(props) {
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      <AppBar actions={actions} />
+      <AppBar
+        actions={
+          <>
+            <SettingsButton />
+            <ViewButton />
+          </>
+        }
+      />
 
       <BoardCommandBar
         menuType={
