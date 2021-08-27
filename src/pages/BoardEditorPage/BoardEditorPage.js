@@ -356,7 +356,11 @@ function BoardEditorPage(props) {
         actions={
           <>
             <SettingsButton />
-            <ViewButton />
+            <ViewButton
+              onClick={() => {
+                history.push(`/board/${board?.id || ''}`);
+              }}
+            />
           </>
         }
       />
