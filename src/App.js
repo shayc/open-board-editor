@@ -4,7 +4,12 @@ import { Helmet } from 'react-helmet-async';
 
 import { useSpeech } from './features/speech';
 import { useLocale } from './features/locale';
-import { AppSettingsPanel, DelayedRender, SpinnerProgress } from './components';
+import {
+  AppSettingsPanel,
+  DelayedRender,
+  SettingsButton,
+  SpinnerProgress,
+} from './components';
 import styles from './App.module.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -43,7 +48,14 @@ function App() {
           </Route>
 
           <Route path="/edit/board/:boardId?">
-            <BoardEditorPage />
+            <BoardEditorPage
+              actions={<SettingsButton onClick={toggleSettingsPanel} />}
+            />
+
+            <AppSettingsPanel
+              open={isSettingsPanelOpen}
+              onDismiss={toggleSettingsPanel}
+            />
           </Route>
 
           <Route path="/board/:boardId?">
@@ -51,11 +63,6 @@ function App() {
           </Route>
         </Switch>
       </Suspense>
-
-      <AppSettingsPanel
-        open={isSettingsPanelOpen}
-        onDismiss={toggleSettingsPanel}
-      />
     </div>
   );
 }

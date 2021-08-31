@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton } from '@fluentui/react';
@@ -28,7 +29,6 @@ import {
   BoardCommandBar,
   GridSizeSelect,
   SelectedBoardsPage,
-  SettingsButton,
   ViewButton,
 } from '../../components';
 
@@ -61,6 +61,7 @@ const defaultColors = [
 ];
 
 function BoardEditorPage(props) {
+  const { actions } = props;
   const intl = useIntl();
   const { boardId } = useParams();
   const history = useHistory();
@@ -355,7 +356,7 @@ function BoardEditorPage(props) {
       <AppBar
         actions={
           <>
-            <SettingsButton />
+            {actions}
             <ViewButton
               onClick={() => {
                 history.push(`/board/${board?.id || ''}`);
@@ -532,5 +533,9 @@ function BoardEditorPage(props) {
     </div>
   );
 }
+
+BoardEditor.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.node),
+};
 
 export default BoardEditorPage;
