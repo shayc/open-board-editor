@@ -70,25 +70,25 @@ function modifyLastValue(values, fn) {
 }
 
 function groupValuesByType(values) {
-  const outputByType = [];
+  const valuesByType = [];
 
   values.forEach(({ vocalization, label, sound }) => {
     const text = vocalization || label;
 
     if (sound) {
-      outputByType.push({ type: 'sound', value: sound });
+      valuesByType.push({ type: 'sound', value: sound });
     } else if (text) {
-      const lastOutput = outputByType[outputByType.length - 1];
+      const lastOutput = valuesByType[valuesByType.length - 1];
 
       if (lastOutput?.type === 'text') {
         lastOutput.value = `${lastOutput.value} ${text}`;
       } else {
-        outputByType.push({ type: 'text', value: text });
+        valuesByType.push({ type: 'text', value: text });
       }
     }
   });
 
-  return outputByType;
+  return valuesByType;
 }
 
 export default useOutput;
