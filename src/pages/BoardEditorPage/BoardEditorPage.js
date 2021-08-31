@@ -172,24 +172,6 @@ function BoardEditorPage(props) {
     [nav]
   );
 
-  // function getNextBoard(currentBoardId, ids) {
-  //   const initialBoardIndex = boardDB.boardsList.findIndex(
-  //     (item) => item.id === currentBoardId
-  //   );
-  //   const filteredList = boardDB.boardsList.filter(
-  //     (item) => !ids.includes(item.id)
-  //   );
-  //   const boardIndex = filteredList.findIndex(
-  //     (item) => item.id === currentBoardId
-  //   );
-  //   const nextBoardIndex =
-  //     boardIndex !== -1
-  //       ? boardIndex
-  //       : filteredList[initialBoardIndex] ||
-  //         filteredList[filteredList.length - 1];
-
-  //   return nextBoardIndex;
-  // }
   // function handleButtonColorChange(ids, color) {
   //   const board = boardCtrl.setButtonColor(ids, color);
   //   boardDB.update(board);
