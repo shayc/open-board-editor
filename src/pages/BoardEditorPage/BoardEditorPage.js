@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton } from '@fluentui/react';
@@ -28,6 +29,7 @@ import {
   BoardCommandBar,
   GridSizeSelect,
   SelectedBoardsPage,
+  ViewButton,
 } from '../../components';
 
 import globalSymbols from '../../api/pictograms/global-symbols';
@@ -159,6 +161,35 @@ function BoardEditorPage(props) {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
 
+  const navigateToNextBoard = useCallback(
+    function navigateToNextBoard(boardId, boardsList) {
+      const boardIndex = boardsList.findIndex((board) => board.id === boardId);
+      const nextBoard =
+        boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
+
+      nav.goTo(nextBoard?.id || '/edit/board/');
+    },
+    [nav]
+  );
+
+  // function getNextBoard(currentBoardId, ids) {
+  //   const initialBoardIndex = boardDB.boardsList.findIndex(
+  //     (item) => item.id === currentBoardId
+  //   );
+  //   const filteredList = boardDB.boardsList.filter(
+  //     (item) => !ids.includes(item.id)
+  //   );
+  //   const boardIndex = filteredList.findIndex(
+  //     (item) => item.id === currentBoardId
+  //   );
+  //   const nextBoardIndex =
+  //     boardIndex !== -1
+  //       ? boardIndex
+  //       : filteredList[initialBoardIndex] ||
+  //         filteredList[filteredList.length - 1];
+
+  //   return nextBoardIndex;
+  // }
   // function handleButtonColorChange(ids, color) {
   //   const board = boardCtrl.setButtonColor(ids, color);
   //   boardDB.update(board);
@@ -195,25 +226,11 @@ function BoardEditorPage(props) {
   const handleBoardDelete = useCallback(
     function handleBoardDelete(id) {
       const ids = Array.isArray(id) ? id : [id];
-
-      const initialBoardIndex = boardDB.boardsList.findIndex(
-        (item) => item.id === board.id
-      );
-      const filteredList = boardDB.boardsList.filter(
-        (item) => !ids.includes(item.id)
-      );
-      const boardIndex = filteredList.findIndex((item) => item.id === board.id);
-      const nextBoardIndex =
-        boardIndex !== -1
-          ? boardIndex
-          : filteredList[initialBoardIndex] ||
-            filteredList[filteredList.length - 1];
-
       boardDB.remove(ids);
 
-      nav.goTo(nextBoardIndex?.id || '/edit/board/');
+      navigateToNextBoard(board.id, boardDB.boardsList);
     },
-    [boardDB, nav, board.id]
+    [boardDB, board.id, navigateToNextBoard]
   );
 
   function handleButtonDelete() {
@@ -263,27 +280,13 @@ function BoardEditorPage(props) {
     setImages([]);
   }
 
-  async function fetchImageData({ contentType, fileName, url }) {
-    const fileExtension = contentType?.split('/')[1];
-    const isSVG = fileExtension?.toLowerCase() === 'svg';
-
-    const file = {
-      type: `${contentType}${isSVG ? '+xml' : ''}`,
-      data: await (await fetch(url)).arrayBuffer(),
-    };
-
-    const path = `images/${fileName}.${fileExtension}`;
-
-    return { file, path };
-  }
-
   async function handleButtonChangeSave(button, position) {
     const { image } = button;
 
-    const noImageData = !image?.data && image?.url;
+    const shouldFetchImage = !image?.data && image?.url;
     let newBoard = { ...board };
 
-    if (noImageData) {
+    if (shouldFetchImage) {
       try {
         const { file, path } = await fetchImageData({
           contentType: image.content_type,
@@ -351,7 +354,18 @@ function BoardEditorPage(props) {
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      <AppBar actions={actions} />
+      <AppBar
+        actions={
+          <>
+            {actions}
+            <ViewButton
+              onClick={() => {
+                history.push(`/board/${board?.id || ''}`);
+              }}
+            />
+          </>
+        }
+      />
 
       <BoardCommandBar
         menuType={
@@ -438,17 +452,16 @@ function BoardEditorPage(props) {
 
                 <BoardEditor
                   board={{ ...board, grid }}
-                  boards={boardDB.boardsList.map((b) => ({
-                    key: b.id,
-                    text: b.name,
-                  }))}
+                  linkableBoards={boardDB.boardsList.filter(
+                    (b) => b.id !== board.id
+                  )}
                   draggable={!isSmallScreen}
                   selection={buttonsSelection}
                   selectionEnabled={isButtonsSelected}
-                  labelPosition={boardSettings.labelPosition}
-                  labelHidden={boardSettings.isLabelHidden}
-                  colors={[...boardDB.boardsColors, ...defaultColors]}
-                  images={images}
+                  buttonLabelPosition={boardSettings.labelPosition}
+                  buttonLabelHidden={boardSettings.isLabelHidden}
+                  buttonColors={[...boardDB.boardsColors, ...defaultColors]}
+                  buttonImages={images}
                   onImagesRequested={handleImagesRequested}
                   onButtonClick={boardCtrl.activateButton}
                   onButtonChange={handleButtonChange}
@@ -519,6 +532,24 @@ function BoardEditorPage(props) {
       )}
     </div>
   );
+}
+
+BoardEditor.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.node),
+};
+
+async function fetchImageData({ contentType, fileName, url }) {
+  const fileExtension = contentType?.split('/')[1];
+  const isSVG = fileExtension?.toLowerCase() === 'svg';
+
+  const file = {
+    type: `${contentType}${isSVG ? '+xml' : ''}`,
+    data: await (await fetch(url)).arrayBuffer(),
+  };
+
+  const path = `images/${fileName}.${fileExtension}`;
+
+  return { file, path };
 }
 
 export default BoardEditorPage;

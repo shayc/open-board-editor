@@ -16,12 +16,11 @@ import {
   Pictogram,
   Output,
   Seo,
+  EditButton,
 } from '../../components';
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage(props) {
-  const { actions } = props;
-
   const history = useHistory();
   const { boardId } = useParams();
   const { board: boardSettings } = useUserSettings();
@@ -128,7 +127,13 @@ function BoardViewerPage(props) {
             {board?.name}
           </NavText>
 
-          <div className={styles.smallScreenBarGroup}>{actions}</div>
+          <div className={styles.smallScreenBarGroup}>
+            <EditButton
+              onClick={() => {
+                history.push(`/edit/board/${board?.id || ''}`);
+              }}
+            />
+          </div>
         </div>
       )}
 
@@ -152,7 +157,11 @@ function BoardViewerPage(props) {
             onBackClick={nav.goBack}
             onHomeClick={nav.goToRoot}
           >
-            {actions}
+            <EditButton
+              onClick={() => {
+                history.push(`/edit/board/${board?.id || ''}`);
+              }}
+            />
           </NavBar>
         </div>
       )}

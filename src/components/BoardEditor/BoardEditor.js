@@ -19,13 +19,13 @@ import { nanoid } from 'nanoid';
 function BoardEditor(props) {
   const {
     board,
-    boards,
+    buttonColors,
+    buttonImages,
+    buttonLabelHidden,
+    buttonLabelPosition,
     className,
-    colors,
     draggable,
-    images,
-    labelHidden,
-    labelPosition,
+    linkableBoards,
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
@@ -47,8 +47,12 @@ function BoardEditor(props) {
     setCalloutTarget,
   } = useButtonCallout();
 
-  const linkableBoards = boards.filter((b) => b.key !== board.id);
   const rootClassName = clsx(className, styles.root);
+
+  const boardsOptions = linkableBoards.map((board) => ({
+    key: board.id,
+    text: board.name,
+  }));
 
   function handleButtonDiscard() {
     resetButton();
@@ -137,8 +141,8 @@ function BoardEditor(props) {
         >
           <Pictogram
             label={label}
-            labelHidden={labelHidden}
-            labelPosition={labelPosition}
+            labelHidden={buttonLabelHidden}
+            labelPosition={buttonLabelPosition}
             src={imageUrl}
           />
         </Tile>
@@ -175,7 +179,6 @@ function BoardEditor(props) {
             buttons={board.buttons}
             grid={board.grid}
             draggable={draggable && !selectionEnabled}
-            scrollSnap={true}
             renderButton={renderTile}
             renderButtonPlaceholder={renderTilePlaceholder}
             onButtonPositionChange={onButtonPositionChange}
@@ -188,9 +191,9 @@ function BoardEditor(props) {
         <ButtonCallout
           target={calloutTarget}
           button={button}
-          colors={colors}
-          images={images}
-          boards={linkableBoards}
+          colors={buttonColors}
+          images={buttonImages}
+          boards={boardsOptions}
           onSave={handleButtonSave}
           onDiscard={handleButtonDiscard}
           onChange={handleButtonChange}
@@ -207,25 +210,29 @@ BoardEditor.propTypes = {
    */
   board: PropTypes.shape({}),
   /**
-   *
+   * Colors for the button callout
    */
-  boards: PropTypes.array,
+  buttonColors: PropTypes.array,
   /**
-   *
+   * Images for the button callout
    */
-  colors: PropTypes.array,
-  /**
-   *
-   */
-  images: PropTypes.array,
+  buttonImages: PropTypes.array,
   /**
    * If `true` button label is hidden
    */
-  labelHidden: PropTypes.bool,
+  buttonLabelHidden: PropTypes.bool,
   /**
    * Button label position
    */
-  labelPosition: PropTypes.oneOf(['top', 'bottom']),
+  buttonLabelPosition: PropTypes.oneOf(['top', 'bottom']),
+  /**
+   * If `true` board is draggable
+   */
+  draggable: PropTypes.bool,
+  /**
+   * Linkable boards for button callout
+   */
+  linkableBoards: PropTypes.array,
   /**
    * Callback, fired when a button changes
    */
