@@ -137,7 +137,7 @@ function BoardEditorPage(props) {
   );
 
   // eslint-disable-next-line
-  const debouncedNavGoTo = useCallback(
+  const debouncedHandleActiveBoardIdChange = useCallback(
     debounce((id) => {
       nav.goTo(id);
     }, 300),
@@ -206,20 +206,20 @@ function BoardEditorPage(props) {
   }
 
   const handleBoardDelete = useCallback(
-    function handleBoardDelete(id) {
-      const ids = Array.isArray(id) ? id : [id];
-      boardDB.remove(ids);
+    function handleBoardDelete() {
+      const selectedIds = boardsSelection.getSelection().map(({ id }) => id);
+      boardDB.remove(selectedIds);
 
       navigateToNextBoard(board.id, boardDB.boardsList);
     },
-    [boardDB, board.id, navigateToNextBoard]
+    [boardDB, board.id, boardsSelection, navigateToNextBoard]
   );
 
   function handleButtonDelete() {
     const ids = buttonsSelection
       .getSelection()
       .filter((id) => id)
-      .map((item) => item.id);
+      .map(({ id }) => id);
 
     const board = boardCtrl.removeButton(ids);
     boardDB.update(board);
@@ -367,13 +367,7 @@ function BoardEditorPage(props) {
           buttonsSelection.setAllSelected(false);
         }}
         onDeleteButtonClick={handleButtonDelete}
-        onDeleteBoardClick={() => {
-          const selectedIds = boardsSelection
-            .getSelection()
-            .map((item) => item.id);
-
-          handleBoardDelete(selectedIds);
-        }}
+        onDeleteBoardClick={handleBoardDelete}
       />
 
       {isLoading ? (
@@ -390,9 +384,7 @@ function BoardEditorPage(props) {
                 items={boardDB.boardsList}
                 selectedCount={selectedCount}
                 selection={boardsSelection}
-                onActiveIdChange={(id) => {
-                  debouncedNavGoTo(id);
-                }}
+                onActiveIdChange={debouncedHandleActiveBoardIdChange}
                 onDeleteClick={handleBoardDelete}
                 onDetailsClick={handleBoardDetails}
                 onSetAsHomeClick={handleSetBoardAsHome}
@@ -485,13 +477,7 @@ function BoardEditorPage(props) {
             {boardsSelection.getSelectedCount() > 1 && (
               <SelectedBoardsPage
                 selectedCount={boardsSelection.getSelectedCount()}
-                onDeleteClick={() => {
-                  const selectedIds = boardsSelection
-                    .getSelection()
-                    .map(({ id }) => id);
-
-                  handleBoardDelete(selectedIds);
-                }}
+                onDeleteClick={handleBoardDelete}
                 onCancelClick={() => {
                   boardsSelection.setAllSelected(false);
                 }}
