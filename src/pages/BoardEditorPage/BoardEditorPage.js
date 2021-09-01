@@ -24,7 +24,6 @@ import {
   DetailsPanel,
   DelayedRender,
   Bar,
-  NavBar,
   NavButtons,
   NavText,
   AppBar,
