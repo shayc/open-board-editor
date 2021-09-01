@@ -36,16 +36,6 @@ function BoardViewerPage(props) {
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
 
-  let grid = { ...board?.grid };
-
-  if (isSmallScreen) {
-    const MAX_GRID_COLUMNS = 4;
-    const MAX_GRID_ROWS = 4;
-
-    grid.rows = Math.min(grid.rows, MAX_GRID_ROWS);
-    grid.columns = Math.min(grid.columns, MAX_GRID_COLUMNS);
-  }
-
   function playAudio(url) {
     utils.playAudio(url);
   }
@@ -63,7 +53,7 @@ function BoardViewerPage(props) {
       button;
 
     const variant = loadBoard ? 'folder' : 'button';
-    const imageUrl = image?.data || image?.url;
+    const imageSrc = image?.data || image?.url;
 
     function handleClick() {
       boardCtrl.activateButton(button);
@@ -81,7 +71,7 @@ function BoardViewerPage(props) {
           label={label}
           labelHidden={boardSettings.isLabelHidden}
           labelPosition={boardSettings.labelPosition}
-          src={imageUrl}
+          src={imageSrc}
         />
       </Tile>
     );
@@ -89,12 +79,12 @@ function BoardViewerPage(props) {
 
   function renderOutputValue(value) {
     const { image, label } = value;
-    const imageUrl = image?.data || image?.url;
+    const imageSrc = image?.data || image?.url;
 
-    return image ? (
+    return imageSrc ? (
       <Pictogram
         label={label}
-        src={imageUrl}
+        src={imageSrc}
         labelHidden={boardSettings.isLabelHidden}
         labelPosition={boardSettings.labelPosition}
       />
@@ -123,9 +113,7 @@ function BoardViewerPage(props) {
 
       {isSmallScreen && (
         <div className={styles.smallScreenBar}>
-          <NavText style={{ height: '48px', margin: '0 8px' }}>
-            {board?.name}
-          </NavText>
+          <NavText>{board?.name}</NavText>
 
           <div className={styles.smallScreenBarGroup}>
             <EditButton
@@ -169,7 +157,7 @@ function BoardViewerPage(props) {
       <div className={styles.boardWrapper}>
         <Board
           buttons={board?.buttons}
-          grid={grid}
+          grid={board?.grid}
           renderButton={renderTile}
           scrollSnap={true}
           scrollDirection="vertical"

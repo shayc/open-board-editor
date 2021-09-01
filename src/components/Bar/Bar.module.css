@@ -8,6 +8,7 @@
 .middleGroup,
 .endGroup {
   display: flex;
+  align-items: center;
 }
 
 .startGroup {

@@ -23,7 +23,9 @@ import {
   BoardList,
   DetailsPanel,
   DelayedRender,
+  Bar,
   NavBar,
+  NavButtons,
   NavText,
   AppBar,
   BoardCommandBar,
@@ -403,22 +405,24 @@ function BoardEditorPage(props) {
           <div className={styles.main}>
             {board?.id && boardsSelection.getSelectedCount() < 2 && (
               <>
-                {isSmallScreen ? (
-                  <NavText>{board?.name}</NavText>
-                ) : (
-                  <NavBar
-                    backDisabled={nav.backDisabled}
-                    forwardDisabled={nav.forwardDisabled}
-                    onBackClick={nav.goBack}
-                    onForwardClick={nav.goForward}
-                    onHomeClick={nav.goToRoot}
-                    forwardHidden={isButtonsSelected}
-                    backHidden={isButtonsSelected}
-                    homeHidden={isButtonsSelected}
-                    text={board?.name}
-                  >
-                    {!isButtonsSelected && (
-                      <>
+                <Bar
+                  startGroup={
+                    !isSmallScreen &&
+                    !isButtonsSelected && (
+                      <NavButtons
+                        backDisabled={nav.backDisabled}
+                        forwardDisabled={nav.forwardDisabled}
+                        onBackClick={nav.goBack}
+                        onForwardClick={nav.goForward}
+                        onHomeClick={nav.goToRoot}
+                      />
+                    )
+                  }
+                  middleGroup={<NavText>{board?.name}</NavText>}
+                  endGroup={
+                    !isSmallScreen &&
+                    !isButtonsSelected && (
+                      <div>
                         <GridSizeSelect onChange={handleGridSizeChange} />
                         <CommandBarButton
                           title={intl.formatMessage(
@@ -427,10 +431,10 @@ function BoardEditorPage(props) {
                           iconProps={{ iconName: 'Info' }}
                           onClick={handleBoardDetails}
                         />
-                      </>
-                    )}
-                  </NavBar>
-                )}
+                      </div>
+                    )
+                  }
+                />
 
                 <BoardEditor
                   board={{ ...board, grid }}
@@ -455,18 +459,21 @@ function BoardEditorPage(props) {
             )}
 
             {isSmallScreen && (
-              <div className={styles.bottomNavBar}>
-                <NavBar
-                  backDisabled={nav.backDisabled}
-                  forwardDisabled={nav.forwardDisabled}
-                  onBackClick={nav.goBack}
-                  onForwardClick={nav.goForward}
-                  onHomeClick={nav.goToRoot}
-                  forwardHidden={isButtonsSelected}
-                  backHidden={isButtonsSelected}
-                  homeHidden={isButtonsSelected}
-                >
-                  {!isButtonsSelected && (
+              <Bar
+                className={styles.bottomNavBar}
+                startGroup={
+                  !isButtonsSelected && (
+                    <NavButtons
+                      backDisabled={nav.backDisabled}
+                      forwardDisabled={nav.forwardDisabled}
+                      onBackClick={nav.goBack}
+                      onForwardClick={nav.goForward}
+                      onHomeClick={nav.goToRoot}
+                    />
+                  )
+                }
+                endGroup={
+                  !isButtonsSelected && (
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
                       <CommandBarButton
@@ -477,9 +484,9 @@ function BoardEditorPage(props) {
                         onClick={handleBoardDetails}
                       />
                     </>
-                  )}
-                </NavBar>
-              </div>
+                  )
+                }
+              />
             )}
 
             {boardsSelection.getSelectedCount() > 1 && (
