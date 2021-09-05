@@ -1,71 +1,76 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 export function useNavigation(params) {
   const {
     history,
-    navigation: initialNavigation = [],
+    navigation: initialNav = [],
     index: initialIndex = -1,
     rootState,
   } = params;
 
-  const [navigation, setNavigation] = useState(initialNavigation);
+  const [nav, setNav] = useState(initialNav);
   const [index, setIndex] = useState(initialIndex);
-  const activeState = navigation[index];
-  const backDisabled = index <= 0;
-  const forwardDisabled = index >= navigation.length - 1;
 
-  function goBack() {
-    if (backDisabled) {
-      return;
+  const navigation = useMemo(() => {
+    const activeState = nav[index];
+    const backDisabled = index <= 0;
+    const forwardDisabled = index >= nav.length - 1;
+
+    function goBack() {
+      if (backDisabled) {
+        return;
+      }
+
+      setIndex((i) => i - 1);
+      history.goBack();
     }
 
-    setIndex((i) => i - 1);
-    history.goBack();
-  }
+    function goForward() {
+      if (forwardDisabled) {
+        return;
+      }
 
-  function goForward() {
-    if (forwardDisabled) {
-      return;
+      setIndex((i) => i + 1);
+      history.goForward();
     }
 
-    setIndex((i) => i + 1);
-    history.goForward();
-  }
-
-  function goTo(id) {
-    push({ id });
-  }
-
-  function goToRoot() {
-    if (!rootState?.id) {
-      return;
+    function goTo(id) {
+      push({ id });
     }
 
-    set({ id: rootState.id });
-  }
+    function goToRoot() {
+      if (!rootState?.id) {
+        return;
+      }
 
-  function push(state) {
-    setNavigation((navigation) => {
-      return [...navigation.slice(0, index + 1), state];
-    });
+      set({ id: rootState.id });
+    }
 
-    setIndex((i) => i + 1);
-    history.push(state.id, state);
-  }
+    function push(state) {
+      setNav((nav) => {
+        return [...nav.slice(0, index + 1), state];
+      });
 
-  function set(state) {
-    setNavigation([state]);
-    setIndex(0);
-    history.push(state.id, state);
-  }
+      setIndex((i) => i + 1);
+      history.push(state.id, state);
+    }
 
-  return {
-    backDisabled,
-    forwardDisabled,
-    goBack,
-    goForward,
-    goTo,
-    goToRoot,
-    activeState,
-  };
+    function set(state) {
+      setNav([state]);
+      setIndex(0);
+      history.push(state.id, state);
+    }
+
+    return {
+      backDisabled,
+      forwardDisabled,
+      goBack,
+      goForward,
+      goTo,
+      goToRoot,
+      activeState,
+    };
+  }, [history, index, nav, rootState.id]);
+
+  return navigation;
 }
