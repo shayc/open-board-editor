@@ -1,15 +1,10 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 import { useSpeech } from './features/speech';
 import { useLocale } from './features/locale';
-import {
-  AppSettingsPanel,
-  DelayedRender,
-  SettingsButton,
-  SpinnerProgress,
-} from './components';
+import { AppSettingsPanel, DelayedRender, SpinnerProgress } from './components';
 import styles from './App.module.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -17,12 +12,21 @@ const BoardViewerPage = lazy(() => import('./pages/BoardViewerPage'));
 const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 
 function App() {
+  const history = useHistory();
   const { locale } = useLocale();
   const speech = useSpeech();
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
 
   function toggleSettingsPanel() {
     setIsSettingsPanelOpen((isOpen) => !isOpen);
+  }
+
+  function viewBoard(id) {
+    history.push(`/board/${id}`);
+  }
+
+  function editBoard(id) {
+    history.push(`/edit/board/${id}`);
   }
 
   useEffect(() => {
@@ -49,7 +53,8 @@ function App() {
 
           <Route path="/edit/board/:boardId?">
             <BoardEditorPage
-              actions={<SettingsButton onClick={toggleSettingsPanel} />}
+              onSettingsClick={toggleSettingsPanel}
+              onViewClick={viewBoard}
             />
 
             <AppSettingsPanel
@@ -59,7 +64,7 @@ function App() {
           </Route>
 
           <Route path="/board/:boardId?">
-            <BoardViewerPage />
+            <BoardViewerPage onEditClick={editBoard} />
           </Route>
         </Switch>
       </Suspense>

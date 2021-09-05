@@ -31,6 +31,7 @@ import {
   GridSizeSelect,
   SelectedBoardsPage,
   ViewButton,
+  SettingsButton,
 } from '../../components';
 
 import globalSymbols from '../../api/pictograms/global-symbols';
@@ -62,7 +63,7 @@ const defaultColors = [
 ];
 
 function BoardEditorPage(props) {
-  const { actions } = props;
+  const { onViewClick, onSettingsClick } = props;
   const intl = useIntl();
   const { boardId } = useParams();
   const history = useHistory();
@@ -309,6 +310,14 @@ function BoardEditorPage(props) {
     boardDB.update(board);
   }
 
+  function handleViewClick() {
+    onViewClick(boardId);
+  }
+
+  function handleSettingsClick() {
+    onSettingsClick();
+  }
+
   useEffect(() => {
     const getBoard = async (id) => {
       const board = await boardDB.getById(id);
@@ -340,12 +349,8 @@ function BoardEditorPage(props) {
       <AppBar
         actions={
           <>
-            {actions}
-            <ViewButton
-              onClick={() => {
-                history.push(`/board/${board?.id || ''}`);
-              }}
-            />
+            <SettingsButton onClick={handleSettingsClick} />
+            <ViewButton onClick={handleViewClick} />
           </>
         }
       />

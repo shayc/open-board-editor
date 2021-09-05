@@ -21,6 +21,7 @@ import {
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage(props) {
+  const { onEditClick } = props;
   const history = useHistory();
   const { boardId } = useParams();
   const { board: boardSettings } = useUserSettings();
@@ -46,6 +47,10 @@ function BoardViewerPage(props) {
 
   function changeBoard(id) {
     nav.goTo(id);
+  }
+
+  function handleEditClick() {
+    onEditClick(boardId);
   }
 
   function renderTile(button) {
@@ -116,11 +121,7 @@ function BoardViewerPage(props) {
           <NavText>{board?.name}</NavText>
 
           <div className={styles.smallScreenBarGroup}>
-            <EditButton
-              onClick={() => {
-                history.push(`/edit/board/${board?.id || ''}`);
-              }}
-            />
+            <EditButton onClick={handleEditClick} />
           </div>
         </div>
       )}
@@ -145,11 +146,7 @@ function BoardViewerPage(props) {
             onBackClick={nav.goBack}
             onHomeClick={nav.goToRoot}
           >
-            <EditButton
-              onClick={() => {
-                history.push(`/edit/board/${board?.id || ''}`);
-              }}
-            />
+            <EditButton onClick={handleEditClick} />
           </NavBar>
         </div>
       )}
@@ -179,10 +176,7 @@ function BoardViewerPage(props) {
 }
 
 BoardViewerPage.propTypes = {
-  /**
-   * Actions to render.
-   */
-  actions: PropTypes.node,
+  onEditClick: PropTypes.func.isRequired,
 };
 
 export default BoardViewerPage;
