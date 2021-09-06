@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -249,7 +249,7 @@ function BoardList(props) {
         {selection && (
           <button
             className={styles.selectAllButton}
-            // onClick={handleToggleSelectAll}
+            onClick={handleToggleSelectAll}
             title={intl.formatMessage(messages.selectAllBoards)}
           >
             <Check

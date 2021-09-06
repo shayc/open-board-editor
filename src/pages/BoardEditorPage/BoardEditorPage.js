@@ -7,7 +7,6 @@ import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { debounce, playAudio } from '../../utils';
-import { gridService } from '../../open-board-format/board/grid/grid.service';
 import {
   useBoard,
   useBoardDB,
