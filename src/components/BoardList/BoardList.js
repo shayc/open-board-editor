@@ -171,8 +171,7 @@ function BoardList(props) {
                 searchWords={matchedItems.searchWords}
                 textToHighlight={item.name}
               />
-
-              {isRoot && <Icon iconProps={{ iconName: 'Home' }} />}
+              {isRoot && <Icon iconName="Home" />}
             </Text>
           ),
         }}
