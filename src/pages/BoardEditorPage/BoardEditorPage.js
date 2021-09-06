@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
+
 import { debounce, playAudio } from '../../utils';
 import { gridService } from '../../open-board-format/board/grid/grid.service';
 import {
@@ -36,31 +37,9 @@ import {
 
 import globalSymbols from '../../api/pictograms/global-symbols';
 import { openFileDialog, share, print } from './utils';
+import { defaultColors } from './colors';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
-
-const defaultColors = [
-  {
-    id: 'PMxkUnkBqx9ZhEq06sAiC',
-    backgroundColor: 'rgb(255, 204, 170)',
-    borderColor: 'rgb(255, 112, 17)',
-  },
-  {
-    id: 'KuA7Ww1Di9QepHRS9S3ni',
-    backgroundColor: 'rgb(255, 170, 204)',
-    borderColor: 'rgb(255, 17, 112)',
-  },
-  {
-    id: 'Jr89fddSpDYrdHS45BINC',
-    backgroundColor: 'rgb(170, 204, 255)',
-    borderColor: 'rgb(17, 112, 255)',
-  },
-  {
-    id: 'qRlY_5kBfmuM9NwhFJyLg',
-    backgroundColor: 'rgb(255, 255, 170)',
-    borderColor: 'rgb(221, 221, 0)',
-  },
-];
 
 function BoardEditorPage(props) {
   const { onViewClick, onSettingsClick } = props;
@@ -81,7 +60,6 @@ function BoardEditorPage(props) {
   const nav = useNavigation({ history, rootState: { id: boardDB.rootId } });
 
   const forceUpdate = useForceUpdate();
-  const [selectedCount, setSelectedCount] = useState(0);
 
   const { board, boardCtrl } = useBoard({
     changeBoard: nav.goTo,
@@ -100,33 +78,20 @@ function BoardEditorPage(props) {
   }
 
   const buttonsSelection = useMemo(() => {
-    const sortedButtons = board.buttons.length
-      ? gridService
-          .sortItems(board.buttons, {
-            columns: board.grid.columns,
-            rows: board.grid.rows,
-            order: board.grid.order,
-          })
-          .flat()
-          .filter((item) => item)
-      : board.buttons;
-
     return new Selection({
       onSelectionChanged: forceUpdate,
-      items: sortedButtons,
+      items: board.buttons,
     });
   }, [board, forceUpdate]);
 
   const boardsSelection = useRef(
     new Selection({
-      onSelectionChanged: () => {
-        const selectedCount = boardsSelection.getSelectedCount();
-        setSelectedCount(selectedCount);
-      },
+      onSelectionChanged: forceUpdate,
       items: boardDB.boardsList,
     })
   ).current;
 
+  const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
   const isButtonsSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardsSelected = Boolean(boardsSelection.getSelectedCount());
 
@@ -139,11 +104,11 @@ function BoardEditorPage(props) {
   );
 
   // eslint-disable-next-line
-  const debouncedNavGoTo = useCallback(
+  const handleActiveBoardIdChange = useCallback(
     debounce((id) => {
       nav.goTo(id);
     }, 300),
-    []
+    [nav]
   );
 
   const handleImagesRequested = useMemo(
@@ -297,8 +262,8 @@ function BoardEditorPage(props) {
     boardDB.update(board);
   }
 
-  const handleSetBoardAsHome = useCallback(
-    function handleSetBoardAsHome(id) {
+  const handleRootIdChange = useCallback(
+    function handleRootIdChange(id) {
       boardDB.setRootId(id);
     },
     [boardDB]
@@ -394,14 +359,11 @@ function BoardEditorPage(props) {
                 activeId={boardId}
                 rootId={boardDB.rootId}
                 items={boardDB.boardsList}
-                selectedCount={selectedCount}
                 selection={boardsSelection}
-                onActiveIdChange={(id) => {
-                  debouncedNavGoTo(id);
-                }}
+                onActiveIdChange={handleActiveBoardIdChange}
                 onDeleteClick={handleBoardDelete}
                 onDetailsClick={handleBoardDetails}
-                onSetAsHomeClick={handleSetBoardAsHome}
+                onRootIdChange={handleRootIdChange}
               />
             </div>
           )}
@@ -442,9 +404,7 @@ function BoardEditorPage(props) {
 
                 <BoardEditor
                   board={{ ...board, grid }}
-                  linkableBoards={boardDB.boardsList.filter(
-                    (b) => b.id !== board.id
-                  )}
+                  linkableBoards={linkableBoards}
                   draggable={!isSmallScreen}
                   selection={buttonsSelection}
                   selectionEnabled={isButtonsSelected}
