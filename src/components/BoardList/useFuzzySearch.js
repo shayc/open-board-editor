@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import Fuse from 'fuse.js';
 
-function useFuse(items, options) {
+function useFuzzySearch(items, options) {
   const [searchText, setSearchText] = useState('');
 
   const fuse = useMemo(() => {
@@ -35,4 +35,4 @@ function useFuse(items, options) {
   return { matchedItems, onSearchChange, searchText };
 }
 
-export default useFuse;
+export default useFuzzySearch;

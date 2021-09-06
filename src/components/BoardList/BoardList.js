@@ -17,7 +17,7 @@ import {
 } from '@fluentui/react';
 import Highlighter from 'react-highlight-words';
 
-import useFuse from './useFuse';
+import useFuzzySearch from './useFuzzySearch';
 import BoardListHeader from './BoardListHeader/BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
@@ -37,7 +37,7 @@ function BoardList(props) {
 
   const intl = useIntl();
 
-  const { matchedItems, searchText, onSearchChange } = useFuse(items, {
+  const { matchedItems, searchText, onSearchChange } = useFuzzySearch(items, {
     threshold: 0.6,
     includeMatches: true,
     minMatchCharLength: 1,
