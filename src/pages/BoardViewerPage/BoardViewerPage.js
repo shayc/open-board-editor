@@ -22,7 +22,7 @@ import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage(props) {
   const { onEditClick } = props;
-  const history = useHistory();
+
   const { boardId } = useParams();
   const { board: boardSettings } = useUserSettings();
   const boardDB = useBoardDB();
@@ -33,6 +33,7 @@ function BoardViewerPage(props) {
     changeBoard,
   });
 
+  const history = useHistory();
   const nav = useNavigation({ history, rootState: { id: boardDB.rootId } });
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
