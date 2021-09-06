@@ -18,7 +18,7 @@ import {
 import Highlighter from 'react-highlight-words';
 
 import useFuse from './useFuse';
-import BoardListHeader from './BoardListHeader';
+import BoardListHeader from './BoardListHeader/BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
 
@@ -196,7 +196,11 @@ function BoardList(props) {
         onToggleSelectAll={handleToggleSelectAll}
         isAllSelected={isAllSelected}
         selectedCount={selectedCount}
-        searchText={searchText}
+        title={
+          searchText.length
+            ? intl.formatMessage(messages.results)
+            : intl.formatMessage(messages.boards)
+        }
       />
 
       <div className={styles.container}>

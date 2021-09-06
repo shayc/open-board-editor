@@ -33,4 +33,12 @@ export default defineMessages({
     id: `${scope}.setAsHomeBoard`,
     defaultMessage: 'Set as home board',
   },
+  results: {
+    id: `${scope}.results`,
+    defaultMessage: 'Results',
+  },
+  boards: {
+    id: `${scope}.boards`,
+    defaultMessage: 'Boards',
+  },
 });

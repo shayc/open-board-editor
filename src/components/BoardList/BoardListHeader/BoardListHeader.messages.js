@@ -13,12 +13,4 @@ export default defineMessages({
     id: `${scope}.selectAllBoards`,
     defaultMessage: 'Select all boards',
   },
-  results: {
-    id: `${scope}.results`,
-    defaultMessage: 'Results',
-  },
-  boards: {
-    id: `${scope}.boards`,
-    defaultMessage: 'Boards',
-  },
 });

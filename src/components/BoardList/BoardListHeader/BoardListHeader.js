@@ -4,7 +4,7 @@ import messages from './BoardListHeader.messages';
 import styles from './BoardListHeader.module.css';
 
 function BoardListHeader(props) {
-  const { onToggleSelectAll, isAllSelected, selectedCount, searchText } = props;
+  const { onToggleSelectAll, isAllSelected, selectedCount, title } = props;
 
   const intl = useIntl();
 
@@ -29,9 +29,7 @@ function BoardListHeader(props) {
         <Text as="span" variant="large">
           {`${selectedCount ? `(${selectedCount})` : ''} `}
 
-          {searchText.length
-            ? intl.formatMessage(messages.results)
-            : intl.formatMessage(messages.boards)}
+          {title}
         </Text>
       </div>
     </div>
