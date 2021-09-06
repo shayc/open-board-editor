@@ -24,26 +24,19 @@ import styles from './BoardList.module.css';
 
 function BoardList(props) {
   const {
-    activeId: activeIdProp,
+    activeId,
     className,
     items,
     onActiveIdChange,
     onDeleteClick,
     onDetailsClick,
-    onSetAsHomeClick,
+    onRootIdChange,
     rootId,
     selection,
   } = props;
 
   const intl = useIntl();
-  const [activeId, setActiveId] = useState(activeIdProp);
   const [filterText, setFilterText] = useState('');
-
-  useEffect(() => {
-    if (activeIdProp) {
-      setActiveId(activeIdProp);
-    }
-  }, [activeIdProp]);
 
   const fuse = useMemo(() => {
     const options = {
@@ -60,12 +53,7 @@ function BoardList(props) {
   const filtered = useMemo(() => {
     function filterItems(text) {
       const results = fuse.search(text);
-
-      const matches = results
-        .map((res) => {
-          return res.matches;
-        })
-        .flat();
+      const matches = results.map((res) => res.matches).flat();
 
       const words = matches
         .map((match) => {
@@ -88,9 +76,10 @@ function BoardList(props) {
     : sortItems(items, rootId);
 
   const selectedCount = selection?.getSelectedCount();
-  const isAnySelected = Boolean(selectedCount);
+  const isAllSelected = selection?.isAllSelected();
+  const selectionMode = selection ? SelectionMode.multiple : SelectionMode.none;
 
-  const checkboxVisibility = isAnySelected
+  const checkboxVisibility = selectedCount
     ? CheckboxVisibility.always
     : CheckboxVisibility.onHover;
 
@@ -117,14 +106,11 @@ function BoardList(props) {
   }
 
   function handleActiveItemChange(item, index, event) {
-    const targetRole = event.target.getAttribute('role');
-
-    if (targetRole === 'checkbox' && selection.getSelectedCount()) {
+    if (selection.getSelectedCount() > 0) {
       return;
     }
 
     if (item?.id) {
-      setActiveId(item.id);
       onActiveIdChange?.(item.id);
     }
   }
@@ -136,7 +122,7 @@ function BoardList(props) {
         text: intl.formatMessage(messages.setAsHomeBoard),
         iconProps: { iconName: 'Home' },
         onClick: () => {
-          onSetAsHomeClick(item.id);
+          onRootIdChange(item.id);
         },
       },
       {
@@ -259,21 +245,21 @@ function BoardList(props) {
           value={filterText}
         />
       </div>
-
       <div className={styles.header}>
         {selection && (
           <button
             className={styles.selectAllButton}
-            onClick={handleToggleSelectAll}
+            // onClick={handleToggleSelectAll}
             title={intl.formatMessage(messages.selectAllBoards)}
           >
             <Check
+              data-selection-toggle-all
               styles={{
                 check: {
                   opacity: 1,
                 },
               }}
-              checked={selection?.isAllSelected()}
+              checked={isAllSelected}
             />
           </button>
         )}
@@ -288,7 +274,6 @@ function BoardList(props) {
           </Text>
         </div>
       </div>
-
       <div className={styles.container}>
         <DetailsList
           columns={columns}
@@ -296,16 +281,17 @@ function BoardList(props) {
           selection={selection}
           selectionZoneProps={{
             isSelectedOnFocus: false,
+            onItemInvoked: (item) => {
+              console.log('invoked', item);
+            },
           }}
-          selectionMode={
-            selection ? SelectionMode.multiple : SelectionMode.none
-          }
-          isHeaderVisible={false}
+          selectionMode={selectionMode}
           checkboxCellClassName={styles.checkboxCell}
           checkboxVisibility={checkboxVisibility}
           checkButtonAriaLabel="Row checkbox"
           onActiveItemChanged={handleActiveItemChange}
           onRenderRow={renderRow}
+          isHeaderVisible={false}
         />
       </div>
 
@@ -353,10 +339,6 @@ BoardList.propTypes = {
    * Callback, fired when rootId changes
    */
   onRootIdChange: PropTypes.func,
-  /**
-   * Callback, fired when clicking on set as home button
-   */
-  onSetAsHomeClick: PropTypes.func,
   /**
    * Root item Id
    */
