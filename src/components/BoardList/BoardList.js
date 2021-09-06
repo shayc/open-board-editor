@@ -94,15 +94,16 @@ function BoardList(props) {
   }
 
   function renderRowActions(item) {
-    const items = [
-      {
-        key: 'setAsHomeBoard',
-        text: intl.formatMessage(messages.setAsHomeBoard),
-        iconProps: { iconName: 'Home' },
-        onClick: () => {
-          onRootIdChange(item.id);
-        },
+    const setAsHome = {
+      key: 'setAsHomeBoard',
+      text: intl.formatMessage(messages.setAsHomeBoard),
+      iconProps: { iconName: 'Home' },
+      onClick: () => {
+        onRootIdChange(item.id);
       },
+    };
+
+    const items = [
       {
         key: 'info',
         text: intl.formatMessage(messages.boardInfo),
@@ -120,6 +121,10 @@ function BoardList(props) {
         },
       },
     ];
+
+    if (item.id !== rootId) {
+      items.unshift(setAsHome);
+    }
 
     function handleFocus(event) {
       event.stopPropagation();
@@ -149,7 +154,6 @@ function BoardList(props) {
 
   function renderRow(props) {
     const { item, ...other } = props;
-
     const isActive = item.id === activeId;
     const isRoot = item.id === rootId;
 
@@ -165,12 +169,16 @@ function BoardList(props) {
         item={{
           ...item,
           name: (
-            <Text>
-              <Highlighter
-                autoEscape={true}
-                searchWords={matchedItems.searchWords}
-                textToHighlight={item.name}
-              />
+            <Text className={styles.rowText}>
+              {matchedItems.searchWords.length ? (
+                <Highlighter
+                  autoEscape={true}
+                  searchWords={matchedItems.searchWords}
+                  textToHighlight={item.name}
+                />
+              ) : (
+                item.name
+              )}{' '}
               {isRoot && <Icon iconName="Home" />}
             </Text>
           ),
