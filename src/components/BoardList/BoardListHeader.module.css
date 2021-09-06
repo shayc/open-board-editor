@@ -1,0 +1,27 @@
+.selectAllButton {
+  width: 48px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  outline: 0;
+  cursor: pointer;
+}
+
+.selectAllButton:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: -2px;
+}
+
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  border-block-end: 1px solid var(--themeLighterAlt);
+}
+
+.title {
+  padding: 0 8px 0 12px;
+}

@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Check,
   DetailsRow,
   DetailsRowFields,
   DetailsList,
@@ -19,6 +18,7 @@ import {
 import Highlighter from 'react-highlight-words';
 
 import useFuse from './useFuse';
+import BoardListHeader from './BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
 
@@ -61,6 +61,10 @@ function BoardList(props) {
     ? matchedItems.items
     : sortItems(items, rootId);
 
+  const selectionZoneProps = {
+    isSelectedOnFocus: false,
+  };
+
   const selectedCount = selection?.getSelectedCount();
   const isAllSelected = selection?.isAllSelected();
   const selectionMode = selection ? SelectionMode.multiple : SelectionMode.none;
@@ -83,6 +87,10 @@ function BoardList(props) {
     if (item?.id) {
       onActiveIdChange?.(item.id);
     }
+  }
+
+  function handleSearchChange(event, text) {
+    onSearchChange(text);
   }
 
   function renderRowActions(item) {
@@ -179,51 +187,24 @@ function BoardList(props) {
           className={styles.searchBox}
           placeholder={intl.formatMessage(messages.filter)}
           iconProps={{ iconName: 'Filter' }}
-          onChange={onSearchChange}
+          onChange={handleSearchChange}
           value={searchText}
         />
       </div>
 
-      <div className={styles.header}>
-        {selection && (
-          <button
-            className={styles.selectAllButton}
-            onClick={handleToggleSelectAll}
-            title={intl.formatMessage(messages.selectAllBoards)}
-            type="button"
-          >
-            <Check
-              styles={{
-                check: {
-                  opacity: 1,
-                },
-              }}
-              checked={isAllSelected}
-            />
-          </button>
-        )}
+      <BoardListHeader
+        onToggleSelectAll={handleToggleSelectAll}
+        isAllSelected={isAllSelected}
+        selectedCount={selectedCount}
+        searchText={searchText}
+      />
 
-        <div className={styles.title}>
-          <Text as="span" variant="large">
-            {`${selectedCount ? `(${selectedCount})` : ''} `}
-
-            {searchText.length
-              ? intl.formatMessage(messages.results)
-              : intl.formatMessage(messages.boards)}
-          </Text>
-        </div>
-      </div>
       <div className={styles.container}>
         <DetailsList
           columns={columns}
           items={sortedItems}
           selection={selection}
-          selectionZoneProps={{
-            isSelectedOnFocus: false,
-            onItemInvoked: (item) => {
-              console.log('invoked', item);
-            },
-          }}
+          selectionZoneProps={selectionZoneProps}
           selectionMode={selectionMode}
           checkboxCellClassName={styles.checkboxCell}
           checkboxVisibility={checkboxVisibility}

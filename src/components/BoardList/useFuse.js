@@ -28,7 +28,7 @@ function useFuse(items, options) {
     return matchItems(searchText);
   }, [fuse, searchText]);
 
-  function onSearchChange(event, text) {
+  function onSearchChange(text) {
     setSearchText(text || '');
   }
 
