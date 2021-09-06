@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -9,16 +9,16 @@ import {
   DetailsList,
   SelectionMode,
   SearchBox,
-  Icon,
   IconButton,
+  Icon,
   Text,
   CheckboxVisibility,
   Stack,
   Selection,
 } from '@fluentui/react';
 import Highlighter from 'react-highlight-words';
-import Fuse from 'fuse.js';
 
+import useFuse from './useFuse';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
 
@@ -36,52 +36,14 @@ function BoardList(props) {
   } = props;
 
   const intl = useIntl();
-  const [filterText, setFilterText] = useState('');
 
-  const fuse = useMemo(() => {
-    const options = {
-      threshold: 0.6,
-      includeMatches: true,
-      minMatchCharLength: 1,
-      shouldSort: true,
-      keys: ['name'],
-    };
-
-    return new Fuse(items, options);
-  }, [items]);
-
-  const filtered = useMemo(() => {
-    function filterItems(text) {
-      const results = fuse.search(text);
-      const matches = results.map((res) => res.matches).flat();
-
-      const words = matches
-        .map((match) => {
-          return match.indices.map(([start, end]) => {
-            return match.value.slice(start, end + 1);
-          });
-        })
-        .flat();
-
-      const items = results.map((res) => res.item);
-
-      return { items, words };
-    }
-
-    return filterItems(filterText);
-  }, [fuse, filterText]);
-
-  const sortedItems = filterText.length
-    ? filtered.items
-    : sortItems(items, rootId);
-
-  const selectedCount = selection?.getSelectedCount();
-  const isAllSelected = selection?.isAllSelected();
-  const selectionMode = selection ? SelectionMode.multiple : SelectionMode.none;
-
-  const checkboxVisibility = selectedCount
-    ? CheckboxVisibility.always
-    : CheckboxVisibility.onHover;
+  const { matchedItems, searchText, onSearchChange } = useFuse(items, {
+    threshold: 0.6,
+    includeMatches: true,
+    minMatchCharLength: 1,
+    shouldSort: true,
+    keys: ['name'],
+  });
 
   const columns = [
     {
@@ -95,11 +57,19 @@ function BoardList(props) {
     },
   ];
 
-  const rootClassName = clsx(className, styles.root);
+  const sortedItems = searchText.length
+    ? matchedItems.items
+    : sortItems(items, rootId);
 
-  function handleFilterTextChange(event, text = '') {
-    setFilterText(text);
-  }
+  const selectedCount = selection?.getSelectedCount();
+  const isAllSelected = selection?.isAllSelected();
+  const selectionMode = selection ? SelectionMode.multiple : SelectionMode.none;
+
+  const checkboxVisibility = selectedCount
+    ? CheckboxVisibility.always
+    : CheckboxVisibility.onHover;
+
+  const rootClassName = clsx(className, styles.root);
 
   function handleToggleSelectAll() {
     selection?.toggleAllSelected();
@@ -152,10 +122,7 @@ function BoardList(props) {
         <IconButton
           iconProps={{ iconName: 'More' }}
           menuIconProps={{ style: { display: 'none' } }}
-          menuProps={{
-            items,
-            directionalHintFixed: true,
-          }}
+          menuProps={{ items }}
           ariaLabel={intl.formatMessage(messages.moreActions)}
           title={intl.formatMessage(messages.moreActions)}
           onFocus={handleFocus}
@@ -166,16 +133,17 @@ function BoardList(props) {
 
   function renderRowFields(props) {
     return (
-      <span data-selection-disabled={true}>
+      <div data-selection-disabled>
         <DetailsRowFields {...props} />
-      </span>
+      </div>
     );
   }
 
   function renderRow(props) {
     const { item, ...other } = props;
+
+    const isActive = item.id === activeId;
     const isRoot = item.id === rootId;
-    const isActive = activeId === item.id;
 
     const className = clsx(styles.row, {
       [styles.isActiveRow]: isActive,
@@ -183,42 +151,20 @@ function BoardList(props) {
 
     return (
       <DetailsRow
-        className={className}
-        styles={{
-          root: [
-            {
-              background: isActive
-                ? 'var(--themeLight)'
-                : 'var(--neutralLighterAlt)',
-              borderBottom: `1px solid var(--neutralLighter)`,
-              selectors: {
-                '&:hover': {
-                  background: isActive ? 'var(--themeLight)' : 'var(--white)',
-                },
-                '&:focus, &:focus:hover, &.is-selected': {
-                  background: 'var(--themeLight)',
-                },
-              },
-            },
-          ],
-        }}
         {...other}
+        className={className}
         rowFieldsAs={renderRowFields}
         item={{
           ...item,
           name: (
-            <Text
-              variant="medium"
-              style={{
-                lineHeight: '32px',
-              }}
-            >
+            <Text>
               <Highlighter
                 autoEscape={true}
-                searchWords={filtered.words}
+                searchWords={matchedItems.searchWords}
                 textToHighlight={item.name}
-              />{' '}
-              {isRoot && <Icon iconName={'Home'} />}
+              />
+
+              {isRoot && <Icon iconProps={{ iconName: 'Home' }} />}
             </Text>
           ),
         }}
@@ -230,30 +176,23 @@ function BoardList(props) {
     <div className={rootClassName}>
       <div className={styles.filterBar}>
         <SearchBox
-          styles={{
-            root: {
-              border: '1px solid var(--neutralLight)',
-              '&:hover': {
-                border: '1px solid var(--neutralQuaternary)',
-              },
-            },
-          }}
           className={styles.searchBox}
           placeholder={intl.formatMessage(messages.filter)}
           iconProps={{ iconName: 'Filter' }}
-          onChange={handleFilterTextChange}
-          value={filterText}
+          onChange={onSearchChange}
+          value={searchText}
         />
       </div>
+
       <div className={styles.header}>
         {selection && (
           <button
             className={styles.selectAllButton}
             onClick={handleToggleSelectAll}
             title={intl.formatMessage(messages.selectAllBoards)}
+            type="button"
           >
             <Check
-              data-selection-toggle-all
               styles={{
                 check: {
                   opacity: 1,
@@ -268,7 +207,7 @@ function BoardList(props) {
           <Text as="span" variant="large">
             {`${selectedCount ? `(${selectedCount})` : ''} `}
 
-            {filterText.length
+            {searchText.length
               ? intl.formatMessage(messages.results)
               : intl.formatMessage(messages.boards)}
           </Text>
@@ -295,7 +234,7 @@ function BoardList(props) {
         />
       </div>
 
-      {Boolean(filterText.length) && !filtered.items.length && (
+      {Boolean(searchText.length) && !matchedItems.items.length && (
         <Stack>
           <Stack.Item align="center">
             <Text as="p" variant="large" block>
