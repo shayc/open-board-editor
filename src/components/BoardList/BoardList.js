@@ -45,6 +45,10 @@ function BoardList(props) {
     keys: ['name'],
   });
 
+  const sortedItems = searchText
+    ? matchedItems.items
+    : sortItems(items, rootId);
+
   const columns = [
     {
       key: 'board',
@@ -56,10 +60,6 @@ function BoardList(props) {
       onRender: renderRowActions,
     },
   ];
-
-  const sortedItems = searchText.length
-    ? matchedItems.items
-    : sortItems(items, rootId);
 
   const selectionZoneProps = {
     isSelectedOnFocus: false,
@@ -196,7 +196,7 @@ function BoardList(props) {
         isAllSelected={isAllSelected}
         selectedCount={selectedCount}
         title={
-          searchText.length
+          searchText
             ? intl.formatMessage(messages.results)
             : intl.formatMessage(messages.boards)
         }
@@ -249,7 +249,6 @@ BoardList.propTypes = {
    * Callback, fired when activeId changes
    */
   onActiveIdChange: PropTypes.func,
-
   /**
    * Callback, fired when clicking on delete button
    */
