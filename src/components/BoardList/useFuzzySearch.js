@@ -32,7 +32,7 @@ function useFuzzySearch(items, options) {
     setSearchText(text || '');
   }
 
-  return { matchedItems, searchWords, onSearchChange, searchText };
+  return { matchedItems, onSearchChange, searchText, searchWords };
 }
 
 export default useFuzzySearch;

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -14,8 +14,6 @@ import {
   Stack,
   Selection,
 } from '@fluentui/react';
-import { useForceUpdate } from '@fluentui/react-hooks';
-
 import Highlighter from 'react-highlight-words';
 
 import useFuzzySearch from './useFuzzySearch';
@@ -36,6 +34,14 @@ const selectionZoneProps = {
   isSelectedOnFocus: false,
 };
 
+const fuseOptions = {
+  threshold: 0.6,
+  includeMatches: true,
+  minMatchCharLength: 1,
+  shouldSort: true,
+  keys: [boardNameField],
+};
+
 function BoardList(props) {
   const {
     activeId,
@@ -49,31 +55,24 @@ function BoardList(props) {
   const intl = useIntl();
 
   const { matchedItems, searchWords, searchText, onSearchChange } =
-    useFuzzySearch(items, {
-      threshold: 0.6,
-      includeMatches: true,
-      minMatchCharLength: 1,
-      shouldSort: true,
-      keys: [boardNameField],
-    });
+    useFuzzySearch(items, fuseOptions);
 
-  const boardList = searchText.length > 0 ? matchedItems : items;
+  const boardList = useMemo(
+    () => (searchText ? matchedItems : items),
+    [searchText, items, matchedItems]
+  );
 
-  const forceUpdate = useForceUpdate();
-
-  const { current: selection } = useRef(
+  const selectionRef = useRef(
     new Selection({
       onSelectionChanged: () => {
-        onSelectionChange(selection.getSelection());
-        forceUpdate();
+        onSelectionChange(selectionRef.current);
       },
-      items,
+      items: boardList,
     })
   );
 
-  const selectedCount = selection?.getSelectedCount();
-  const isAllSelected = selection?.isAllSelected();
-  const selectionMode = selection ? SelectionMode.multiple : SelectionMode.none;
+  const selectedCount = selectionRef.current?.getSelectedCount();
+  const isAllSelected = selectionRef.current?.isAllSelected();
 
   const checkboxVisibility = selectedCount
     ? CheckboxVisibility.always
@@ -82,7 +81,8 @@ function BoardList(props) {
   const rootClassName = clsx(className, styles.root);
 
   function handleToggleSelectAll() {
-    selection?.toggleAllSelected();
+    selectionRef.current?.toggleAllSelected();
+    console.log('object', selectionRef.current?.getSelection());
   }
 
   function handleActiveItemChange(item, index, event) {
@@ -118,15 +118,11 @@ function BoardList(props) {
           ...item,
           name: (
             <Text className={styles.rowText}>
-              {searchWords.length ? (
-                <Highlighter
-                  autoEscape={true}
-                  searchWords={searchWords}
-                  textToHighlight={item.name}
-                />
-              ) : (
-                item.name
-              )}
+              <Highlighter
+                autoEscape={true}
+                searchWords={searchWords}
+                textToHighlight={item.name}
+              />
 
               {item.id === rootId && <Icon iconName="Home" />}
             </Text>
@@ -163,9 +159,9 @@ function BoardList(props) {
         <DetailsList
           columns={columns}
           items={boardList}
-          selection={selection}
+          selection={selectionRef.current}
           selectionZoneProps={selectionZoneProps}
-          selectionMode={selectionMode}
+          selectionMode={SelectionMode.multiple}
           checkboxCellClassName={styles.checkboxCell}
           checkboxVisibility={checkboxVisibility}
           checkButtonAriaLabel="Row checkbox"

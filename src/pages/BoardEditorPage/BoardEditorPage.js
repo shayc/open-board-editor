@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -276,8 +276,9 @@ function BoardEditorPage(props) {
     onSettingsClick();
   }
 
-  function handleBoardSelectionChange(selectedBoards) {
-    setSelectedBoards(selectedBoards);
+  function handleBoardSelectionChange(selection) {
+    console.log(selection.getSelection());
+    setSelectedBoards(selection.getSelection());
   }
 
   function renderRowActions(item) {
@@ -406,9 +407,6 @@ function BoardEditorPage(props) {
                 items={boardDB.boardsList}
                 onActiveIdChange={handleActiveBoardIdChange}
                 onSelectionChange={handleBoardSelectionChange}
-                // onDeleteClick={handleBoardDelete}
-                // onDetailsClick={handleBoardDetails}
-                // onRootIdChange={handleRootIdChange}
               />
             </div>
           )}
