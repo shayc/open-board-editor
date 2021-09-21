@@ -17,22 +17,6 @@ export default defineMessages({
     id: `${scope}.didntFindAnything`,
     defaultMessage: "Didn't find anything.",
   },
-  deleteBoard: {
-    id: `${scope}.deleteBoard`,
-    defaultMessage: 'Delete board',
-  },
-  moreActions: {
-    id: `${scope}.moreActions`,
-    defaultMessage: 'More actions',
-  },
-  boardInfo: {
-    id: `${scope}.boardInfo`,
-    defaultMessage: 'Board info',
-  },
-  setAsHomeBoard: {
-    id: `${scope}.setAsHomeBoard`,
-    defaultMessage: 'Set as home board',
-  },
   results: {
     id: `${scope}.results`,
     defaultMessage: 'Results',

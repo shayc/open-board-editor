@@ -281,56 +281,58 @@ function BoardEditorPage(props) {
     setSelectedBoards(selection.getSelection());
   }
 
-  function renderRowActions(item) {
-    const setAsHome = {
-      key: 'setAsHomeBoard',
-      text: intl.formatMessage(messages.setAsHomeBoard),
-      iconProps: { iconName: 'Home' },
-      onClick: () => {
-        handleRootIdChange(item.id);
-      },
-    };
-
-    const items = [
-      {
-        key: 'info',
-        text: intl.formatMessage(messages.boardInfo),
-        iconProps: { iconName: 'Info' },
-        onClick: () => {
-          handleBoardDetails(item.id);
+  const renderBoardActions = useCallback(
+    function renderBoardActions(board) {
+      const items = [
+        {
+          key: 'setAsHomeBoard',
+          text: intl.formatMessage(messages.setAsHomeBoard),
+          iconProps: { iconName: 'Home' },
+          onClick: () => {
+            handleRootIdChange(board.id);
+          },
         },
-      },
-      {
-        key: 'delete',
-        text: intl.formatMessage(messages.deleteBoard),
-        iconProps: { iconName: 'Delete' },
-        onClick: () => {
-          handleBoardDelete(item.id);
+        {
+          key: 'info',
+          text: intl.formatMessage(messages.boardInfo),
+          iconProps: { iconName: 'Info' },
+          onClick: () => {
+            handleBoardDetails(board.id);
+          },
         },
-      },
-    ];
+        {
+          key: 'delete',
+          text: intl.formatMessage(messages.deleteBoard),
+          iconProps: { iconName: 'Delete' },
+          onClick: () => {
+            handleBoardDelete(board.id);
+          },
+        },
+      ];
 
-    if (item.id !== boardDB.rootId) {
-      items.unshift(setAsHome);
-    }
+      if (board.id === boardDB.rootId) {
+        items.shift();
+      }
 
-    function handleFocus(event) {
-      event.stopPropagation();
-    }
+      function handleFocus(event) {
+        event.stopPropagation();
+      }
 
-    return (
-      <div className={styles.rowActions}>
-        <IconButton
-          iconProps={{ iconName: 'More' }}
-          menuIconProps={{ style: { display: 'none' } }}
-          menuProps={{ items }}
-          ariaLabel={intl.formatMessage(messages.moreActions)}
-          title={intl.formatMessage(messages.moreActions)}
-          onFocus={handleFocus}
-        />
-      </div>
-    );
-  }
+      return (
+        <div className={styles.rowActions}>
+          <IconButton
+            iconProps={{ iconName: 'More' }}
+            menuIconProps={{ style: { display: 'none' } }}
+            menuProps={{ items }}
+            ariaLabel={intl.formatMessage(messages.moreActions)}
+            title={intl.formatMessage(messages.moreActions)}
+            onFocus={handleFocus}
+          />
+        </div>
+      );
+    },
+    [boardDB.rootId]
+  );
 
   useEffect(() => {
     const getBoard = async (id) => {
@@ -407,6 +409,7 @@ function BoardEditorPage(props) {
                 items={boardDB.boardsList}
                 onActiveIdChange={handleActiveBoardIdChange}
                 onSelectionChange={handleBoardSelectionChange}
+                renderItemActions={renderBoardActions}
               />
             </div>
           )}

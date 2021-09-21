@@ -21,25 +21,18 @@ import BoardListHeader from './BoardListHeader/BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
 
-const boardNameField = 'name';
-
-const columns = [
-  {
-    key: '1',
-    fieldName: boardNameField,
-  },
-];
-
-const selectionZoneProps = {
-  isSelectedOnFocus: false,
-};
+const itemNameKey = 'name';
 
 const fuseOptions = {
   threshold: 0.6,
   includeMatches: true,
   minMatchCharLength: 1,
   shouldSort: true,
-  keys: [boardNameField],
+  keys: [itemNameKey],
+};
+
+const selectionZoneProps = {
+  isSelectedOnFocus: false,
 };
 
 function BoardList(props) {
@@ -49,10 +42,26 @@ function BoardList(props) {
     items,
     onActiveIdChange,
     onSelectionChange,
+    renderItemActions,
     rootId,
   } = props;
 
   const intl = useIntl();
+
+  const columns = useMemo(
+    () => [
+      {
+        key: '1',
+        fieldName: itemNameKey,
+      },
+      {
+        key: '2',
+        minWidth: 34,
+        onRender: renderItemActions,
+      },
+    ],
+    [renderItemActions]
+  );
 
   const { matchedItems, searchWords, searchText, onSearchChange } =
     useFuzzySearch(items, fuseOptions);

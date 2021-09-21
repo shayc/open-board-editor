@@ -17,4 +17,20 @@ export default defineMessages({
     id: `${scope}.viewBoardInformation`,
     defaultMessage: 'View board information',
   },
+  deleteBoard: {
+    id: `${scope}.deleteBoard`,
+    defaultMessage: 'Delete board',
+  },
+  moreActions: {
+    id: `${scope}.moreActions`,
+    defaultMessage: 'More actions',
+  },
+  boardInfo: {
+    id: `${scope}.boardInfo`,
+    defaultMessage: 'Board info',
+  },
+  setAsHomeBoard: {
+    id: `${scope}.setAsHomeBoard`,
+    defaultMessage: 'Set as home board',
+  },
 });
