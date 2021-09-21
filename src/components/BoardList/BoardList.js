@@ -39,7 +39,7 @@ function BoardList(props) {
   const {
     activeId,
     className,
-    items,
+    items: itemsProp,
     onActiveIdChange,
     onSelectionChange,
     renderItemActions,
@@ -64,38 +64,35 @@ function BoardList(props) {
   );
 
   const { matchedItems, searchWords, searchText, onSearchChange } =
-    useFuzzySearch(items, fuseOptions);
+    useFuzzySearch(itemsProp, fuseOptions);
 
-  const boardList = useMemo(
-    () => (searchText ? matchedItems : items),
-    [searchText, items, matchedItems]
+  const items = useMemo(
+    () => (searchText ? matchedItems : itemsProp),
+    [searchText, itemsProp, matchedItems]
   );
 
-  const selectionRef = useRef(
+  const { current: selection } = useRef(
     new Selection({
       onSelectionChanged: () => {
-        onSelectionChange(selectionRef.current);
+        onSelectionChange(selection);
       },
-      items: boardList,
+      items,
     })
   );
 
-  const selectedCount = selectionRef.current?.getSelectedCount();
-  const isAllSelected = selectionRef.current?.isAllSelected();
-
-  const checkboxVisibility = selectedCount
+  const checkboxVisibility = selection.getSelectedCount()
     ? CheckboxVisibility.always
     : CheckboxVisibility.onHover;
 
   const rootClassName = clsx(className, styles.root);
 
   function handleToggleSelectAll() {
-    selectionRef.current?.toggleAllSelected();
-    console.log('object', selectionRef.current?.getSelection());
+    selection.toggleAllSelected();
+    console.log('object', selection.getSelection());
   }
 
   function handleActiveItemChange(item, index, event) {
-    if (selectedCount) {
+    if (selection.getSelectedCount()) {
       return;
     }
 
@@ -155,8 +152,8 @@ function BoardList(props) {
 
       <BoardListHeader
         onToggleSelectAll={handleToggleSelectAll}
-        isAllSelected={isAllSelected}
-        selectedCount={selectedCount}
+        isAllSelected={selection.isAllSelected()}
+        selectedCount={selection.getSelectedCount()}
         title={
           searchText
             ? intl.formatMessage(messages.results)
@@ -167,8 +164,8 @@ function BoardList(props) {
       <div className={styles.container}>
         <DetailsList
           columns={columns}
-          items={boardList}
-          selection={selectionRef.current}
+          items={items}
+          selection={selection}
           selectionZoneProps={selectionZoneProps}
           selectionMode={SelectionMode.multiple}
           checkboxCellClassName={styles.checkboxCell}
