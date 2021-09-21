@@ -107,7 +107,7 @@ function BoardEditorPage(props) {
     debounce((id) => {
       nav.goTo(id);
     }, 300),
-    [nav]
+    []
   );
 
   const handleImagesRequested = useMemo(
@@ -360,9 +360,9 @@ function BoardEditorPage(props) {
                 items={boardDB.boardsList}
                 selection={boardsSelection}
                 onActiveIdChange={handleActiveBoardIdChange}
-                onDeleteClick={handleBoardDelete}
-                onDetailsClick={handleBoardDetails}
-                onRootIdChange={handleRootIdChange}
+                // onDeleteClick={handleBoardDelete}
+                // onDetailsClick={handleBoardDetails}
+                // onRootIdChange={handleRootIdChange}
               />
             </div>
           )}

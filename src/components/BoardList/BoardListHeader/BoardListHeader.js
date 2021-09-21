@@ -4,9 +4,17 @@ import messages from './BoardListHeader.messages';
 import styles from './BoardListHeader.module.css';
 
 function BoardListHeader(props) {
-  const { onToggleSelectAll, isAllSelected, selectedCount, title } = props;
+  const { isAllSelected, onToggleSelectAll, selectedCount, title } = props;
 
   const intl = useIntl();
+
+  const checkStyles = {
+    check: {
+      opacity: 1,
+    },
+  };
+
+  const selectedCountText = selectedCount ? `(${selectedCount})` : '';
 
   return (
     <div className={styles.header}>
@@ -15,19 +23,12 @@ function BoardListHeader(props) {
         onClick={onToggleSelectAll}
         title={intl.formatMessage(messages.selectAllBoards)}
       >
-        <Check
-          styles={{
-            check: {
-              opacity: 1,
-            },
-          }}
-          checked={isAllSelected}
-        />
+        <Check styles={checkStyles} checked={isAllSelected} />
       </button>
 
       <div className={styles.title}>
         <Text as="span" variant="large">
-          {`${selectedCount ? `(${selectedCount})` : ''} `}
+          {selectedCountText}
 
           {title}
         </Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -21,6 +21,17 @@ import useFuzzySearch from './useFuzzySearch';
 import BoardListHeader from './BoardListHeader/BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
+
+const columns = [
+  {
+    key: 'board',
+    fieldName: 'name',
+  },
+];
+
+const selectionZoneProps = {
+  isSelectedOnFocus: false,
+};
 
 function BoardList(props) {
   const {
@@ -45,25 +56,13 @@ function BoardList(props) {
     keys: ['name'],
   });
 
-  const sortedItems = searchText
-    ? matchedItems.items
-    : sortItems(items, rootId);
-
-  const columns = [
-    {
-      key: 'board',
-      fieldName: 'name',
-    },
-    {
-      key: 'actions',
-      minWidth: 34,
-      onRender: renderRowActions,
-    },
-  ];
-
-  const selectionZoneProps = {
-    isSelectedOnFocus: false,
-  };
+  const listItems = useMemo(() => {
+    return items.map((item) => ({
+      ...item,
+      isActive: item.id === activeId,
+      isRoot: item.id === rootId,
+    }));
+  }, [activeId, rootId, items]);
 
   const selectedCount = selection?.getSelectedCount();
   const isAllSelected = selection?.isAllSelected();
@@ -83,7 +82,7 @@ function BoardList(props) {
     if (selection.getSelectedCount() > 0) {
       return;
     }
-
+    console.log('active :>> ', item);
     if (item?.id) {
       onActiveIdChange?.(item.id);
     }
@@ -154,11 +153,9 @@ function BoardList(props) {
 
   function renderRow(props) {
     const { item, ...other } = props;
-    const isActive = item.id === activeId;
-    const isRoot = item.id === rootId;
-
+    console.log('item :>> ', item);
     const className = clsx(styles.row, {
-      [styles.isActiveRow]: isActive,
+      [styles.isActiveRow]: item.isActive,
     });
 
     return (
@@ -169,18 +166,21 @@ function BoardList(props) {
         item={{
           ...item,
           name: (
-            <Text className={styles.rowText}>
-              {matchedItems.searchWords.length ? (
-                <Highlighter
-                  autoEscape={true}
-                  searchWords={matchedItems.searchWords}
-                  textToHighlight={item.name}
-                />
-              ) : (
-                item.name
-              )}{' '}
-              {isRoot && <Icon iconName="Home" />}
-            </Text>
+            <>
+              <Text className={styles.rowText}>
+                {matchedItems.searchWords.length ? (
+                  <Highlighter
+                    autoEscape={true}
+                    searchWords={matchedItems.searchWords}
+                    textToHighlight={item.name}
+                  />
+                ) : (
+                  item.name
+                )}
+              </Text>
+
+              {item.isRoot && <Icon iconName="Home" />}
+            </>
           ),
         }}
       />
@@ -213,7 +213,7 @@ function BoardList(props) {
       <div className={styles.container}>
         <DetailsList
           columns={columns}
-          items={sortedItems}
+          items={listItems}
           selection={selection}
           selectionZoneProps={selectionZoneProps}
           selectionMode={selectionMode}
