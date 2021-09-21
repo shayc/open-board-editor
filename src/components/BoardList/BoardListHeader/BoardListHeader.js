@@ -14,8 +14,6 @@ function BoardListHeader(props) {
     },
   };
 
-  const selectedCountText = selectedCount ? `(${selectedCount})` : '';
-
   return (
     <div className={styles.header}>
       <button
@@ -28,9 +26,7 @@ function BoardListHeader(props) {
 
       <div className={styles.title}>
         <Text as="span" variant="large">
-          {selectedCountText}
-
-          {title}
+          {Boolean(selectedCount) && `(${selectedCount})`} {title}
         </Text>
       </div>
     </div>

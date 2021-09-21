@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -8,13 +8,14 @@ import {
   DetailsList,
   SelectionMode,
   SearchBox,
-  IconButton,
   Icon,
   Text,
   CheckboxVisibility,
   Stack,
   Selection,
 } from '@fluentui/react';
+import { useForceUpdate } from '@fluentui/react-hooks';
+
 import Highlighter from 'react-highlight-words';
 
 import useFuzzySearch from './useFuzzySearch';
@@ -22,10 +23,12 @@ import BoardListHeader from './BoardListHeader/BoardListHeader';
 import messages from './BoardList.messages';
 import styles from './BoardList.module.css';
 
+const boardNameField = 'name';
+
 const columns = [
   {
-    key: 'board',
-    fieldName: 'name',
+    key: '1',
+    fieldName: boardNameField,
   },
 ];
 
@@ -39,30 +42,34 @@ function BoardList(props) {
     className,
     items,
     onActiveIdChange,
-    onDeleteClick,
-    onDetailsClick,
-    onRootIdChange,
+    onSelectionChange,
     rootId,
-    selection,
   } = props;
 
   const intl = useIntl();
 
-  const { matchedItems, searchText, onSearchChange } = useFuzzySearch(items, {
-    threshold: 0.6,
-    includeMatches: true,
-    minMatchCharLength: 1,
-    shouldSort: true,
-    keys: ['name'],
-  });
+  const { matchedItems, searchWords, searchText, onSearchChange } =
+    useFuzzySearch(items, {
+      threshold: 0.6,
+      includeMatches: true,
+      minMatchCharLength: 1,
+      shouldSort: true,
+      keys: [boardNameField],
+    });
 
-  const listItems = useMemo(() => {
-    return items.map((item) => ({
-      ...item,
-      isActive: item.id === activeId,
-      isRoot: item.id === rootId,
-    }));
-  }, [activeId, rootId, items]);
+  const boardList = searchText.length > 0 ? matchedItems : items;
+
+  const forceUpdate = useForceUpdate();
+
+  const { current: selection } = useRef(
+    new Selection({
+      onSelectionChanged: () => {
+        onSelectionChange(selection.getSelection());
+        forceUpdate();
+      },
+      items,
+    })
+  );
 
   const selectedCount = selection?.getSelectedCount();
   const isAllSelected = selection?.isAllSelected();
@@ -79,10 +86,10 @@ function BoardList(props) {
   }
 
   function handleActiveItemChange(item, index, event) {
-    if (selection.getSelectedCount() > 0) {
+    if (selectedCount) {
       return;
     }
-    console.log('active :>> ', item);
+
     if (item?.id) {
       onActiveIdChange?.(item.id);
     }
@@ -90,57 +97,6 @@ function BoardList(props) {
 
   function handleSearchChange(event, text) {
     onSearchChange(text);
-  }
-
-  function renderRowActions(item) {
-    const setAsHome = {
-      key: 'setAsHomeBoard',
-      text: intl.formatMessage(messages.setAsHomeBoard),
-      iconProps: { iconName: 'Home' },
-      onClick: () => {
-        onRootIdChange(item.id);
-      },
-    };
-
-    const items = [
-      {
-        key: 'info',
-        text: intl.formatMessage(messages.boardInfo),
-        iconProps: { iconName: 'Info' },
-        onClick: () => {
-          onDetailsClick(item.id);
-        },
-      },
-      {
-        key: 'delete',
-        text: intl.formatMessage(messages.deleteBoard),
-        iconProps: { iconName: 'Delete' },
-        onClick: () => {
-          onDeleteClick(item.id);
-        },
-      },
-    ];
-
-    if (item.id !== rootId) {
-      items.unshift(setAsHome);
-    }
-
-    function handleFocus(event) {
-      event.stopPropagation();
-    }
-
-    return (
-      <div className={styles.rowActions}>
-        <IconButton
-          iconProps={{ iconName: 'More' }}
-          menuIconProps={{ style: { display: 'none' } }}
-          menuProps={{ items }}
-          ariaLabel={intl.formatMessage(messages.moreActions)}
-          title={intl.formatMessage(messages.moreActions)}
-          onFocus={handleFocus}
-        />
-      </div>
-    );
   }
 
   function renderRowFields(props) {
@@ -153,34 +109,27 @@ function BoardList(props) {
 
   function renderRow(props) {
     const { item, ...other } = props;
-    console.log('item :>> ', item);
-    const className = clsx(styles.row, {
-      [styles.isActiveRow]: item.isActive,
-    });
 
     return (
       <DetailsRow
         {...other}
-        className={className}
         rowFieldsAs={renderRowFields}
         item={{
           ...item,
           name: (
-            <>
-              <Text className={styles.rowText}>
-                {matchedItems.searchWords.length ? (
-                  <Highlighter
-                    autoEscape={true}
-                    searchWords={matchedItems.searchWords}
-                    textToHighlight={item.name}
-                  />
-                ) : (
-                  item.name
-                )}
-              </Text>
+            <Text className={styles.rowText}>
+              {searchWords.length ? (
+                <Highlighter
+                  autoEscape={true}
+                  searchWords={searchWords}
+                  textToHighlight={item.name}
+                />
+              ) : (
+                item.name
+              )}
 
-              {item.isRoot && <Icon iconName="Home" />}
-            </>
+              {item.id === rootId && <Icon iconName="Home" />}
+            </Text>
           ),
         }}
       />
@@ -213,7 +162,7 @@ function BoardList(props) {
       <div className={styles.container}>
         <DetailsList
           columns={columns}
-          items={listItems}
+          items={boardList}
           selection={selection}
           selectionZoneProps={selectionZoneProps}
           selectionMode={selectionMode}
@@ -226,7 +175,7 @@ function BoardList(props) {
         />
       </div>
 
-      {Boolean(searchText.length) && !matchedItems.items.length && (
+      {Boolean(searchText.length) && !matchedItems.length && (
         <Stack>
           <Stack.Item align="center">
             <Text as="p" variant="large" block>
@@ -258,26 +207,9 @@ BoardList.propTypes = {
    */
   onActiveIdChange: PropTypes.func,
   /**
-   * Callback, fired when clicking on delete button
-   */
-  onDeleteClick: PropTypes.func,
-  /**
-   * Callback, fired when clicking on details button
-   */
-  onDetailsClick: PropTypes.func,
-  /**
-   * Callback, fired when rootId changes
-   */
-  onRootIdChange: PropTypes.func,
-  /**
    * Root item Id
    */
   rootId: PropTypes.string,
-  /**
-   * A store that maintains the selection state of items.
-   * https://developer.microsoft.com/en-us/fluentui#/controls/web/selection
-   */
-  selection: PropTypes.instanceOf(Selection),
 };
 
 function sortItems(items, rootId) {

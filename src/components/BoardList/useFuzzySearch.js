@@ -8,11 +8,11 @@ function useFuzzySearch(items, options) {
     return new Fuse(items, options);
   }, [items, options]);
 
-  const matchedItems = useMemo(() => {
+  const { matchedItems, searchWords } = useMemo(() => {
     function matchItems(text) {
       const results = fuse.search(text);
       const matches = results.map((res) => res.matches).flat();
-      const items = results.map((res) => res.item);
+      const matchedItems = results.map((res) => res.item);
 
       const searchWords = matches
         .map((match) => {
@@ -22,7 +22,7 @@ function useFuzzySearch(items, options) {
         })
         .flat();
 
-      return { items, searchWords };
+      return { matchedItems, searchWords };
     }
 
     return matchItems(searchText);
@@ -32,7 +32,7 @@ function useFuzzySearch(items, options) {
     setSearchText(text || '');
   }
 
-  return { matchedItems, onSearchChange, searchText };
+  return { matchedItems, searchWords, onSearchChange, searchText };
 }
 
 export default useFuzzySearch;

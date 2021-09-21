@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, CommandBarButton } from '@fluentui/react';
+import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -75,6 +75,7 @@ function BoardEditorPage(props) {
     grid.rows = Math.min(grid.rows, MAX_GRID_ROWS);
     grid.columns = Math.min(grid.columns, MAX_GRID_COLUMNS);
   }
+  const [selectedBoards, setSelectedBoards] = useState([]);
 
   const buttonsSelection = useMemo(() => {
     return new Selection({
@@ -83,16 +84,9 @@ function BoardEditorPage(props) {
     });
   }, [board, forceUpdate]);
 
-  const boardsSelection = useRef(
-    new Selection({
-      onSelectionChanged: forceUpdate,
-      items: boardDB.boardsList,
-    })
-  ).current;
-
   const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
   const isButtonsSelected = Boolean(buttonsSelection.getSelectedCount());
-  const isBoardsSelected = Boolean(boardsSelection.getSelectedCount());
+  const isBoardsSelected = Boolean(selectedBoards?.length);
 
   useHotkeys(
     'del',
@@ -282,6 +276,61 @@ function BoardEditorPage(props) {
     onSettingsClick();
   }
 
+  function handleBoardSelectionChange(selectedBoards) {
+    setSelectedBoards(selectedBoards);
+  }
+
+  function renderRowActions(item) {
+    const setAsHome = {
+      key: 'setAsHomeBoard',
+      text: intl.formatMessage(messages.setAsHomeBoard),
+      iconProps: { iconName: 'Home' },
+      onClick: () => {
+        handleRootIdChange(item.id);
+      },
+    };
+
+    const items = [
+      {
+        key: 'info',
+        text: intl.formatMessage(messages.boardInfo),
+        iconProps: { iconName: 'Info' },
+        onClick: () => {
+          handleBoardDetails(item.id);
+        },
+      },
+      {
+        key: 'delete',
+        text: intl.formatMessage(messages.deleteBoard),
+        iconProps: { iconName: 'Delete' },
+        onClick: () => {
+          handleBoardDelete(item.id);
+        },
+      },
+    ];
+
+    if (item.id !== boardDB.rootId) {
+      items.unshift(setAsHome);
+    }
+
+    function handleFocus(event) {
+      event.stopPropagation();
+    }
+
+    return (
+      <div className={styles.rowActions}>
+        <IconButton
+          iconProps={{ iconName: 'More' }}
+          menuIconProps={{ style: { display: 'none' } }}
+          menuProps={{ items }}
+          ariaLabel={intl.formatMessage(messages.moreActions)}
+          title={intl.formatMessage(messages.moreActions)}
+          onFocus={handleFocus}
+        />
+      </div>
+    );
+  }
+
   useEffect(() => {
     const getBoard = async (id) => {
       const board = await boardDB.getById(id);
@@ -338,10 +387,7 @@ function BoardEditorPage(props) {
         }}
         onDeleteButtonClick={handleButtonDelete}
         onDeleteBoardClick={() => {
-          const selectedIds = boardsSelection
-            .getSelection()
-            .map((item) => item.id);
-
+          const selectedIds = selectedBoards.map((item) => item.id);
           handleBoardDelete(selectedIds);
         }}
       />
@@ -358,8 +404,8 @@ function BoardEditorPage(props) {
                 activeId={boardId}
                 rootId={boardDB.rootId}
                 items={boardDB.boardsList}
-                selection={boardsSelection}
                 onActiveIdChange={handleActiveBoardIdChange}
+                onSelectionChange={handleBoardSelectionChange}
                 // onDeleteClick={handleBoardDelete}
                 // onDetailsClick={handleBoardDetails}
                 // onRootIdChange={handleRootIdChange}
@@ -368,7 +414,7 @@ function BoardEditorPage(props) {
           )}
 
           <div className={styles.main}>
-            {board?.id && boardsSelection.getSelectedCount() < 2 && (
+            {board?.id && selectedBoards.length < 2 && (
               <>
                 <Bar
                   startGroup={
@@ -452,23 +498,22 @@ function BoardEditorPage(props) {
               />
             )}
 
-            {boardsSelection.getSelectedCount() > 1 && (
+            {selectedBoards.length > 1 && (
               <SelectedBoardsPage
-                selectedCount={boardsSelection.getSelectedCount()}
+                selectedCount={selectedBoards.length}
                 onDeleteClick={() => {
-                  const selectedIds = boardsSelection
-                    .getSelection()
-                    .map(({ id }) => id);
-
+                  const selectedIds = selectedBoards.map(({ id }) => id);
                   handleBoardDelete(selectedIds);
                 }}
                 onCancelClick={() => {
-                  boardsSelection.setAllSelected(false);
+                  // boardsSelection.setAllSelected(false);
                 }}
                 onSelectAllClick={() => {
-                  boardsSelection.setAllSelected(true);
+                  // boardsSelection.setAllSelected(true);
                 }}
-                allSelected={boardsSelection.isAllSelected()}
+                allSelected={
+                  selectedBoards.length === boardDB.boardsList.length
+                }
               />
             )}
           </div>
