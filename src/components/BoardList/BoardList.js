@@ -130,7 +130,22 @@ function BoardList(props) {
         key={item.id}
         {...other}
         rowFieldsAs={renderRowFields}
-        styles={{ root: { background: item.isActive ? 'red' : '' } }}
+        styles={{
+          root: [
+            {
+              background: item.isActive
+                ? 'var(--themeLight)'
+                : 'var(--neutralLighterAlt)',
+              selectors: {
+                '&:hover': {
+                  background: item.isActive
+                    ? 'var(--themeLight)'
+                    : 'var(--white)',
+                },
+              },
+            },
+          ],
+        }}
         item={{
           ...item,
           name: (
