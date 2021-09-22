@@ -67,7 +67,14 @@ function BoardList(props) {
     useFuzzySearch(items, fuseOptions);
 
   const sortedItems = useMemo(() => {
-    const sorted = searchText ? matchedItems : sortItems(items, rootId);
+    let sorted = [];
+
+    if (searchText) {
+      sorted = matchedItems;
+    } else if (rootId) {
+      sorted = sortItems(items, rootId);
+    }
+
     return sorted;
   }, [items, rootId, searchText, matchedItems]);
 
