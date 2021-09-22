@@ -67,13 +67,13 @@ function BoardViewerPage(props) {
 
     return (
       <Tile
-        key={id}
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         variant={variant}
         onClick={handleClick}
       >
         <Pictogram
+          key={image.url}
           label={label}
           labelHidden={boardSettings.isLabelHidden}
           labelPosition={boardSettings.labelPosition}

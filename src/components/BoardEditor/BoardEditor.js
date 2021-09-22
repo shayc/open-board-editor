@@ -148,6 +148,7 @@ function BoardEditor(props) {
           onKeyDown={handleKeyDown}
         >
           <Pictogram
+            key={image.url}
             label={label}
             labelHidden={buttonLabelHidden}
             labelPosition={buttonLabelPosition}
