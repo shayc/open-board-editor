@@ -279,10 +279,6 @@ function BoardEditorPage(props) {
   function handleBoardSelectionChange(selection) {
     const boardSelection = selection.getSelection();
     setSelectedBoards(boardSelection);
-
-    if (boardSelection.length === 1) {
-      nav.goTo(boardSelection[0].id);
-    }
   }
 
   const renderBoardActions = useCallback(

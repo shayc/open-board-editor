@@ -66,20 +66,13 @@ function BoardList(props) {
   const { matchedItems, searchWords, searchText, onSearchChange } =
     useFuzzySearch(items, fuseOptions);
 
-  // const sortedItems = useMemo(() => {
+  const sortedItems = useMemo(() => {
+    const sorted = rootId
+      ? sortItems(searchText ? matchedItems : items, rootId)
+      : [];
 
-  //   return rootId ? sortItems(searchText ? matchedItems : items, rootId) : [];
-  // }, [searchText, items, matchedItems, rootId]);
-
-  const sortedItems = useMemo(
-    () =>
-      items.map((i) => ({
-        ...i,
-        isRoot: i.id === rootId,
-        isActive: i.id === activeId,
-      })),
-    [items, rootId, activeId]
-  );
+    return sorted;
+  }, [items, rootId, searchText, matchedItems]);
 
   const { current: selection } = useRef(
     new Selection({
@@ -90,7 +83,9 @@ function BoardList(props) {
     })
   );
 
-  const checkboxVisibility = selection.getSelectedCount()
+  const selectedCount = selection.getSelectedCount();
+
+  const checkboxVisibility = selectedCount
     ? CheckboxVisibility.always
     : CheckboxVisibility.onHover;
 
@@ -101,7 +96,7 @@ function BoardList(props) {
   }
 
   function handleActiveItemChange(item, index, event) {
-    if (selection.getSelectedCount()) {
+    if (selectedCount) {
       return;
     }
 
@@ -142,6 +137,9 @@ function BoardList(props) {
                     ? 'var(--themeLight)'
                     : 'var(--white)',
                 },
+                '&:focus': {
+                  background: 'var(--themeLight)',
+                },
               },
             },
           ],
@@ -178,7 +176,7 @@ function BoardList(props) {
       <BoardListHeader
         onToggleSelectAll={handleToggleSelectAll}
         isAllSelected={selection.isAllSelected()}
-        selectedCount={selection.getSelectedCount()}
+        selectedCount={selectedCount}
         title={
           searchText
             ? intl.formatMessage(messages.results)
