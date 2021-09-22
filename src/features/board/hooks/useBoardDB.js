@@ -32,7 +32,9 @@ export function useBoardDB() {
 
     if (boards) {
       const list = boards.map((b) => ({ id: b.id, name: b.name }));
-      setBoardsList(list);
+      const sortedList = list.sort((a, b) => a.name.localeCompare(b.name));
+
+      setBoardsList(sortedList);
     }
   }
 

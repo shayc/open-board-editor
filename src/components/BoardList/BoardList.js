@@ -39,7 +39,7 @@ function BoardList(props) {
   const {
     activeId,
     className,
-    items: itemsProp,
+    items,
     onActiveIdChange,
     onSelectionChange,
     renderItemActions,
@@ -64,11 +64,21 @@ function BoardList(props) {
   );
 
   const { matchedItems, searchWords, searchText, onSearchChange } =
-    useFuzzySearch(itemsProp, fuseOptions);
+    useFuzzySearch(items, fuseOptions);
 
-  const items = useMemo(
-    () => (searchText ? matchedItems : itemsProp),
-    [searchText, itemsProp, matchedItems]
+  // const sortedItems = useMemo(() => {
+
+  //   return rootId ? sortItems(searchText ? matchedItems : items, rootId) : [];
+  // }, [searchText, items, matchedItems, rootId]);
+
+  const sortedItems = useMemo(
+    () =>
+      items.map((i) => ({
+        ...i,
+        isRoot: i.id === rootId,
+        isActive: i.id === activeId,
+      })),
+    [items, rootId, activeId]
   );
 
   const { current: selection } = useRef(
@@ -76,7 +86,7 @@ function BoardList(props) {
       onSelectionChanged: () => {
         onSelectionChange(selection);
       },
-      items,
+      items: sortedItems,
     })
   );
 
@@ -88,7 +98,6 @@ function BoardList(props) {
 
   function handleToggleSelectAll() {
     selection.toggleAllSelected();
-    console.log('object', selection.getSelection());
   }
 
   function handleActiveItemChange(item, index, event) {
@@ -118,19 +127,20 @@ function BoardList(props) {
 
     return (
       <DetailsRow
+        key={item.id}
         {...other}
         rowFieldsAs={renderRowFields}
+        styles={{ root: { background: item.isActive ? 'red' : '' } }}
         item={{
           ...item,
           name: (
             <Text className={styles.rowText}>
+              {item.isRoot && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
                 searchWords={searchWords}
                 textToHighlight={item.name}
               />
-
-              {item.id === rootId && <Icon iconName="Home" />}
             </Text>
           ),
         }}
@@ -164,7 +174,7 @@ function BoardList(props) {
       <div className={styles.container}>
         <DetailsList
           columns={columns}
-          items={items}
+          items={sortedItems}
           selection={selection}
           selectionZoneProps={selectionZoneProps}
           selectionMode={SelectionMode.multiple}
@@ -215,7 +225,7 @@ BoardList.propTypes = {
 };
 
 function sortItems(items, rootId) {
-  const sortedItems = items.sort((a, b) => a.name?.localeCompare(b.name));
+  const sortedItems = [...items];
   const rootItemIndex = items.findIndex((item) => item.id === rootId);
 
   if (rootItemIndex > 0) {
