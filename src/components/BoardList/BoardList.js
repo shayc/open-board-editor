@@ -67,10 +67,7 @@ function BoardList(props) {
     useFuzzySearch(items, fuseOptions);
 
   const sortedItems = useMemo(() => {
-    const sorted = rootId
-      ? sortItems(searchText ? matchedItems : items, rootId)
-      : [];
-
+    const sorted = searchText ? matchedItems : sortItems(items, rootId);
     return sorted;
   }, [items, rootId, searchText, matchedItems]);
 
@@ -120,35 +117,30 @@ function BoardList(props) {
   function renderRow(props) {
     const { item, ...other } = props;
 
+    const styles = {
+      root: [
+        {
+          background: 'var(--neutralLighterAlt)',
+          selectors: {
+            '&:focus': {
+              background: 'var(--themeLight)',
+            },
+          },
+        },
+      ],
+    };
+
     return (
       <DetailsRow
         key={item.id}
         {...other}
         rowFieldsAs={renderRowFields}
-        styles={{
-          root: [
-            {
-              background: item.isActive
-                ? 'var(--themeLight)'
-                : 'var(--neutralLighterAlt)',
-              selectors: {
-                '&:hover': {
-                  background: item.isActive
-                    ? 'var(--themeLight)'
-                    : 'var(--white)',
-                },
-                '&:focus': {
-                  background: 'var(--themeLight)',
-                },
-              },
-            },
-          ],
-        }}
+        styles={styles}
         item={{
           ...item,
           name: (
             <Text className={styles.rowText}>
-              {item.isRoot && <Icon iconName="Home" />}{' '}
+              {item.id === rootId && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
                 searchWords={searchWords}
