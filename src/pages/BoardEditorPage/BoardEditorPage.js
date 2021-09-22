@@ -100,7 +100,7 @@ function BoardEditorPage(props) {
   const handleActiveBoardIdChange = useCallback(
     debounce((id) => {
       nav.goTo(id);
-    }, 300),
+    }, 50),
     []
   );
 
