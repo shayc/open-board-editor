@@ -130,6 +130,13 @@ function BoardEditor(props) {
       setCalloutTarget(event.target.parentElement);
     }
 
+    function handleKeyDown(event) {
+      if (event.code === 'Space') {
+        event.preventDefault();
+        selection.toggleIndexSelected(index);
+      }
+    }
+
     return (
       <div className={styles.tileContainer} data-selection-index={index}>
         <Tile
@@ -138,6 +145,7 @@ function BoardEditor(props) {
           borderColor={borderColor}
           variant={variant}
           onClick={handleClick}
+          onKeyDown={handleKeyDown}
         >
           <Pictogram
             label={label}

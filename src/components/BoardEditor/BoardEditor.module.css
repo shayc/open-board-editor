@@ -28,7 +28,8 @@
   pointer-events: none;
 }
 
-.tileContainer:hover .tileControls {
+.tileContainer:hover .tileControls,
+.tileContainer:focus-within .tileControls {
   display: block;
 }
 
