@@ -331,6 +331,7 @@ function BoardEditorPage(props) {
         </div>
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [boardDB.rootId]
   );
 

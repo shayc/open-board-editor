@@ -55,11 +55,10 @@ function BoardViewerPage(props) {
   }
 
   function renderTile(button) {
-    const { id, backgroundColor, borderColor, image, label, loadBoard } =
-      button;
+    const { backgroundColor, borderColor, image, label, loadBoard } = button;
 
     const variant = loadBoard ? 'folder' : 'button';
-    const imageSrc = image?.data || image?.url;
+    const pictogramSrc = image?.data || image?.url;
 
     function handleClick() {
       boardCtrl.activateButton(button);
@@ -73,11 +72,11 @@ function BoardViewerPage(props) {
         onClick={handleClick}
       >
         <Pictogram
-          key={image.url}
+          key={image?.url}
           label={label}
           labelHidden={boardSettings.isLabelHidden}
           labelPosition={boardSettings.labelPosition}
-          src={imageSrc}
+          src={pictogramSrc}
         />
       </Tile>
     );

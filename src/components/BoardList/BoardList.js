@@ -37,7 +37,6 @@ const selectionZoneProps = {
 
 function BoardList(props) {
   const {
-    activeId,
     className,
     items,
     onActiveIdChange,
