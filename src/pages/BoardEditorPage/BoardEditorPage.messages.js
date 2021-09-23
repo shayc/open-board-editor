@@ -33,4 +33,12 @@ export default defineMessages({
     id: `${scope}.setAsHomeBoard`,
     defaultMessage: 'Set as home board',
   },
+  selected: {
+    id: `${scope}.selected`,
+    defaultMessage: '{number} selected',
+  },
+  color: {
+    id: `${scope}.color`,
+    defaultMessage: 'Color',
+  },
 });

@@ -16,17 +16,14 @@ function BoardCommandBar(props) {
     className,
     isPanelOpen,
     menuType,
-    selectedCount,
     onPanelToggleClick,
     onOpenFileClick,
     onDownloadFileClick,
     onPrintClick,
-    onClearSelectionClick,
     onShareClick,
     onNewBoardClick,
     onNewTileClick,
     onDeleteBoardClick,
-    onDeleteButtonClick,
   } = props;
 
   const intl = useIntl();
@@ -118,35 +115,13 @@ function BoardCommandBar(props) {
     },
   ];
 
-  const selectedButtonItems = [
-    {
-      ...deleteItem,
-      onClick: onDeleteButtonClick,
-    },
-    {
-      buttonStyles,
-      key: 'color',
-      text: intl.formatMessage(messages.color),
-      disabled: false,
-      iconProps: { iconName: 'BucketColor' },
-      // subMenuProps: {
-      //   items: colors,
-      //   onRenderMenuList: (props) => (
-      //     <div style={{ display: 'flex' }}>
-      //       <ColorPicker colors={colors} onChange={onColorClick} />
-      //     </div>
-      //   ),
-      // },
-    },
-  ];
-
   const noBoardSelectedItems = [openFileItem];
 
   let items = [...permanentItems];
 
   switch (menuType) {
     case 'selected-button': {
-      items = [...items, ...selectedButtonItems];
+      items = [...items, ...defaultItems];
       break;
     }
     case 'selected-board': {
@@ -161,17 +136,6 @@ function BoardCommandBar(props) {
       items = [...items, ...defaultItems];
     }
   }
-
-  const selectedButtonFarItems = [
-    {
-      buttonStyles,
-      key: 'clear-selection',
-      text: intl.formatMessage(messages.selected, { number: selectedCount }),
-      disabled: false,
-      iconProps: { iconName: 'Clear' },
-      onClick: onClearSelectionClick,
-    },
-  ];
 
   const overflowItems = [
     {
@@ -200,9 +164,7 @@ function BoardCommandBar(props) {
   ];
 
   const farItems = [];
-  if (menuType === 'selected-button') {
-    farItems.push(...selectedButtonFarItems);
-  }
+
   return (
     <CommandBar
       className={rootClassName}
@@ -215,11 +177,7 @@ function BoardCommandBar(props) {
       overflowButtonProps={{ styles: buttonStyles }}
       items={items}
       farItems={farItems}
-      overflowItems={
-        menuType === 'no-board-selected' || menuType === 'selected-button'
-          ? []
-          : overflowItems
-      }
+      overflowItems={menuType === 'no-board-selected' ? [] : overflowItems}
       ariaLabel="Use left and right arrow keys to navigate between commands"
     />
   );

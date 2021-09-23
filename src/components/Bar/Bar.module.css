@@ -8,7 +8,7 @@
 .middleGroup,
 .endGroup {
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
 
 .startGroup {
@@ -17,9 +17,8 @@
 }
 
 .middleGroup {
-  min-width: 0;
   justify-content: center;
-  align-items: center;
+  min-width: 0;
 }
 
 .endGroup {

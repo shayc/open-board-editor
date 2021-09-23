@@ -29,10 +29,6 @@ export default defineMessages({
     id: `${scope}.delete`,
     defaultMessage: 'Delete',
   },
-  color: {
-    id: `${scope}.color`,
-    defaultMessage: 'Color',
-  },
   openFile: {
     id: `${scope}.openFile`,
     defaultMessage: 'Open file',
@@ -48,9 +44,5 @@ export default defineMessages({
   hideBoardsPanel: {
     id: `${scope}.hideBoardsPanel`,
     defaultMessage: 'Hide boards panel',
-  },
-  selected: {
-    id: `${scope}.selected`,
-    defaultMessage: '{number} selected',
   },
 });

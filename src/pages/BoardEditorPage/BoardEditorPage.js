@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -65,6 +65,8 @@ function BoardEditorPage(props) {
     playAudio,
     speak,
   });
+
+  const boardSelectionRef = useRef();
 
   let grid = { ...board?.grid };
 
@@ -277,6 +279,7 @@ function BoardEditorPage(props) {
   }
 
   function handleBoardSelectionChange(selection) {
+    boardSelectionRef.current = selection;
     const boardSelection = selection.getSelection();
     setSelectedBoards(boardSelection);
   }
@@ -285,19 +288,19 @@ function BoardEditorPage(props) {
     function renderBoardActions(board) {
       const items = [
         {
-          key: 'setAsHomeBoard',
-          text: intl.formatMessage(messages.setAsHomeBoard),
-          iconProps: { iconName: 'Home' },
-          onClick: () => {
-            handleRootIdChange(board.id);
-          },
-        },
-        {
           key: 'info',
           text: intl.formatMessage(messages.boardInfo),
           iconProps: { iconName: 'Info' },
           onClick: () => {
             handleBoardDetails(board.id);
+          },
+        },
+        {
+          key: 'setAsHomeBoard',
+          text: intl.formatMessage(messages.setAsHomeBoard),
+          iconProps: { iconName: 'Home' },
+          onClick: () => {
+            handleRootIdChange(board.id);
           },
         },
         {
@@ -311,7 +314,8 @@ function BoardEditorPage(props) {
       ];
 
       if (board.id === boardDB.rootId) {
-        items.shift();
+        items[1].disabled = true;
+        items[2].disabled = true;
       }
 
       function handleFocus(event) {
@@ -321,7 +325,7 @@ function BoardEditorPage(props) {
       return (
         <div className={styles.rowActions}>
           <IconButton
-            iconProps={{ iconName: 'More' }}
+            iconProps={{ iconName: 'MoreVertical' }}
             menuIconProps={{ style: { display: 'none' } }}
             menuProps={{ items }}
             ariaLabel={intl.formatMessage(messages.moreActions)}
@@ -421,7 +425,7 @@ function BoardEditorPage(props) {
                 <Bar
                   startGroup={
                     !isSmallScreen &&
-                    !isButtonsSelected && (
+                    (!isButtonsSelected ? (
                       <NavButtons
                         backDisabled={nav.backDisabled}
                         forwardDisabled={nav.forwardDisabled}
@@ -429,13 +433,24 @@ function BoardEditorPage(props) {
                         onForwardClick={nav.goForward}
                         onHomeClick={nav.goToRoot}
                       />
-                    )
+                    ) : (
+                      <>
+                        <CommandBarButton iconProps={{ iconName: 'Delete' }}>
+                          Delete
+                        </CommandBarButton>
+                        <CommandBarButton
+                          iconProps={{ iconName: 'BucketColor' }}
+                        >
+                          Color
+                        </CommandBarButton>
+                      </>
+                    ))
                   }
                   middleGroup={<NavText>{board?.name}</NavText>}
                   endGroup={
                     !isSmallScreen &&
-                    !isButtonsSelected && (
-                      <div>
+                    (!isButtonsSelected ? (
+                      <>
                         <GridSizeSelect onChange={handleGridSizeChange} />
                         <CommandBarButton
                           title={intl.formatMessage(
@@ -444,8 +459,18 @@ function BoardEditorPage(props) {
                           iconProps={{ iconName: 'Info' }}
                           onClick={handleBoardDetails}
                         />
-                      </div>
-                    )
+                      </>
+                    ) : (
+                      <>
+                        <CommandBarButton
+                          text={intl.formatMessage(messages.selected, {
+                            number: 1,
+                          })}
+                          iconProps={{ iconName: 'Clear' }}
+                          onClick={handleBoardDetails}
+                        />
+                      </>
+                    ))
                   }
                 />
 
@@ -473,7 +498,7 @@ function BoardEditorPage(props) {
               <Bar
                 className={styles.bottomNavBar}
                 startGroup={
-                  !isButtonsSelected && (
+                  (!isButtonsSelected && (
                     <NavButtons
                       backDisabled={nav.backDisabled}
                       forwardDisabled={nav.forwardDisabled}
@@ -481,10 +506,19 @@ function BoardEditorPage(props) {
                       onForwardClick={nav.goForward}
                       onHomeClick={nav.goToRoot}
                     />
+                  )) || (
+                    <>
+                      <CommandBarButton iconProps={{ iconName: 'Delete' }}>
+                        Delete
+                      </CommandBarButton>
+                      <CommandBarButton iconProps={{ iconName: 'BucketColor' }}>
+                        Color
+                      </CommandBarButton>
+                    </>
                   )
                 }
                 endGroup={
-                  !isButtonsSelected && (
+                  (!isButtonsSelected && (
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
                       <CommandBarButton
@@ -492,6 +526,16 @@ function BoardEditorPage(props) {
                           messages.viewBoardInformation
                         )}
                         iconProps={{ iconName: 'Info' }}
+                        onClick={handleBoardDetails}
+                      />
+                    </>
+                  )) || (
+                    <>
+                      <CommandBarButton
+                        text={intl.formatMessage(messages.selected, {
+                          number: 1,
+                        })}
+                        iconProps={{ iconName: 'Clear' }}
                         onClick={handleBoardDetails}
                       />
                     </>
@@ -508,10 +552,10 @@ function BoardEditorPage(props) {
                   handleBoardDelete(selectedIds);
                 }}
                 onCancelClick={() => {
-                  // boardsSelection.setAllSelected(false);
+                  boardSelectionRef.current.setAllSelected(false);
                 }}
                 onSelectAllClick={() => {
-                  // boardsSelection.setAllSelected(true);
+                  boardSelectionRef.current.setAllSelected(true);
                 }}
                 allSelected={
                   selectedBoards.length === boardDB.boardsList.length
