@@ -15,6 +15,11 @@
 
 .searchBox {
   flex: 1;
+  border: 1px solid var(--neutralQuaternaryAlt);
+}
+
+.searchBox:hover {
+  border: 1px solid var(--neutralQuaternaryAlt);
 }
 
 .container {

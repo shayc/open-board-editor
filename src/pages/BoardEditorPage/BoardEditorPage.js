@@ -438,9 +438,7 @@ function BoardEditorPage(props) {
                         <CommandBarButton iconProps={{ iconName: 'Delete' }}>
                           Delete
                         </CommandBarButton>
-                        <CommandBarButton
-                          iconProps={{ iconName: 'BucketColor' }}
-                        >
+                        <CommandBarButton iconProps={{ iconName: 'Color' }}>
                           Color
                         </CommandBarButton>
                       </>
@@ -508,12 +506,15 @@ function BoardEditorPage(props) {
                     />
                   )) || (
                     <>
-                      <CommandBarButton iconProps={{ iconName: 'Delete' }}>
-                        Delete
-                      </CommandBarButton>
-                      <CommandBarButton iconProps={{ iconName: 'BucketColor' }}>
-                        Color
-                      </CommandBarButton>
+                      <CommandBarButton
+                        iconProps={{ iconName: 'Delete' }}
+                        title="Delete"
+                      />
+
+                      <CommandBarButton
+                        iconProps={{ iconName: 'Color' }}
+                        title="Color"
+                      />
                     </>
                   )
                 }
