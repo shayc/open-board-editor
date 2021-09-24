@@ -374,6 +374,7 @@ function BoardEditorPage(props) {
             <ViewButton onClick={handleViewClick} />
           </>
         }
+        title={isSmallScreen ? board?.name : 'Board Editor'}
       />
 
       <BoardCommandBar
@@ -422,55 +423,65 @@ function BoardEditorPage(props) {
           <div className={styles.main}>
             {board?.id && selectedBoards.length < 2 && (
               <>
-                <Bar
-                  startGroup={
-                    !isSmallScreen &&
-                    (!isButtonsSelected ? (
-                      <NavButtons
-                        backDisabled={nav.backDisabled}
-                        forwardDisabled={nav.forwardDisabled}
-                        onBackClick={nav.goBack}
-                        onForwardClick={nav.goForward}
-                        onHomeClick={nav.goToRoot}
-                      />
-                    ) : (
-                      <>
-                        <CommandBarButton iconProps={{ iconName: 'Delete' }}>
-                          Delete
-                        </CommandBarButton>
-                        <CommandBarButton iconProps={{ iconName: 'Color' }}>
-                          Color
-                        </CommandBarButton>
-                      </>
-                    ))
-                  }
-                  middleGroup={<NavText>{board?.name}</NavText>}
-                  endGroup={
-                    !isSmallScreen &&
-                    (!isButtonsSelected ? (
-                      <>
-                        <GridSizeSelect onChange={handleGridSizeChange} />
-                        <CommandBarButton
-                          title={intl.formatMessage(
-                            messages.viewBoardInformation
-                          )}
-                          iconProps={{ iconName: 'Info' }}
-                          onClick={handleBoardDetails}
+                {!isSmallScreen && (
+                  <Bar
+                    startGroup={
+                      !isButtonsSelected ? (
+                        <NavButtons
+                          backDisabled={nav.backDisabled}
+                          forwardDisabled={nav.forwardDisabled}
+                          onBackClick={nav.goBack}
+                          onForwardClick={nav.goForward}
+                          onHomeClick={nav.goToRoot}
                         />
-                      </>
-                    ) : (
-                      <>
-                        <CommandBarButton
-                          text={intl.formatMessage(messages.selected, {
-                            number: 1,
-                          })}
-                          iconProps={{ iconName: 'Clear' }}
-                          onClick={handleBoardDetails}
-                        />
-                      </>
-                    ))
-                  }
-                />
+                      ) : (
+                        <>
+                          <CommandBarButton
+                            iconProps={{ iconName: 'Delete' }}
+                            onClick={handleButtonDelete}
+                          >
+                            Delete
+                          </CommandBarButton>
+                          <CommandBarButton
+                            iconProps={{ iconName: 'Color' }}
+                            onClick={() => {}}
+                          >
+                            Color
+                          </CommandBarButton>
+                        </>
+                      )
+                    }
+                    middleGroup={
+                      !isButtonsSelected && <NavText>{board?.name}</NavText>
+                    }
+                    endGroup={
+                      !isButtonsSelected ? (
+                        <>
+                          <GridSizeSelect onChange={handleGridSizeChange} />
+                          <CommandBarButton
+                            title={intl.formatMessage(
+                              messages.viewBoardInformation
+                            )}
+                            iconProps={{ iconName: 'Info' }}
+                            onClick={handleBoardDetails}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <CommandBarButton
+                            text={intl.formatMessage(messages.selected, {
+                              number: buttonsSelection.getSelectedCount(),
+                            })}
+                            iconProps={{ iconName: 'Clear' }}
+                            onClick={() => {
+                              buttonsSelection.setAllSelected(false);
+                            }}
+                          />
+                        </>
+                      )
+                    }
+                  />
+                )}
 
                 <BoardEditor
                   board={{ ...board, grid }}
@@ -509,6 +520,7 @@ function BoardEditorPage(props) {
                       <CommandBarButton
                         iconProps={{ iconName: 'Delete' }}
                         title="Delete"
+                        onClick={handleButtonDelete}
                       />
 
                       <CommandBarButton
@@ -534,10 +546,12 @@ function BoardEditorPage(props) {
                     <>
                       <CommandBarButton
                         text={intl.formatMessage(messages.selected, {
-                          number: 1,
+                          number: buttonsSelection.getSelectedCount(),
                         })}
                         iconProps={{ iconName: 'Clear' }}
-                        onClick={handleBoardDetails}
+                        onClick={() => {
+                          buttonsSelection.setAllSelected(false);
+                        }}
                       />
                     </>
                   )

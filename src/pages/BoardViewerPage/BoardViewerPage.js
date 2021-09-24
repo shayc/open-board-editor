@@ -11,11 +11,11 @@ import { useNavigation } from '../../features/board/hooks/useNavigation';
 import {
   Board,
   NavBar,
-  NavText,
   Tile,
   Pictogram,
   Output,
   Seo,
+  AppBar,
   EditButton,
 } from '../../components';
 import styles from './BoardViewerPage.module.css';
@@ -117,13 +117,10 @@ function BoardViewerPage(props) {
       <Seo title={board?.name} />
 
       {isSmallScreen && (
-        <div className={styles.smallScreenBar}>
-          <NavText>{board?.name}</NavText>
-
-          <div className={styles.smallScreenBarGroup}>
-            <EditButton onClick={handleEditClick} />
-          </div>
-        </div>
+        <AppBar
+          actions={<EditButton onClick={handleEditClick} />}
+          title={board?.name}
+        />
       )}
 
       <div className={styles.outputWrapper}>

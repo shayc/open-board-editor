@@ -58,7 +58,7 @@ function NavButtons(props) {
     <FocusZone
       className={rootClassName}
       direction={FocusZoneDirection.horizontal}
-      handleTabKey={FocusZoneTabbableElements.all}
+      handleTabKey={FocusZoneTabbableElements.none}
     >
       {!backHidden && (
         <IconButton
