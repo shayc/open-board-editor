@@ -487,6 +487,8 @@ function BoardEditorPage(props) {
                   board={{ ...board, grid }}
                   linkableBoards={linkableBoards}
                   draggable={!isSmallScreen}
+                  scrollSnap={true}
+                  scrollDirection="vertical"
                   selection={buttonsSelection}
                   selectionEnabled={isButtonsSelected}
                   buttonLabelPosition={boardSettings.labelPosition}
