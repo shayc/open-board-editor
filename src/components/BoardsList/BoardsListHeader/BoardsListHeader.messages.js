@@ -1,12 +1,12 @@
 /*
- * BoardListHeader Messages
+ * BoardsListHeader Messages
  *
- * This contains all the text for the BoardListHeader component.
+ * This contains all the text for the BoardsListHeader component.
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.BoardListHeader';
+export const scope = 'app.components.BoardsListHeader';
 
 export default defineMessages({
   selectAllBoards: {

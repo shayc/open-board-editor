@@ -21,7 +21,7 @@ import Board from './Board';
 import BoardEditor from './BoardEditor';
 import AppSettingsPanel from './AppSettingsPanel';
 import AppBar from './AppBar';
-import BoardList from './BoardList';
+import BoardsList from './BoardsList';
 import SpinnerProgress from './SpinnerProgress';
 import NavButtons from './NavButtons';
 
@@ -49,7 +49,7 @@ export {
   BoardEditor,
   AppSettingsPanel,
   AppBar,
-  BoardList,
+  BoardsList,
   SpinnerProgress,
   NavButtons,
 };

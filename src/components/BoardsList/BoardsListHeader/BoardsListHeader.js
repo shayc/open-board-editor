@@ -1,9 +1,9 @@
 import { Check, Text } from '@fluentui/react';
 import { useIntl } from 'react-intl';
-import messages from './BoardListHeader.messages';
-import styles from './BoardListHeader.module.css';
+import messages from './BoardsListHeader.messages';
+import styles from './BoardsListHeader.module.css';
 
-function BoardListHeader(props) {
+function BoardsListHeader(props) {
   const { isAllSelected, onToggleSelectAll, selectedCount, title } = props;
 
   const intl = useIntl();
@@ -33,4 +33,4 @@ function BoardListHeader(props) {
   );
 }
 
-export default BoardListHeader;
+export default BoardsListHeader;

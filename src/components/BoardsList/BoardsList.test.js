@@ -1,7 +1,7 @@
 import { renderWithReactIntl } from '../../setupTests';
-import BoardList from './BoardList';
+import BoardsList from './BoardsList';
 
-describe('<BoardList />', () => {
+describe('<BoardsList />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
 
@@ -9,7 +9,7 @@ describe('<BoardList />', () => {
       items: [],
     };
 
-    renderWithReactIntl(<BoardList {...props} />);
+    renderWithReactIntl(<BoardsList {...props} />);
     expect(spy).not.toHaveBeenCalled();
   });
 });

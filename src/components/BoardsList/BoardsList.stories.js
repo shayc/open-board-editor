@@ -1,12 +1,12 @@
-import BoardList from './BoardList';
+import BoardsList from './BoardsList';
 
 const story = {
-  title: 'Example/BoardList',
-  component: BoardList,
+  title: 'Example/BoardsList',
+  component: BoardsList,
 };
 export default story;
 
-const Template = (args) => <BoardList {...args} />;
+const Template = (args) => <BoardsList {...args} />;
 
 export const Default = Template.bind({});
 

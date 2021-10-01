@@ -17,9 +17,9 @@ import {
 import Highlighter from 'react-highlight-words';
 
 import useFuzzySearch from './useFuzzySearch';
-import BoardListHeader from './BoardListHeader/BoardListHeader';
-import messages from './BoardList.messages';
-import styles from './BoardList.module.css';
+import BoardsListHeader from './BoardsListHeader/BoardsListHeader';
+import messages from './BoardsList.messages';
+import styles from './BoardsList.module.css';
 
 const itemNameKey = 'name';
 
@@ -35,7 +35,7 @@ const selectionZoneProps = {
   isSelectedOnFocus: false,
 };
 
-function BoardList(props) {
+function BoardsList(props) {
   const {
     className,
     items,
@@ -171,7 +171,7 @@ function BoardList(props) {
         />
       </div>
 
-      <BoardListHeader
+      <BoardsListHeader
         onToggleSelectAll={handleToggleSelectAll}
         isAllSelected={selection.isAllSelected()}
         selectedCount={selectedCount}
@@ -211,7 +211,7 @@ function BoardList(props) {
   );
 }
 
-BoardList.propTypes = {
+BoardsList.propTypes = {
   /**
    * Active item Id
    */
@@ -247,4 +247,4 @@ function sortItems(items, rootId) {
   return sortedItems;
 }
 
-export default React.memo(BoardList);
+export default React.memo(BoardsList);

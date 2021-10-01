@@ -20,7 +20,7 @@ import {
   Seo,
   SpinnerProgress,
   BoardEditor,
-  BoardList,
+  BoardsList,
   DetailsPanel,
   DelayedRender,
   Bar,
@@ -409,7 +409,7 @@ function BoardEditorPage(props) {
         <div className={styles.container}>
           {isBoardsPanelOpen && (
             <div className={styles.panel}>
-              <BoardList
+              <BoardsList
                 activeId={boardId}
                 rootId={boardDB.rootId}
                 items={boardDB.boardsList}

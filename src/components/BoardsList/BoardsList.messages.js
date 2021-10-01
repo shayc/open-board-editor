@@ -1,12 +1,12 @@
 /*
- * BoardList Messages
+ * BoardsList Messages
  *
- * This contains all the text for the BoardList component.
+ * This contains all the text for the BoardsList component.
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.BoardList';
+export const scope = 'app.components.BoardsList';
 
 export default defineMessages({
   filter: {
