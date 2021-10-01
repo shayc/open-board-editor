@@ -110,7 +110,7 @@ function BoardsList(props) {
     }
   }
 
-  function handleSearchChange(event, text) {
+  function handleFilterChange(event, text) {
     onSearchChange(text);
   }
 
@@ -165,10 +165,10 @@ function BoardsList(props) {
     <div className={rootClassName}>
       <div className={styles.filterBar}>
         <SearchBox
-          className={styles.searchBox}
+          className={styles.filterBox}
           placeholder={intl.formatMessage(messages.filter)}
           iconProps={{ iconName: 'Filter' }}
-          onChange={handleSearchChange}
+          onChange={handleFilterChange}
           value={searchText}
         />
       </div>
