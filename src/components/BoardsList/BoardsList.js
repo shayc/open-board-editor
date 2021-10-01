@@ -52,6 +52,8 @@ function BoardsList(props) {
       {
         key: '1',
         fieldName: itemNameKey,
+        minWidth: 154,
+        maxWidth: 154,
       },
       {
         key: '2',
@@ -145,7 +147,7 @@ function BoardsList(props) {
         item={{
           ...item,
           name: (
-            <Text className={styles.rowText}>
+            <Text styles={{ root: { lineHeight: '32px' } }}>
               {item.id === rootId && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
