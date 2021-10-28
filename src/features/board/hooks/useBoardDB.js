@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { nanoid } from 'nanoid';
-import filenamify from 'filenamify';
+import sanitize from 'sanitize-filename';
 
 import * as OBF from '../../../open-board-format';
 import { boardMap } from '../../../open-board-format/board/board.map';
@@ -95,7 +95,7 @@ export function useBoardDB() {
       const boardSet = await boardRepo.exportBoardSet();
       const rootBoard = await boardRepo.getById(rootId);
       const filename =
-        name || (rootBoard.name && filenamify(rootBoard.name)) || 'board-set';
+        name || (rootBoard.name && sanitize(rootBoard.name)) || 'board-set';
 
       OBF.saveAsOBZFile(boardSet, filename);
     }

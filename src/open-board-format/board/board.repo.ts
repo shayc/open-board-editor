@@ -1,5 +1,5 @@
 import { openDB, DBSchema, StoreNames, IDBPDatabase } from 'idb';
-import filenamify from 'filenamify';
+import sanitize from 'sanitize-filename';
 
 import * as OBF from '../interfaces';
 import { boardMap } from './board.map';
@@ -59,7 +59,7 @@ export const boardRepo = {
     const boardsStore = await tx.objectStore('boards');
     const manifestStore = await tx.objectStore('manifest');
 
-    const filename = filenamify(board.name);
+    const filename = sanitize(board.name);
     const path = `${filename}.obf`;
 
     const manifestPaths = await manifestStore.get('paths');
