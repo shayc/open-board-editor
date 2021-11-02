@@ -14,15 +14,15 @@ import styles from './BoardCommandBar.module.css';
 function BoardCommandBar(props) {
   const {
     className,
+    isBoardActive,
+    isBoardSelected,
     isPanelOpen,
-    menuType,
     onPanelToggleClick,
     onOpenFileClick,
     onDownloadFileClick,
     onPrintClick,
     onShareClick,
     onNewBoardClick,
-    onNewTileClick,
     onDeleteBoardClick,
   } = props;
 
@@ -42,23 +42,28 @@ function BoardCommandBar(props) {
     },
   };
 
+  const panelToggleItem = {
+    buttonStyles,
+    key: 'panel-toggle',
+    title: isPanelOpen
+      ? intl.formatMessage(messages.hideBoardsPanel)
+      : intl.formatMessage(messages.showBoardsPanel),
+    iconOnly: true,
+    iconProps: {
+      iconName: isPanelOpen ? closePaneIconName : openPaneIconName,
+    },
+    onClick: onPanelToggleClick,
+  };
+
   const newBoardItem = {
     buttonStyles,
     key: 'new-board',
     text: intl.formatMessage(messages.newBoard),
     onClick: onNewBoardClick,
     onRender: (item) => {
-      const className = clsx(styles.newBoardButtonContainer, {
-        [styles.fixedWidth]: isPanelOpen && menuType !== 'selected-board',
-      });
-
       return (
-        <div className={className}>
-          <DefaultButton
-            data-is-focusable={true}
-            primary={true}
-            onClick={item.onClick}
-          >
+        <div className={styles.newBoardButtonContainer}>
+          <DefaultButton data-is-focusable primary onClick={item.onClick}>
             {item.text}
           </DefaultButton>
         </div>
@@ -78,66 +83,11 @@ function BoardCommandBar(props) {
     buttonStyles,
     key: 'delete',
     text: intl.formatMessage(messages.delete),
-    disabled: false,
     iconProps: { iconName: 'Delete' },
+    onClick: onDeleteBoardClick,
   };
 
-  const permanentItems = [
-    {
-      buttonStyles,
-      key: 'panel-toggle',
-      title: isPanelOpen
-        ? intl.formatMessage(messages.hideBoardsPanel)
-        : intl.formatMessage(messages.showBoardsPanel),
-      iconOnly: true,
-      iconProps: {
-        iconName: isPanelOpen ? closePaneIconName : openPaneIconName,
-      },
-      onClick: onPanelToggleClick,
-    },
-    newBoardItem,
-  ];
-
-  const defaultItems = [
-    {
-      buttonStyles,
-      key: 'new-tile',
-      text: intl.formatMessage(messages.newTile),
-      iconProps: { iconName: 'Add' },
-      onClick: onNewTileClick,
-    },
-  ];
-
-  const selectedBoardItems = [
-    {
-      ...deleteItem,
-      onClick: onDeleteBoardClick,
-    },
-  ];
-
-  const noBoardSelectedItems = [openFileItem];
-
-  let items = [...permanentItems];
-
-  switch (menuType) {
-    case 'selected-button': {
-      items = [...items, ...defaultItems];
-      break;
-    }
-    case 'selected-board': {
-      items = [...items, ...selectedBoardItems];
-      break;
-    }
-    case 'no-board-selected': {
-      items = [...items, ...noBoardSelectedItems];
-      break;
-    }
-    default: {
-      items = [...items, ...defaultItems];
-    }
-  }
-
-  const overflowItems = [
+  const activeBoardItems = [
     {
       buttonStyles,
       key: 'print',
@@ -152,6 +102,18 @@ function BoardCommandBar(props) {
       iconProps: { iconName: 'Share' },
       onClick: onShareClick,
     },
+  ];
+
+  const selectedBoardItems = [deleteItem];
+
+  const items = [
+    panelToggleItem,
+    newBoardItem,
+    ...(isBoardSelected ? selectedBoardItems : []),
+    ...(isBoardActive ? activeBoardItems : []),
+  ];
+
+  const overflowItems = [
     { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
     openFileItem,
     {
@@ -177,7 +139,7 @@ function BoardCommandBar(props) {
       overflowButtonProps={{ styles: buttonStyles }}
       items={items}
       farItems={farItems}
-      overflowItems={menuType === 'no-board-selected' ? [] : overflowItems}
+      overflowItems={overflowItems}
       ariaLabel="Use left and right arrow keys to navigate between commands"
     />
   );
