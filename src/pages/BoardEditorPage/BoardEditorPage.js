@@ -87,8 +87,8 @@ function BoardEditorPage(props) {
   }, [board, forceUpdate]);
 
   const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
-  const isButtonsSelected = Boolean(buttonsSelection.getSelectedCount());
-  const isBoardsSelected = Boolean(selectedBoards?.length);
+  const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
+  const isBoardSelected = Boolean(selectedBoards?.length);
 
   useHotkeys(
     'del',
@@ -378,11 +378,8 @@ function BoardEditorPage(props) {
       />
 
       <BoardCommandBar
-        menuType={
-          (isButtonsSelected && 'selected-button') ||
-          (isBoardsSelected && 'selected-board') ||
-          (!board?.id && 'no-board-selected')
-        }
+        isBoardSelected={isBoardSelected}
+        isBoardActive={board?.id}
         isPanelOpen={isBoardsPanelOpen}
         selectedCount={buttonsSelection.getSelectedCount()}
         onPanelToggleClick={toggleBoardsPanel}
@@ -426,7 +423,7 @@ function BoardEditorPage(props) {
                 {!isSmallScreen && (
                   <Bar
                     startGroup={
-                      !isButtonsSelected ? (
+                      !isButtonSelected ? (
                         <NavButtons
                           backDisabled={nav.backDisabled}
                           forwardDisabled={nav.forwardDisabled}
@@ -452,10 +449,10 @@ function BoardEditorPage(props) {
                       )
                     }
                     middleGroup={
-                      !isButtonsSelected && <NavText>{board?.name}</NavText>
+                      !isButtonSelected && <NavText>{board?.name}</NavText>
                     }
                     endGroup={
-                      !isButtonsSelected ? (
+                      !isButtonSelected ? (
                         <>
                           <GridSizeSelect onChange={handleGridSizeChange} />
                           <CommandBarButton
@@ -490,7 +487,7 @@ function BoardEditorPage(props) {
                   scrollSnap={true}
                   scrollDirection="vertical"
                   selection={buttonsSelection}
-                  selectionEnabled={isButtonsSelected}
+                  selectionEnabled={isButtonSelected}
                   buttonLabelPosition={boardSettings.labelPosition}
                   buttonLabelHidden={boardSettings.isLabelHidden}
                   buttonColors={[...boardDB.boardsColors, ...defaultColors]}
@@ -509,7 +506,7 @@ function BoardEditorPage(props) {
               <Bar
                 className={styles.bottomNavBar}
                 startGroup={
-                  (!isButtonsSelected && (
+                  (!isButtonSelected && (
                     <NavButtons
                       backDisabled={nav.backDisabled}
                       forwardDisabled={nav.forwardDisabled}
@@ -533,7 +530,7 @@ function BoardEditorPage(props) {
                   )
                 }
                 endGroup={
-                  (!isButtonsSelected && (
+                  (!isButtonSelected && (
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
                       <CommandBarButton
