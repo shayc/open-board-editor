@@ -95,7 +95,7 @@ export function useBoardDB() {
       const boardSet = await boardRepo.exportBoardSet();
       const rootBoard = await boardRepo.getById(rootId);
       const filename =
-        name || (rootBoard.name && sanitize(rootBoard.name)) || 'board-set';
+        name || (rootBoard?.name && sanitize(rootBoard.name)) || 'board-set';
 
       OBF.saveAsOBZFile(boardSet, filename);
     }
