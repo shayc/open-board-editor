@@ -7,7 +7,7 @@
 .outputWrapper {
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
-  background-color: var(--neutralQuaternary);
+  background-color: var(--neutralLight);
   color: var(--black);
 }
 
@@ -23,6 +23,7 @@
 .navBarWrapper {
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
+  background-color: var(--neutralLighterAlt);
 }
 
 .boardWrapper {
