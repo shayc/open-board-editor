@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo } from 'react';
 import { boardService } from '../../../open-board-format/board/board.service';
 
-const initialBoard = { buttons: [], grid: {} };
+const initialBoard = { buttons: [], grid: { columns: 0, rows: 0 } };
 
 function useBoardState() {
   const boardRef = useRef({});
