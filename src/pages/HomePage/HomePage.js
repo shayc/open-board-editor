@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Text } from '@fluentui/react';
 
 import fourGridStartingCommunicationImage from '../../open-board-format/examples/four-grid-starting-communication.png';
@@ -10,14 +10,14 @@ import messages from './HomePage.messages';
 import styles from './HomePage.module.css';
 
 function HomePage(props) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const boardSets = [
     {
       name: <FormattedMessage {...messages.blank} />,
       image: plusSvg,
       onClick: () => {
-        history.push(`/edit/board/`);
+        navigate(`/edit/board`);
       },
     },
     {

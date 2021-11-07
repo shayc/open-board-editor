@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as utils from '../../utils';
 import { useSpeech } from '../../features/speech';
@@ -33,8 +33,8 @@ function BoardViewerPage(props) {
     changeBoard,
   });
 
-  const history = useHistory();
-  const nav = useNavigation({ history, rootState: { id: boardDB.rootId } });
+  const navigate = useNavigate();
+  const nav = useNavigation({ navigate, rootState: { id: boardDB.rootId } });
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
 

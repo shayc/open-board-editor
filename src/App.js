@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 import { useSpeech } from './features/speech';
@@ -12,7 +12,7 @@ const BoardViewerPage = lazy(() => import('./pages/BoardViewerPage'));
 const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 
 function App() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { locale } = useLocale();
   const speech = useSpeech();
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
@@ -22,11 +22,11 @@ function App() {
   }
 
   function viewBoard(id) {
-    history.push(`/board/${id}`);
+    navigate(`board/${id}`);
   }
 
   function editBoard(id) {
-    history.push(`/edit/board/${id}`);
+    navigate(`edit/board/${id}`);
   }
 
   useEffect(() => {
@@ -39,6 +39,11 @@ function App() {
         <html lang={locale} />
       </Helmet>
 
+      <AppSettingsPanel
+        open={isSettingsPanelOpen}
+        onDismiss={toggleSettingsPanel}
+      />
+
       <Suspense
         fallback={
           <DelayedRender delay={300}>
@@ -46,27 +51,39 @@ function App() {
           </DelayedRender>
         }
       >
-        <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
 
-          <Route path="/edit/board/:boardId?">
-            <BoardEditorPage
-              onSettingsClick={toggleSettingsPanel}
-              onViewClick={viewBoard}
+          <Route
+            path="edit/board"
+            element={
+              <BoardEditorPage
+                onSettingsClick={toggleSettingsPanel}
+                onViewClick={viewBoard}
+              />
+            }
+          >
+            <Route
+              path=":boardId"
+              element={
+                <BoardEditorPage
+                  onSettingsClick={toggleSettingsPanel}
+                  onViewClick={viewBoard}
+                />
+              }
             />
+          </Route>
 
-            <AppSettingsPanel
-              open={isSettingsPanelOpen}
-              onDismiss={toggleSettingsPanel}
+          <Route
+            path="board"
+            element={<BoardViewerPage onEditClick={editBoard} />}
+          >
+            <Route
+              path=":boardId"
+              element={<BoardViewerPage onEditClick={editBoard} />}
             />
           </Route>
-
-          <Route path="/board/:boardId?">
-            <BoardViewerPage onEditClick={editBoard} />
-          </Route>
-        </Switch>
+        </Routes>
       </Suspense>
     </div>
   );

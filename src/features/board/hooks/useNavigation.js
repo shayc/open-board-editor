@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 
 export function useNavigation(params) {
   const {
-    history,
+    navigate,
     navigation: initialNav = [],
     index: initialIndex = -1,
     rootState,
@@ -22,7 +22,7 @@ export function useNavigation(params) {
       }
 
       setIndex((i) => i - 1);
-      history.goBack();
+      navigate(-1);
     }
 
     function goForward() {
@@ -31,7 +31,7 @@ export function useNavigation(params) {
       }
 
       setIndex((i) => i + 1);
-      history.goForward();
+      navigate(1);
     }
 
     function goTo(id) {
@@ -52,13 +52,13 @@ export function useNavigation(params) {
       });
 
       setIndex((i) => i + 1);
-      history.push(state.id, state);
+      navigate(state.id, { state });
     }
 
     function set(state) {
       setNav([state]);
       setIndex(0);
-      history.push(state.id, state);
+      navigate(state.id, { state });
     }
 
     return {
@@ -70,7 +70,7 @@ export function useNavigation(params) {
       goToRoot,
       activeState,
     };
-  }, [history, index, nav, rootState.id]);
+  }, [navigate, index, nav, rootState.id]);
 
   return navigation;
 }

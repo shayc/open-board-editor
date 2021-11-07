@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
@@ -44,7 +44,7 @@ function BoardEditorPage(props) {
   const { onViewClick, onSettingsClick } = props;
   const intl = useIntl();
   const { boardId } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
   const [isBoardsPanelOpen, setIsBoardsPanelOpen] = useState(!isSmallScreen);
@@ -56,7 +56,10 @@ function BoardEditorPage(props) {
   const { board: boardSettings } = useUserSettings();
 
   const boardDB = useBoardDB();
-  const nav = useNavigation({ history, rootState: { id: boardDB.rootId } });
+  const nav = useNavigation({
+    navigate,
+    rootState: { id: boardDB.rootId },
+  });
 
   const forceUpdate = useForceUpdate();
 
@@ -346,7 +349,7 @@ function BoardEditorPage(props) {
       if (board) {
         boardCtrl.setBoard(board);
       } else {
-        history.push('/edit/board/');
+        navigate('/edit/board/');
       }
     };
 
@@ -355,7 +358,7 @@ function BoardEditorPage(props) {
     } else {
       boardCtrl.setBoard({ buttons: [], grid: {} });
     }
-  }, [boardCtrl, boardDB, history, boardId]);
+  }, [boardCtrl, boardDB, navigate, boardId]);
 
   useEffect(() => {
     if (isSmallScreen) {
