@@ -22,11 +22,11 @@ function App() {
   }
 
   function viewBoard(id) {
-    navigate(`board/${id}`);
+    navigate(`boards/${id}`);
   }
 
   function editBoard(id) {
-    navigate(`edit/board/${id}`);
+    navigate(`edit/boards/${id}`);
   }
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
 
           <Route
-            path="edit/board"
+            path="edit/boards"
             element={
               <BoardEditorPage
                 onSettingsClick={toggleSettingsPanel}
@@ -75,7 +75,7 @@ function App() {
           </Route>
 
           <Route
-            path="board"
+            path="boards"
             element={<BoardViewerPage onEditClick={editBoard} />}
           >
             <Route
