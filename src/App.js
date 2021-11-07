@@ -22,7 +22,7 @@ function App() {
   }
 
   function viewBoard(id) {
-    navigate(`boards/${id}`);
+    navigate(`view/boards/${id}`);
   }
 
   function editBoard(id) {
@@ -75,7 +75,7 @@ function App() {
           </Route>
 
           <Route
-            path="boards"
+            path="view/boards"
             element={<BoardViewerPage onEditClick={editBoard} />}
           >
             <Route
