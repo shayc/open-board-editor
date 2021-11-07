@@ -132,7 +132,7 @@ function BoardEditorPage(props) {
       const nextBoard =
         boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
 
-      nav.goTo(nextBoard?.id || '/edit/board/');
+      nav.goTo(nextBoard?.id || '/edit/boards/');
     },
     [nav]
   );
@@ -349,7 +349,7 @@ function BoardEditorPage(props) {
       if (board) {
         boardCtrl.setBoard(board);
       } else {
-        navigate('/edit/board/');
+        navigate('/edit/boards/');
       }
     };
 
