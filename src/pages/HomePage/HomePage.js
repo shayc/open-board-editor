@@ -17,7 +17,7 @@ function HomePage(props) {
       name: <FormattedMessage {...messages.blank} />,
       image: plusSvg,
       onClick: () => {
-        navigate(`/edit/board`);
+        navigate(`/edit/boards`);
       },
     },
     {
