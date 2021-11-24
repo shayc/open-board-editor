@@ -127,9 +127,9 @@ function BoardViewerPage(props) {
         <Output
           className={styles.output}
           values={output}
-          onBackspaceClick={outputCtrl.clearLastValue}
+          onBackspaceClick={outputCtrl.backspace}
           onClearClick={outputCtrl.clear}
-          onClick={outputCtrl.activateOutput}
+          onClick={outputCtrl.activate}
           renderValue={renderOutputValue}
         />
       </div>

@@ -1,5 +1,5 @@
 import * as OBF from '../../../open-board-format';
-import useOutput from './useOutput';
+import useBoardOutput from './useBoardOutput';
 import useBoardState from './useBoardState';
 
 export function useBoard(params) {
@@ -14,16 +14,16 @@ export function useBoard(params) {
 
   const [board, boardCtrl] = useBoardState();
 
-  const [output, outputCtrl] = useOutput({
+  const [output, outputCtrl] = useBoardOutput({
     playAudio,
     speak,
   });
 
   const actionHandlers = {
-    [OBF.SpecialtyActions.Backspace]: outputCtrl.clearLastValue,
+    [OBF.SpecialtyActions.Backspace]: outputCtrl.backspace,
     [OBF.SpecialtyActions.Clear]: outputCtrl.clear,
-    [OBF.SpecialtyActions.Space]: outputCtrl.addSpace,
-    [OBF.SpecialtyActions.Speak]: outputCtrl.activateOutput,
+    [OBF.SpecialtyActions.Space]: outputCtrl.space,
+    [OBF.SpecialtyActions.Speak]: outputCtrl.activate,
     [OBF.SpecialtyActions.Spell]: outputCtrl.spellValue,
     ...actionHandlersProp,
   };

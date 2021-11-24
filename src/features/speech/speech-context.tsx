@@ -57,7 +57,7 @@ const SpeechProvider: React.FC = (props) => {
   }, [lang]);
 
   useEffect(() => {
-    async function getDefaultVoiceURI() {
+    async function getDefaultVoiceURI(lang: string) {
       const langVoices = await asyncSpeech.getVoices({ lang });
       const voiceURIExists = langVoices.find((v) => v.voiceURI === voiceURI);
 
@@ -72,7 +72,7 @@ const SpeechProvider: React.FC = (props) => {
       }
     }
 
-    getDefaultVoiceURI();
+    getDefaultVoiceURI(lang);
   }, [lang, voices, voiceURI, setVoiceURI]);
 
   useEffect(() => {

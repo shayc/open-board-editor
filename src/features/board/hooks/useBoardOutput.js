@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useOutput(params) {
+function useBoardOutput(params) {
   const { playAudio, speak } = params;
   const [values, setValues] = useState([]);
 
@@ -8,15 +8,15 @@ function useOutput(params) {
     setValues((values) => [...values, value]);
   }
 
-  function addSpace() {
-    addValue({});
+  function space() {
+    setValues((values) => [...values, {}]);
   }
 
   function clear() {
     setValues([]);
   }
 
-  function clearLastValue() {
+  function backspace() {
     setValues((values) => values.slice(0, values.length - 1));
   }
 
@@ -31,7 +31,7 @@ function useOutput(params) {
     setValues(newValues);
   }
 
-  async function activateOutput() {
+  async function activate() {
     const outputByType = groupValuesByType(values);
 
     for (const output of outputByType) {
@@ -46,11 +46,11 @@ function useOutput(params) {
   }
 
   const outputCtrl = {
-    activateOutput,
-    addSpace,
+    activate,
+    space,
     addValue,
     clear,
-    clearLastValue,
+    backspace,
     setValues,
     spellValue,
   };
@@ -91,4 +91,4 @@ function groupValuesByType(values) {
   return valuesByType;
 }
 
-export default useOutput;
+export default useBoardOutput;
