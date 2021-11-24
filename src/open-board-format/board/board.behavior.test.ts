@@ -13,7 +13,7 @@ describe('Board behavior', () => {
     },
     changeBoard: jest.fn(),
     fetchBoard: jest.fn(),
-    redirectWindow: jest.fn(),
+    redirect: jest.fn(),
     playAudio: jest.fn(),
     speak: jest.fn(),
     addOutput: jest.fn(),
@@ -36,7 +36,7 @@ describe('Board behavior', () => {
 
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
@@ -58,7 +58,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
     });
   });
@@ -79,7 +79,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
     });
   });
@@ -106,7 +106,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.speak).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
     });
   });
 
@@ -133,7 +133,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.speak).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
     });
   });
 
@@ -154,7 +154,7 @@ describe('Board behavior', () => {
 
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).toHaveBeenCalledWith(
         buttonDTO.sound.data
       );
@@ -182,7 +182,7 @@ describe('Board behavior', () => {
       );
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -209,7 +209,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.speak).toHaveBeenCalledWith(buttonDTO.vocalization);
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
     });
   });
@@ -233,7 +233,7 @@ describe('Board behavior', () => {
       );
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -253,7 +253,7 @@ describe('Board behavior', () => {
 
       activateButton(buttonDTO);
 
-      expect(behaviorParams.redirectWindow).toHaveBeenCalledWith(
+      expect(behaviorParams.redirect).toHaveBeenCalledWith(
         buttonDTO.loadBoard.url
       );
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
@@ -277,7 +277,7 @@ describe('Board behavior', () => {
       activateButton(buttonDTO);
 
       expect(behaviorParams.actionHandlers[':clear']).toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
@@ -304,7 +304,7 @@ describe('Board behavior', () => {
       expect(
         behaviorParams.actionHandlers[OBF.SpecialtyActions.Home]
       ).toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
@@ -328,7 +328,7 @@ describe('Board behavior', () => {
       expect(
         behaviorParams.actionHandlers[OBF.SpecialtyActions.Spell]
       ).toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();
@@ -352,7 +352,7 @@ describe('Board behavior', () => {
       expect(
         behaviorParams.actionHandlers[CustomSpecialtyAction]
       ).toHaveBeenCalled();
-      expect(behaviorParams.redirectWindow).not.toHaveBeenCalled();
+      expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.addOutput).not.toHaveBeenCalled();

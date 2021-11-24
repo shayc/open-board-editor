@@ -7,7 +7,7 @@ export function useBoard(params) {
     actionHandlers: actionHandlersProp,
     changeBoard,
     fetchBoard,
-    redirectWindow,
+    redirect,
     playAudio,
     speak,
   } = params;
@@ -32,7 +32,7 @@ export function useBoard(params) {
     changeBoard,
     actionHandlers,
     fetchBoard,
-    redirectWindow,
+    redirect,
     playAudio,
     speak,
     spellOutput: outputCtrl.spellValue,

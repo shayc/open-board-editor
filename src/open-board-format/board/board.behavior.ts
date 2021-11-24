@@ -4,7 +4,7 @@ interface BoardBehaviorParams {
   actionHandlers: any;
   changeBoard: (id: string) => void;
   fetchBoard: (url: string) => Promise<OBF.Board>;
-  redirectWindow: (url: string) => void;
+  redirect: (url: string) => void;
   playAudio: (url: string) => void;
   speak: (text: string) => void;
   addOutput: (button: OBF.ButtonDTO) => void;
@@ -15,7 +15,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     actionHandlers,
     changeBoard,
     fetchBoard,
-    redirectWindow,
+    redirect,
     playAudio,
     speak,
     addOutput,
@@ -29,7 +29,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     } else if (dataUrl) {
       fetchBoard?.(dataUrl);
     } else if (url) {
-      redirectWindow?.(url);
+      redirect?.(url);
     }
   }
 
@@ -37,9 +37,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     const handler = actionHandlers[action];
     const SpellAction = OBF.SpecialtyActions.Spell;
 
-    if (handler) {
-      handler();
-    }
+    handler?.();
 
     if (action.startsWith(SpellAction)) {
       const value = action.slice(SpellAction.length);
@@ -67,10 +65,10 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     }
 
     if (sound) {
-      const src = sound.data || sound.url;
+      const url = sound.data || sound.url;
 
-      if (src) {
-        playAudio(src);
+      if (url) {
+        playAudio(url);
       }
     } else {
       const text = loadBoard ? vocalization : vocalization || label;
