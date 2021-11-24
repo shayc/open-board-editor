@@ -15,7 +15,6 @@ Default.args = {
   button: {
     id: 'btn-1',
     label: 'Chat',
-    image: 'https://s3.amazonaws.com/opensymbols/libraries/arasaac/talk.png',
   },
   colors: [
     { id: '1', backgroundColor: '#ff0000', borderColor: 'green' },
@@ -24,8 +23,8 @@ Default.args = {
   images: [
     {
       id: '1',
-      src: '',
-      alt: '',
+      url: 'https://s3.amazonaws.com/opensymbols/libraries/arasaac/talk.png',
+      text: 'Talk',
     },
   ],
   onChange: (button) => {
