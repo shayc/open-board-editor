@@ -25,7 +25,7 @@ function BoardEditor(props) {
     buttonLabelPosition,
     className,
     draggable,
-    linkableBoards,
+    linkableBoards = [],
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
