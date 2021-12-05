@@ -7,7 +7,7 @@ import { useSpeech } from '../../contexts/speech';
 import { useUserSettings } from '../../contexts/user-settings';
 import { useBoard, useBoardDB } from '../../hooks/board';
 import { useMediaQuery } from '../../contexts/media-query';
-import { useNavigation } from '../../hooks/board/useNavigation';
+import { useBoardNavigation } from '../../hooks/board/useBoardNavigation';
 import {
   Board,
   NavBar,
@@ -34,7 +34,10 @@ function BoardViewerPage(props) {
   });
 
   const navigate = useNavigate();
-  const nav = useNavigation({ navigate, rootState: { id: boardDB.rootId } });
+  const nav = useBoardNavigation({
+    navigate,
+    rootState: { id: boardDB.rootId },
+  });
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
 

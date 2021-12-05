@@ -7,7 +7,7 @@ import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { debounce, playAudio } from '../../utils';
-import { useBoard, useBoardDB, useNavigation } from '../../hooks/board';
+import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 import { useSpeech } from '../../contexts/speech';
 import { useMediaQuery } from '../../contexts/media-query';
 import { useUserSettings } from '../../contexts/user-settings';
@@ -52,7 +52,7 @@ function BoardEditorPage(props) {
   const { board: boardSettings } = useUserSettings();
 
   const boardDB = useBoardDB();
-  const nav = useNavigation({
+  const nav = useBoardNavigation({
     navigate,
     rootState: { id: boardDB.rootId },
   });

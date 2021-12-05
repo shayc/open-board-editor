@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-export function useNavigation(params) {
+export function useBoardNavigation(params) {
   const {
     navigate,
     navigation: initialNav = [],
