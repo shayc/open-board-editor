@@ -196,8 +196,8 @@ export default function init(plop) {
     ],
   });
 
-  plop.setGenerator('feature', {
-    description: 'Add a feature',
+  plop.setGenerator('context', {
+    description: 'Add a context provider',
     prompts: [
       {
         type: 'input',
@@ -211,14 +211,14 @@ export default function init(plop) {
       const actions = [
         {
           type: 'add',
-          path: 'src/features/{{dashCase name}}/{{dashCase name}}-context.js',
+          path: 'src/contexts/{{dashCase name}}/{{dashCase name}}-context.js',
           templateFile:
-            'internals/plop-templates/feature/feature-context.js.hbs',
+            'internals/plop-templates/context/context.js.hbs',
         },
         {
           type: 'add',
-          path: 'src/features/{{dashCase name}}/index.js',
-          templateFile: 'internals/plop-templates/feature/index.js.hbs',
+          path: 'src/contexts/{{dashCase name}}/index.js',
+          templateFile: 'internals/plop-templates/context/index.js.hbs',
         },
       ];
 
