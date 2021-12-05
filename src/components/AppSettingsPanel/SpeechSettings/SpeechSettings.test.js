@@ -1,6 +1,6 @@
 import { renderWithReactIntl } from '../../../setupTests';
 import SpeechSettings from './SpeechSettings';
-import { useSpeech } from '../../../features/speech';
+import { useSpeech } from '../../../contexts/speech';
 
 jest.mock('../../../features/speech');
 

@@ -7,14 +7,10 @@ import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { debounce, playAudio } from '../../utils';
-import {
-  useBoard,
-  useBoardDB,
-  useNavigation,
-} from '../../features/board/hooks';
-import { useSpeech } from '../../features/speech';
-import { useMediaQuery } from '../../features/media-query';
-import { useUserSettings } from '../../features/user-settings';
+import { useBoard, useBoardDB, useNavigation } from '../../hooks/board';
+import { useSpeech } from '../../contexts/speech';
+import { useMediaQuery } from '../../contexts/media-query';
+import { useUserSettings } from '../../contexts/user-settings';
 
 import {
   Seo,

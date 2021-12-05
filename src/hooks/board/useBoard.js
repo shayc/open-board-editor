@@ -1,4 +1,4 @@
-import * as OBF from '../../../open-board-format';
+import * as OBF from '../../open-board-format';
 import useBoardOutput from './useBoardOutput';
 import useBoardState from './useBoardState';
 

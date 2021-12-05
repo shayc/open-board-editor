@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Text, Toggle } from '@fluentui/react';
 
-import { useTheme } from '../../../features/theme/theme-context';
+import { useTheme } from '../../../contexts/theme/theme-context';
 import messages from './ColorSettings.messages';
 import styles from './ColorSettings.module.css';
 

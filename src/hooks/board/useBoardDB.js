@@ -2,9 +2,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import sanitize from 'sanitize-filename';
 
-import * as OBF from '../../../open-board-format';
-import { boardMap } from '../../../open-board-format/board/board.map';
-import { boardRepo } from '../../../open-board-format/board/board.repo';
+import * as OBF from '../../open-board-format';
+import { boardMap } from '../../open-board-format/board/board.map';
+import { boardRepo } from '../../open-board-format/board/board.repo';
 import { getAvailableName } from './utils';
 
 export function useBoardDB() {

@@ -11,7 +11,7 @@ import {
   MAX_PITCH,
   MAX_RATE,
   MAX_VOLUME,
-} from '../../../features/speech';
+} from '../../../contexts/speech';
 import messages from './SpeechSettings.messages';
 import styles from './SpeechSettings.module.css';
 

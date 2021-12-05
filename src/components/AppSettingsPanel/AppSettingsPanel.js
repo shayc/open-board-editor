@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Panel, PanelType } from '@fluentui/react';
 
-import { useUserSettings } from '../../features/user-settings';
+import { useUserSettings } from '../../contexts/user-settings';
 import ColorSettings from './ColorSettings';
 import LanguageSettings from './LanguageSettings';
 import SpeechSettings from './SpeechSettings';

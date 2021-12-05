@@ -2,8 +2,8 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import { useSpeech } from './features/speech';
-import { useLocale } from './features/locale';
+import { useSpeech } from './contexts/speech';
+import { useLocale } from './contexts/locale';
 import { AppSettingsPanel, DelayedRender, SpinnerProgress } from './components';
 import styles from './App.module.css';
 

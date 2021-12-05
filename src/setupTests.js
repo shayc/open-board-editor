@@ -9,10 +9,10 @@ import { setIconOptions } from '@fluentui/react';
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-import { MediaQueryProvider } from './features/media-query';
-import { LocaleProvider } from './features/locale';
-import { ThemeProvider } from './features/theme';
-import { SpeechProvider } from './features/speech';
+import { MediaQueryProvider } from './contexts/media-query';
+import { LocaleProvider } from './contexts/locale';
+import { ThemeProvider } from './contexts/theme';
+import { SpeechProvider } from './contexts/speech';
 import messages from './i18n/extracted-messages/en-US.json';
 
 // Suppress icon warnings.

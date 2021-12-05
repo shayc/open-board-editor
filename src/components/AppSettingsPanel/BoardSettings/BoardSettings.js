@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { ChoiceGroup, Text } from '@fluentui/react';
 
-import { useUserSettings } from '../../../features/user-settings';
+import { useUserSettings } from '../../../contexts/user-settings';
 import messages from './BoardSettings.messages';
 import styles from './BoardSettings.module.css';
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Dropdown, Text } from '@fluentui/react';
 
-import { useLocale } from '../../../features/locale';
+import { useLocale } from '../../../contexts/locale';
 import messages from './LanguageSettings.messages';
 import styles from './LanguageSettings.module.css';
 

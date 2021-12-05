@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as utils from '../../utils';
-import { useSpeech } from '../../features/speech';
-import { useUserSettings } from '../../features/user-settings';
-import { useBoard, useBoardDB } from '../../features/board/hooks';
-import { useMediaQuery } from '../../features/media-query';
-import { useNavigation } from '../../features/board/hooks/useNavigation';
+import { useSpeech } from '../../contexts/speech';
+import { useUserSettings } from '../../contexts/user-settings';
+import { useBoard, useBoardDB } from '../../hooks/board';
+import { useMediaQuery } from '../../contexts/media-query';
+import { useNavigation } from '../../hooks/board/useNavigation';
 import {
   Board,
   NavBar,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { CommandBarButton } from '@fluentui/react';
 
-import { useMediaQuery } from '../../features/media-query';
+import { useMediaQuery } from '../../contexts/media-query';
 import messages from './GridSizeSelect.messages';
 import styles from './GridSizeSelect.module.css';
 
