@@ -104,10 +104,9 @@ function BoardViewer(props) {
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
-      const boardDTO = board && boardMap.toDTO(board);
 
-      if (boardDTO) {
-        boardCtrl.setBoard(boardDTO);
+      if (board) {
+        boardCtrl.setBoard(boardMap.toDTO(board));
       }
     }
 
