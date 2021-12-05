@@ -1,13 +1,4 @@
-const requireField = (fieldName) => {
-  return (value) => {
-    if (String(value).length === 0) {
-      return fieldName + ' is required';
-    }
-    return true;
-  };
-};
-
-module.exports = (plop) => {
+export default function init(plop) {
   plop.setGenerator('component', {
     description: 'Add a reusable component',
     prompts: [
@@ -234,4 +225,14 @@ module.exports = (plop) => {
       return actions;
     },
   });
-};
+}
+
+function requireField(fieldName) {
+  return (value) => {
+    if (String(value).length === 0) {
+      return fieldName + ' is required';
+    }
+
+    return true;
+  };
+}
