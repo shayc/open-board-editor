@@ -87,6 +87,78 @@ export default function init(plop) {
     },
   });
 
+  plop.setGenerator('feature', {
+    description: 'Add a feature',
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'What is your feature name?',
+        validate: requireField('name'),
+      },
+      {
+        type: 'confirm',
+        name: 'wantMessages',
+        default: true,
+        message: 'Do you want i18n messages (i.e. will this feature use text)?',
+      },
+    ],
+    actions: (data) => {
+      const actions = [
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.js',
+          templateFile: 'internals/plop-templates/feature/feature.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.test.js',
+          templateFile: 'internals/plop-templates/feature/feature.test.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.module.css',
+          templateFile:
+            'internals/plop-templates/feature/feature.module.css.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/index.js',
+          templateFile: 'internals/plop-templates/feature/index.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/index.js',
+          templateFile: 'internals/plop-templates/injectable-index.js.hbs',
+          skipIfExists: true,
+        },
+        {
+          type: 'append',
+          path: 'src/features/index.js',
+          pattern: `/* PLOP_INJECT_IMPORT */`,
+          template: `import {{properCase name}} from './{{properCase name}}';`,
+        },
+        {
+          type: 'append',
+          path: 'src/features/index.js',
+          pattern: `/* PLOP_INJECT_EXPORT */`,
+          template: `\t{{properCase name}},`,
+        },
+      ];
+
+      // If the user wants i18n messages
+      if (data.wantMessages) {
+        actions.push({
+          type: 'add',
+          path: 'src/pages/{{properCase name}}/{{properCase name}}.messages.js',
+          templateFile: 'internals/plop-templates/page/page.messages.js.hbs',
+        });
+      }
+
+      return actions;
+    },
+  });
+
   plop.setGenerator('page', {
     description: 'Add a page',
     prompts: [
@@ -159,6 +231,35 @@ export default function init(plop) {
     },
   });
 
+  plop.setGenerator('context', {
+    description: 'Add a context provider',
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'What should it be called?',
+        validate: requireField('name'),
+      },
+    ],
+
+    actions: (data) => {
+      const actions = [
+        {
+          type: 'add',
+          path: 'src/contexts/{{dashCase name}}/{{dashCase name}}-context.js',
+          templateFile: 'internals/plop-templates/context/context.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/contexts/{{dashCase name}}/index.js',
+          templateFile: 'internals/plop-templates/context/index.js.hbs',
+        },
+      ];
+
+      return actions;
+    },
+  });
+
   plop.setGenerator('hook', {
     description: 'Add a custom hook',
     prompts: [
@@ -194,108 +295,6 @@ export default function init(plop) {
         template: `\tuse{{properCase name}},`,
       },
     ],
-  });
-
-  plop.setGenerator('context', {
-    description: 'Add a context provider',
-    prompts: [
-      {
-        type: 'input',
-        name: 'name',
-        message: 'What should it be called?',
-        validate: requireField('name'),
-      },
-    ],
-
-    actions: (data) => {
-      const actions = [
-        {
-          type: 'add',
-          path: 'src/contexts/{{dashCase name}}/{{dashCase name}}-context.js',
-          templateFile:
-            'internals/plop-templates/context/context.js.hbs',
-        },
-        {
-          type: 'add',
-          path: 'src/contexts/{{dashCase name}}/index.js',
-          templateFile: 'internals/plop-templates/context/index.js.hbs',
-        },
-      ];
-
-      return actions;
-    },
-  });
-
-  plop.setGenerator('feature', {
-    description: 'Add a feature',
-    prompts: [
-      {
-        type: 'input',
-        name: 'name',
-        message: 'What is your feature name?',
-        validate: requireField('name'),
-      },
-      {
-        type: 'confirm',
-        name: 'wantMessages',
-        default: true,
-        message:
-          'Do you want i18n messages (i.e. will this feature use text)?',
-      },
-    ],
-    actions: (data) => {
-      const actions = [
-        {
-          type: 'add',
-          path: 'src/features/{{properCase name}}/{{properCase name}}.js',
-          templateFile: 'internals/plop-templates/feature/feature.js.hbs',
-        },
-        {
-          type: 'add',
-          path: 'src/features/{{properCase name}}/{{properCase name}}.test.js',
-          templateFile: 'internals/plop-templates/feature/feature.test.js.hbs',
-        },
-        {
-          type: 'add',
-          path: 'src/features/{{properCase name}}/{{properCase name}}.module.css',
-          templateFile: 'internals/plop-templates/feature/feature.module.css.hbs',
-        },
-        {
-          type: 'add',
-          path: 'src/features/{{properCase name}}/index.js',
-          templateFile: 'internals/plop-templates/feature/index.js.hbs',
-        },
-        {
-          type: 'add',
-          path: 'src/features/index.js',
-          templateFile: 'internals/plop-templates/injectable-index.js.hbs',
-          skipIfExists: true,
-        },
-        {
-          type: 'append',
-          path: 'src/features/index.js',
-          pattern: `/* PLOP_INJECT_IMPORT */`,
-          template: `import {{properCase name}} from './{{properCase name}}';`,
-        },
-        {
-          type: 'append',
-          path: 'src/features/index.js',
-          pattern: `/* PLOP_INJECT_EXPORT */`,
-          template: `\t{{properCase name}},`,
-        },
-      ];
-
-      // If the user wants i18n messages
-      if (data.wantMessages) {
-        actions.push({
-          type: 'add',
-          path: 'src/pages/{{properCase name}}/{{properCase name}}.messages.js',
-          templateFile: 'internals/plop-templates/page/page.messages.js.hbs',
-        });
-      }
-
-      return actions;
-    },
   });
 }
 
