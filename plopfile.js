@@ -226,7 +226,7 @@ export default function init(plop) {
     },
   });
 
-  plop.setGenerator('page', {
+  plop.setGenerator('feature', {
     description: 'Add a feature',
     prompts: [
       {
