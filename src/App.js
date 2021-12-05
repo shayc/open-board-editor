@@ -54,34 +54,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
 
-          <Route
-            path="edit/boards"
-            element={
-              <BoardEditorPage
-                onSettingsClick={toggleSettingsPanel}
-                onViewClick={viewBoard}
-              />
-            }
-          >
-            <Route
-              path=":boardId"
-              element={
-                <BoardEditorPage
-                  onSettingsClick={toggleSettingsPanel}
-                  onViewClick={viewBoard}
-                />
-              }
-            />
+          <Route path="edit/boards" element={<BoardEditorPage />}>
+            <Route path=":boardId" element={<BoardEditorPage />} />
           </Route>
 
-          <Route
-            path="view/boards"
-            element={<BoardViewerPage onEditClick={editBoard} />}
-          >
-            <Route
-              path=":boardId"
-              element={<BoardViewerPage onEditClick={editBoard} />}
-            />
+          <Route path="view/boards" element={<BoardViewerPage />}>
+            <Route path=":boardId" element={<BoardViewerPage />} />
           </Route>
         </Routes>
       </Suspense>
