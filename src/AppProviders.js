@@ -6,7 +6,7 @@ import { SpeechProvider } from './contexts/speech';
 import { LocaleProvider } from './contexts/locale';
 import { ThemeProvider } from './contexts/theme';
 import { MediaQueryProvider } from './contexts/media-query';
-import { UserSettingsProvider } from './contexts/user-settings';
+import { SettingsProvider } from './contexts/settings';
 
 const userLocale = APP_LOCALES.find((locale) => {
   // TODO: Some browsers expose navigator.language in different format: 'en-US', 'en-us' 'en_US', 'en'
@@ -25,7 +25,7 @@ function AppProviders(props) {
           <ThemeProvider>
             <LocaleProvider locale={initialLocale}>
               <SpeechProvider>
-                <UserSettingsProvider>{children}</UserSettingsProvider>
+                <SettingsProvider>{children}</SettingsProvider>
               </SpeechProvider>
             </LocaleProvider>
           </ThemeProvider>

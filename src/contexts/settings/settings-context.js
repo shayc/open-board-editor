@@ -1,10 +1,12 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 
-const BoardSettingsContext = React.createContext(null);
+const SettingsContext = React.createContext(null);
 
-function UserSettingsProvider(props) {
+function SettingsProvider(props) {
   const { children } = props;
+
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const [boardSettings, setBoardSettings] = useLocalStorageState(
     'boardSettings',
@@ -15,6 +17,10 @@ function UserSettingsProvider(props) {
   );
 
   const context = useMemo(() => {
+    function toggleSettings() {
+      setIsSettingsOpen((isOpen) => !isOpen);
+    }
+
     function setLabelPosition(labelPosition) {
       setBoardSettings((prevState) => {
         return { ...prevState, labelPosition };
@@ -28,31 +34,31 @@ function UserSettingsProvider(props) {
     }
 
     return {
+      toggleSettings,
+      isSettingsOpen,
       board: {
         setIsLabelHidden,
         setLabelPosition,
         ...boardSettings,
       },
     };
-  }, [boardSettings, setBoardSettings]);
+  }, [boardSettings, setBoardSettings, isSettingsOpen]);
 
   return (
-    <BoardSettingsContext.Provider value={context}>
+    <SettingsContext.Provider value={context}>
       {children}
-    </BoardSettingsContext.Provider>
+    </SettingsContext.Provider>
   );
 }
 
-function useUserSettings() {
-  const context = useContext(BoardSettingsContext);
+function useSettings() {
+  const context = useContext(SettingsContext);
 
   if (!context) {
-    throw new Error(
-      `useUserSettings must be used within a UserSettingsProvider`
-    );
+    throw new Error(`useSettings must be used within a SettingsProvider`);
   }
 
   return context;
 }
 
-export { UserSettingsProvider, useUserSettings };
+export { SettingsProvider, useSettings };

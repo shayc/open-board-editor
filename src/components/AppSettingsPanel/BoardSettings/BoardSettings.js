@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { ChoiceGroup, Text } from '@fluentui/react';
 
-import { useUserSettings } from '../../../contexts/user-settings';
+import { useSettings } from '../../../contexts/settings';
 import messages from './BoardSettings.messages';
 import styles from './BoardSettings.module.css';
 
@@ -13,7 +13,7 @@ function BoardSettings(props) {
 
   const {
     board: { setIsLabelHidden, setLabelPosition, isLabelHidden, labelPosition },
-  } = useUserSettings();
+  } = useSettings();
 
   const rootClassName = clsx(className, styles.root);
   const [selectedKey, setSelectedKey] = useState(

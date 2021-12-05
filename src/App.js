@@ -1,7 +1,8 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Suspense, lazy, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
+import { useSettings } from './contexts/settings';
 import { useSpeech } from './contexts/speech';
 import { useLocale } from './contexts/locale';
 import { AppSettingsPanel, DelayedRender, SpinnerProgress } from './components';
@@ -12,22 +13,9 @@ const BoardViewerPage = lazy(() => import('./pages/BoardViewerPage'));
 const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 
 function App() {
-  const navigate = useNavigate();
+  const { isSettingsOpen, toggleSettings } = useSettings();
   const { locale } = useLocale();
   const speech = useSpeech();
-  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
-
-  function toggleSettingsPanel() {
-    setIsSettingsPanelOpen((isOpen) => !isOpen);
-  }
-
-  function viewBoard(id) {
-    navigate(`view/boards/${id}`);
-  }
-
-  function editBoard(id) {
-    navigate(`edit/boards/${id}`);
-  }
 
   useEffect(() => {
     speech.setLang(locale);
@@ -39,10 +27,7 @@ function App() {
         <html lang={locale} />
       </Helmet>
 
-      <AppSettingsPanel
-        open={isSettingsPanelOpen}
-        onDismiss={toggleSettingsPanel}
-      />
+      <AppSettingsPanel open={isSettingsOpen} onDismiss={toggleSettings} />
 
       <Suspense
         fallback={

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
-import { useUserSettings } from '../../contexts/user-settings';
+import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../contexts/media-query';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
@@ -25,7 +25,7 @@ function BoardViewer(props) {
   const { onEditClick } = props;
 
   const { boardId } = useParams();
-  const { board: boardSettings } = useUserSettings();
+  const { board: boardSettings } = useSettings();
 
   const { board, boardCtrl, output, outputCtrl } = useBoard({
     playAudio,

@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
@@ -10,7 +9,7 @@ import { debounce, playAudio } from '../../utils';
 import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 import { useSpeech } from '../../contexts/speech';
 import { useMediaQuery } from '../../contexts/media-query';
-import { useUserSettings } from '../../contexts/user-settings';
+import { useSettings } from '../../contexts/settings';
 
 import {
   Seo,
@@ -36,8 +35,8 @@ import { defaultColors } from './colors';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
 
-function BoardEditorPage(props) {
-  const { onViewClick, onSettingsClick } = props;
+function BoardEditorPage() {
+  const { toggleSettings } = useSettings();
   const intl = useIntl();
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -49,7 +48,7 @@ function BoardEditorPage(props) {
   const [images, setImages] = useState([]);
   const [detailsBoard, setDetailsBoard] = useState({});
 
-  const { board: boardSettings } = useUserSettings();
+  const { board: boardSettings } = useSettings();
 
   const boardDB = useBoardDB();
   const nav = useBoardNavigation({
@@ -270,11 +269,11 @@ function BoardEditorPage(props) {
   }
 
   function handleViewClick() {
-    onViewClick(boardId);
+    navigate(`/view/boards/${boardId}`);
   }
 
   function handleSettingsClick() {
-    onSettingsClick();
+    toggleSettings();
   }
 
   function handleBoardSelectionChange(selection) {
@@ -589,10 +588,6 @@ function BoardEditorPage(props) {
     </div>
   );
 }
-
-BoardEditor.propTypes = {
-  actions: PropTypes.arrayOf(PropTypes.node),
-};
 
 async function fetchImageData({ contentType, fileName, url }) {
   const fileExtension = contentType?.split('/')[1];

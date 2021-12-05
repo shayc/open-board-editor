@@ -5,7 +5,7 @@ import { MediaQueryProvider } from '../src/features/media-query';
 import { SpeechProvider } from '../src/features/speech';
 import { LocaleProvider } from '../src/features/locale';
 import { ThemeProvider } from '../src/features/theme';
-import { UserSettingsProvider } from '../src/features/user-settings';
+import { SettingsProvider } from '../src/features/settings';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -58,11 +58,11 @@ const withMediaQueryProvider = (Story, { globals }) => {
   );
 };
 
-const withUserSettingsProvider = (Story, { globals }) => {
+const withSettingsProvider = (Story, { globals }) => {
   return (
-    <UserSettingsProvider>
+    <SettingsProvider>
       <Story />
-    </UserSettingsProvider>
+    </SettingsProvider>
   );
 };
 
@@ -79,6 +79,6 @@ export const decorators = [
   withLocaleProvider,
   withSpeechProvider,
   withMediaQueryProvider,
-  withUserSettingsProvider,
+  withSettingsProvider,
   withRouterProvider,
 ];
