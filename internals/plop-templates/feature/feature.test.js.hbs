@@ -1,0 +1,25 @@
+import React from 'react';
+{{#if wantMessages}}
+import { renderWithReactIntl } from '../../setupTests';
+{{else}}
+import { render } from '@testing-library/react';
+{{/if}}
+import {{properCase name}} from './{{properCase name}}';
+
+describe('<{{ properCase name }} />', () => {
+  it('Expect to not log errors in console', () => {
+    const spy = jest.spyOn(global.console, 'error');
+
+{{#if wantMessages}}
+    renderWithReactIntl(<{{ properCase name }} />);
+{{else}}
+    render(<{{ properCase name }} />);
+{{/if}}
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+
+});
+
+
+

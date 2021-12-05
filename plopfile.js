@@ -225,6 +225,78 @@ export default function init(plop) {
       return actions;
     },
   });
+
+  plop.setGenerator('page', {
+    description: 'Add a feature',
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'What is your feature name?',
+        validate: requireField('name'),
+      },
+      {
+        type: 'confirm',
+        name: 'wantMessages',
+        default: true,
+        message:
+          'Do you want i18n messages (i.e. will this feature use text)?',
+      },
+    ],
+    actions: (data) => {
+      const actions = [
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.js',
+          templateFile: 'internals/plop-templates/feature/feature.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.test.js',
+          templateFile: 'internals/plop-templates/feature/feature.test.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.module.css',
+          templateFile: 'internals/plop-templates/feature/feature.module.css.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/{{properCase name}}/index.js',
+          templateFile: 'internals/plop-templates/feature/index.js.hbs',
+        },
+        {
+          type: 'add',
+          path: 'src/features/index.js',
+          templateFile: 'internals/plop-templates/injectable-index.js.hbs',
+          skipIfExists: true,
+        },
+        {
+          type: 'append',
+          path: 'src/features/index.js',
+          pattern: `/* PLOP_INJECT_IMPORT */`,
+          template: `import {{properCase name}} from './{{properCase name}}';`,
+        },
+        {
+          type: 'append',
+          path: 'src/features/index.js',
+          pattern: `/* PLOP_INJECT_EXPORT */`,
+          template: `\t{{properCase name}},`,
+        },
+      ];
+
+      // If the user wants i18n messages
+      if (data.wantMessages) {
+        actions.push({
+          type: 'add',
+          path: 'src/pages/{{properCase name}}/{{properCase name}}.messages.js',
+          templateFile: 'internals/plop-templates/page/page.messages.js.hbs',
+        });
+      }
+
+      return actions;
+    },
+  });
 }
 
 function requireField(fieldName) {
