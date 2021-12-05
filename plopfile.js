@@ -150,7 +150,7 @@ export default function init(plop) {
       if (data.wantMessages) {
         actions.push({
           type: 'add',
-          path: 'src/pages/{{properCase name}}/{{properCase name}}.messages.js',
+          path: 'src/features/{{properCase name}}/{{properCase name}}.messages.js',
           templateFile: 'internals/plop-templates/page/page.messages.js.hbs',
         });
       }

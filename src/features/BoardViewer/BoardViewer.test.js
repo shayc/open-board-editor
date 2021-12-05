@@ -1,3 +1,4 @@
+import React from 'react';
 import { renderWithReactIntl } from '../../setupTests';
 import BoardViewer from './BoardViewer';
 
