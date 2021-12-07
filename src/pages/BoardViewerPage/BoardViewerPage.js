@@ -9,7 +9,7 @@ function BoardViewerPage() {
 
   const actions = (
     <EditButton
-      onClick={(boardId) => {
+      onClick={() => {
         navigate(`/edit/boards/${boardId}`);
       }}
     />
