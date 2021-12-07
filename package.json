@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "@dnd-kit/core": "^4.0.3",
     "@fluentui/react": "^8.46.2",
