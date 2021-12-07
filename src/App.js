@@ -5,7 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import { useSettings } from './contexts/settings';
 import { useSpeech } from './contexts/speech';
 import { useLocale } from './contexts/locale';
-import { AppSettingsPanel, DelayedRender, SpinnerProgress } from './components';
+import { DelayedRender, SpinnerProgress } from './components';
+import { AppSettingsPanel } from './features';
 import styles from './App.module.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));

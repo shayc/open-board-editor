@@ -18,7 +18,6 @@ import Tile from './Tile';
 import Pictogram from './Pictogram';
 import Output from './Output';
 import Board from './Board';
-import AppSettingsPanel from './AppSettingsPanel';
 import AppBar from './AppBar';
 import BoardsList from './BoardsList';
 import SpinnerProgress from './SpinnerProgress';
@@ -45,7 +44,6 @@ export {
   Pictogram,
   Output,
   Board,
-  AppSettingsPanel,
   AppBar,
   BoardsList,
   SpinnerProgress,
