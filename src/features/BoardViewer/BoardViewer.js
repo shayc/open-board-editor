@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useNavigate } from 'react-router-dom';
 
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
@@ -17,14 +16,12 @@ import {
   Output,
   Seo,
   AppBar,
-  EditButton,
 } from '../../components';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
-  const { onEditClick } = props;
+  const { actions, boardId, navigate } = props;
 
-  const { boardId } = useParams();
   const { board: boardSettings } = useSettings();
 
   const { board, boardCtrl, output, outputCtrl } = useBoard({
@@ -33,13 +30,26 @@ function BoardViewer(props) {
     changeBoard,
   });
 
-  const navigate = useNavigate();
   const nav = useBoardNavigation({
     navigate,
     rootState: { id: null },
   });
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
+
+  useEffect(() => {
+    async function getBoard(id) {
+      const board = await boardRepo.getById(id);
+
+      if (board) {
+        boardCtrl.setBoard(boardMap.toDTO(board));
+      }
+    }
+
+    if (boardId) {
+      getBoard(boardId);
+    }
+  }, [boardId, boardCtrl]);
 
   function playAudio(url) {
     utils.playAudio(url);
@@ -51,10 +61,6 @@ function BoardViewer(props) {
 
   function changeBoard(id) {
     nav.goTo(id);
-  }
-
-  function handleEditClick() {
-    onEditClick(boardId);
   }
 
   function renderTile(button) {
@@ -101,30 +107,11 @@ function BoardViewer(props) {
     );
   }
 
-  useEffect(() => {
-    async function getBoard(id) {
-      const board = await boardRepo.getById(id);
-
-      if (board) {
-        boardCtrl.setBoard(boardMap.toDTO(board));
-      }
-    }
-
-    if (boardId) {
-      getBoard(boardId);
-    }
-  }, [boardId, boardCtrl]);
-
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      {isSmallScreen && (
-        <AppBar
-          actions={<EditButton onClick={handleEditClick} />}
-          title={board?.name}
-        />
-      )}
+      {isSmallScreen && <AppBar actions={actions} title={board?.name} />}
 
       <div className={styles.outputWrapper}>
         <Output
@@ -146,7 +133,7 @@ function BoardViewer(props) {
             onBackClick={nav.goBack}
             onHomeClick={nav.goToRoot}
           >
-            <EditButton onClick={handleEditClick} />
+            {actions}
           </NavBar>
         </div>
       )}
@@ -176,7 +163,7 @@ function BoardViewer(props) {
 }
 
 BoardViewer.propTypes = {
-  onEditClick: PropTypes.func.isRequired,
+  actions: PropTypes.node,
 };
 
 export default BoardViewer;

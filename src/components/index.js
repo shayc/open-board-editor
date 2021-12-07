@@ -18,7 +18,6 @@ import Tile from './Tile';
 import Pictogram from './Pictogram';
 import Output from './Output';
 import Board from './Board';
-import BoardEditor from './BoardEditor';
 import AppSettingsPanel from './AppSettingsPanel';
 import AppBar from './AppBar';
 import BoardsList from './BoardsList';
@@ -46,7 +45,6 @@ export {
   Pictogram,
   Output,
   Board,
-  BoardEditor,
   AppSettingsPanel,
   AppBar,
   BoardsList,

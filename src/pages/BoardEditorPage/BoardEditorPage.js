@@ -14,7 +14,6 @@ import { useSettings } from '../../contexts/settings';
 import {
   Seo,
   SpinnerProgress,
-  BoardEditor,
   BoardsList,
   DetailsPanel,
   DelayedRender,
@@ -29,6 +28,7 @@ import {
   SettingsButton,
 } from '../../components';
 
+import { BoardEditor } from '../../features';
 import globalSymbols from '../../api/pictograms/global-symbols';
 import { openFileDialog, share, print } from './utils';
 import { defaultColors } from './colors';
