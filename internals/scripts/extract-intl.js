@@ -3,21 +3,19 @@
  * and package them in the translation json files in the translations folder.
  */
 
-const shell = require('shelljs');
+import shell from 'shelljs';
+import fs from 'fs';
+import nodeGlob from 'glob';
+import { transform } from '@babel/core';
+import { get } from 'lodash-es';
 
-const fs = require('fs');
-const nodeGlob = require('glob');
-const { transform } = require('@babel/core');
-const get = require('lodash/get');
-
-const animateProgress = require('./helpers/progress');
-const addCheckmark = require('./helpers/checkmark');
-
-const { APP_LOCALES, DEFAULT_LOCALE } = require('../../src/i18n/i18n');
+import { APP_LOCALES, DEFAULT_LOCALE } from '../../src/i18n/i18n.js';
+import animateProgress from './helpers/progress.js';
+import addCheckmark from './helpers/checkmark.js';
 
 process.env.NODE_ENV = 'production';
 
-const FILES_TO_PARSE = 'src/**/!(*.test).js';
+const FILES_TO_PARSE = 'src/**/*.messages.js';
 
 const newLine = () => process.stdout.write('\n');
 
