@@ -1,5 +1,5 @@
 .root {
-  --rootHeight: 8rem;
+  --rootHeight: 9rem;
   --valueHeight: var(--rootHeight);
   --valueWidth: var(--rootHeight);
 }

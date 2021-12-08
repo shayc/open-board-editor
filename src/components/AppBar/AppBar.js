@@ -11,7 +11,11 @@ function AppBar(props) {
 
   return (
     <Stack horizontal className={rootClassName} horizontalAlign="space-between">
-      <Stack horizontal verticalAlign="center">
+      <Stack
+        horizontal
+        verticalAlign="center"
+        styles={{ root: { minWidth: '0' } }}
+      >
         <Text className={styles.title} variant="mediumPlus">
           {title}
         </Text>

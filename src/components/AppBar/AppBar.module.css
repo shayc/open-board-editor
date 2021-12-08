@@ -10,6 +10,9 @@
 .title {
   padding-inline-start: 8px;
   padding-inline-end: 12px;
-  color: inherit;
   font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: inherit;
 }
