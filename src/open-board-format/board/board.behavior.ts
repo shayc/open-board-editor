@@ -7,7 +7,7 @@ interface BoardBehaviorParams {
   redirect: (url: string) => void;
   playAudio: (url: string) => void;
   speak: (text: string) => void;
-  addOutput: (button: OBF.ButtonDTO) => void;
+  addOutput?: (button: OBF.ButtonDTO) => void;
 }
 
 export function createBoardBehavior(params: BoardBehaviorParams) {
@@ -35,13 +35,16 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
 
   function handleAction(action: OBF.SpecialtyActions) {
     const handler = actionHandlers[action];
-    const SpellAction = OBF.SpecialtyActions.Spell;
 
-    handler?.();
+    if (handler) {
+      handler();
+    } else {
+      const SpellAction = OBF.SpecialtyActions.Spell;
 
-    if (action.startsWith(SpellAction)) {
-      const value = action.slice(SpellAction.length);
-      actionHandlers[SpellAction](value);
+      if (action.startsWith(SpellAction)) {
+        const value = action.slice(SpellAction.length);
+        actionHandlers[SpellAction](value);
+      }
     }
   }
 
@@ -50,7 +53,16 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
   }
 
   function activateButton(button: OBF.ButtonDTO) {
-    const { actions, label, vocalization, sound, loadBoard } = button;
+    const {
+      action,
+      actions: actionsProp,
+      label,
+      vocalization,
+      sound,
+      loadBoard,
+    } = button;
+
+    const actions = action ? [action, ...(actionsProp || [])] : actionsProp;
 
     if (actions?.length) {
       doActions(actions);
@@ -61,7 +73,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     if (loadBoard) {
       handleLoadBoard(loadBoard);
     } else if (label || sound) {
-      addOutput(button);
+      addOutput?.(button);
     }
 
     if (sound) {

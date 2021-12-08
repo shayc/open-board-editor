@@ -49,6 +49,7 @@ export interface ButtonDTO {
   id: string;
   label?: string;
   image?: ImageDTO | null;
+  action?: SpecialtyActions;
   actions?: SpecialtyActions[];
   sound?: SoundDTO | null;
   loadBoard?: LoadBoardDTO;

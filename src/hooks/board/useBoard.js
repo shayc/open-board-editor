@@ -1,32 +1,18 @@
 import * as OBF from '../../open-board-format';
-import useBoardOutput from './useBoardOutput';
 import useBoardState from './useBoardState';
 
 export function useBoard(params) {
   const {
-    actionHandlers: actionHandlersProp,
+    actionHandlers,
     changeBoard,
     fetchBoard,
     redirect,
     playAudio,
     speak,
+    addOutput,
   } = params;
 
   const [board, boardCtrl] = useBoardState();
-
-  const [output, outputCtrl] = useBoardOutput({
-    playAudio,
-    speak,
-  });
-
-  const actionHandlers = {
-    [OBF.SpecialtyActions.Backspace]: outputCtrl.backspace,
-    [OBF.SpecialtyActions.Clear]: outputCtrl.clear,
-    [OBF.SpecialtyActions.Space]: outputCtrl.space,
-    [OBF.SpecialtyActions.Speak]: outputCtrl.activate,
-    [OBF.SpecialtyActions.Spell]: outputCtrl.spellValue,
-    ...actionHandlersProp,
-  };
 
   const { activateButton } = OBF.createBoardBehavior({
     changeBoard,
@@ -35,8 +21,7 @@ export function useBoard(params) {
     redirect,
     playAudio,
     speak,
-    spellOutput: outputCtrl.spellValue,
-    addOutput: outputCtrl.addValue,
+    addOutput,
   });
 
   boardCtrl.activateButton = activateButton;
@@ -44,7 +29,5 @@ export function useBoard(params) {
   return {
     board,
     boardCtrl,
-    output,
-    outputCtrl,
   };
 }

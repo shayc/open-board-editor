@@ -12,6 +12,7 @@ export const buttonMap = {
     const {
       id,
       label,
+      action,
       actions,
       load_board: loadBoard,
       background_color: backgroundColor,
@@ -27,6 +28,7 @@ export const buttonMap = {
       id,
       label,
       image: assets?.image,
+      action,
       actions,
       sound: assets?.sound,
       loadBoard,

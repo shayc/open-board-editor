@@ -1,8 +1,18 @@
 import { useState } from 'react';
+import * as OBF from '../../open-board-format';
 
-function useBoardOutput(params) {
+export function useBoardOutput(params) {
   const { playAudio, speak } = params;
+
   const [values, setValues] = useState([]);
+
+  const actionHandlers = {
+    [OBF.SpecialtyActions.Backspace]: backspace,
+    [OBF.SpecialtyActions.Clear]: clear,
+    [OBF.SpecialtyActions.Space]: space,
+    [OBF.SpecialtyActions.Speak]: activate,
+    [OBF.SpecialtyActions.Spell]: spellValue,
+  };
 
   function addValue(value) {
     setValues((values) => [...values, value]);
@@ -45,17 +55,19 @@ function useBoardOutput(params) {
     }
   }
 
-  const outputCtrl = {
+  const output = {
+    actionHandlers,
     activate,
-    space,
     addValue,
-    clear,
     backspace,
+    clear,
     setValues,
+    space,
     spellValue,
+    data: values,
   };
 
-  return [values, outputCtrl];
+  return output;
 }
 
 function modifyLastValue(values, fn) {
@@ -90,5 +102,3 @@ function groupValuesByType(values) {
 
   return valuesByType;
 }
-
-export default useBoardOutput;

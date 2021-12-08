@@ -8,7 +8,11 @@ import { boardMap } from '../../open-board-format/board/board.map';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../contexts/media-query';
-import { useBoard, useBoardNavigation } from '../../hooks/board';
+import {
+  useBoard,
+  useBoardOutput,
+  useBoardNavigation,
+} from '../../hooks/board';
 import {
   Board,
   NavBar,
@@ -26,10 +30,17 @@ function BoardViewer(props) {
   const [rootBoardId, setRootBoardId] = useState();
   const { board: boardSettings } = useSettings();
 
-  const { board, boardCtrl, output, outputCtrl } = useBoard({
+  const output = useBoardOutput({
+    playAudio,
+    speak,
+  });
+
+  const { board, boardCtrl } = useBoard({
     playAudio,
     speak,
     changeBoard,
+    actionHandlers: output.actionHandlers,
+    addOutput: output.addValue,
   });
 
   const nav = useBoardNavigation({
@@ -143,10 +154,10 @@ function BoardViewer(props) {
       <div className={styles.outputWrapper}>
         <Output
           className={styles.output}
-          values={output}
-          onBackspaceClick={outputCtrl.backspace}
-          onClearClick={outputCtrl.clear}
-          onClick={outputCtrl.activate}
+          values={output.data}
+          onBackspaceClick={output.backspace}
+          onClearClick={output.clear}
+          onClick={output.activate}
           renderValue={renderOutputValue}
         />
       </div>
