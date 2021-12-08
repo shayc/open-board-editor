@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import * as utils from '../../utils';
@@ -22,6 +22,7 @@ import styles from './BoardViewer.module.css';
 function BoardViewer(props) {
   const { actions, boardId, navigate } = props;
 
+  const [rootBoardId, setRootBoardId] = useState();
   const { board: boardSettings } = useSettings();
 
   const { board, boardCtrl, output, outputCtrl } = useBoard({
@@ -32,7 +33,7 @@ function BoardViewer(props) {
 
   const nav = useBoardNavigation({
     navigate,
-    rootState: { id: null },
+    rootState: { id: rootBoardId },
   });
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
@@ -40,9 +41,11 @@ function BoardViewer(props) {
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
+      const rootId = await boardRepo.getRootId();
 
       if (board) {
         boardCtrl.setBoard(boardMap.toDTO(board));
+        setRootBoardId(rootId);
       }
     }
 
@@ -111,7 +114,10 @@ function BoardViewer(props) {
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      {isSmallScreen && <AppBar actions={actions} title={board?.name} />}
+      <AppBar
+        actions={actions}
+        title={isSmallScreen ? board?.name : 'Board Editor'}
+      />
 
       <div className={styles.outputWrapper}>
         <Output
@@ -132,9 +138,7 @@ function BoardViewer(props) {
             text={board?.name}
             onBackClick={nav.goBack}
             onHomeClick={nav.goToRoot}
-          >
-            {actions}
-          </NavBar>
+          />
         </div>
       )}
 
@@ -163,7 +167,18 @@ function BoardViewer(props) {
 }
 
 BoardViewer.propTypes = {
+  /**
+   * Actions to render on the actions bar.
+   */
   actions: PropTypes.node,
+  /**
+   * The id of the board to display, loads from IndexedDB.
+   */
+  boardId: PropTypes.string,
+  /**
+   *
+   */
+  navigate: PropTypes.func,
 };
 
 export default BoardViewer;
