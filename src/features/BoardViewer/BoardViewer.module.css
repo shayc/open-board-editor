@@ -7,8 +7,8 @@
 .outputWrapper {
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
-  background-color: var(--neutralLight);
-  color: var(--black);
+  background-color: #e1dfdd;
+  color: #222;
 }
 
 .output {

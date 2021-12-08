@@ -21,7 +21,7 @@ import {
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
-  const { actions, boardId, navigate, url } = props;
+  const { actions, boardId, navigate, boardUrl } = props;
 
   const [rootBoardId, setRootBoardId] = useState();
   const { board: boardSettings } = useSettings();
@@ -64,7 +64,7 @@ function BoardViewer(props) {
       return file;
     }
 
-    async function importBoardSet() {
+    async function importBoardSet(url) {
       const file = await fetchFile(url);
       const [boardSet] = await OBF.readFiles([file]);
       boardRepo.importBoardSet(boardSet);
@@ -73,10 +73,10 @@ function BoardViewer(props) {
       nav.goTo(rootId);
     }
 
-    if (url) {
-      importBoardSet(`/${url}`);
+    if (boardUrl) {
+      importBoardSet(`${boardUrl}`);
     }
-  }, [url, nav]);
+  }, [boardUrl, nav]);
 
   function playAudio(url) {
     utils.playAudio(url);

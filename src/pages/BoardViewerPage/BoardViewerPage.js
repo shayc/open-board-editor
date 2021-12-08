@@ -25,7 +25,7 @@ function BoardViewerPage() {
         actions={actions}
         navigate={navigate}
         boardId={boardId}
-        url={boardUrl}
+        boardUrl={boardUrl}
       />
     </div>
   );
