@@ -363,7 +363,7 @@ function BoardEditorPage() {
     if (isSmallScreen) {
       setIsBoardsPanelOpen(false);
     }
-  }, [isSmallScreen]);
+  }, [isSmallScreen, setIsBoardsPanelOpen]);
 
   return (
     <div className={styles.root}>
