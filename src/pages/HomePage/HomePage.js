@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Text } from '@fluentui/react';
 
 import fourGridStartingCommunicationImage from '../../open-board-format/examples/four-grid-starting-communication.png';
-import quickCore24Image from '../../open-board-format/examples/quick-core-24.png';
 import BoardSetList from '../../components/BoardSetList';
 import plusSvg from './plus.svg';
 import messages from './HomePage.messages';
