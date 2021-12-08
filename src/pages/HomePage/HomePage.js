@@ -25,12 +25,11 @@ function HomePage(props) {
       author: 'CoughDrop',
       authorUrl: 'https://www.mycoughdrop.com/example',
       image: fourGridStartingCommunicationImage,
-    },
-    {
-      name: 'Quick Core 24',
-      author: 'CoughDrop',
-      authorUrl: 'https://www.mycoughdrop.com/example',
-      image: quickCore24Image,
+      onClick: () => {
+        navigate(
+          `/view/boards/?boardUrl=/four-grid-starting-communication.obz`
+        );
+      },
     },
   ];
 

@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import * as utils from '../../utils';
+import * as OBF from '../../open-board-format';
+import { boardRepo } from '../../open-board-format/board/board.repo';
+import { boardMap } from '../../open-board-format/board/board.map';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../contexts/media-query';
-import { boardRepo } from '../../open-board-format/board/board.repo';
-import { boardMap } from '../../open-board-format/board/board.map';
 import { useBoard, useBoardNavigation } from '../../hooks/board';
 import {
   Board,
@@ -20,7 +21,7 @@ import {
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
-  const { actions, boardId, navigate } = props;
+  const { actions, boardId, navigate, url } = props;
 
   const [rootBoardId, setRootBoardId] = useState();
   const { board: boardSettings } = useSettings();
@@ -53,6 +54,29 @@ function BoardViewer(props) {
       getBoard(boardId);
     }
   }, [boardId, boardCtrl]);
+
+  useEffect(() => {
+    async function fetchFile(url) {
+      const response = await fetch(`${url}`);
+      const blob = await response.blob();
+      const file = new File([blob], url.slice(1));
+
+      return file;
+    }
+
+    async function importBoardSet() {
+      const file = await fetchFile(url);
+      const [boardSet] = await OBF.readFiles([file]);
+      boardRepo.importBoardSet(boardSet);
+
+      const rootId = await boardRepo.getRootId();
+      nav.goTo(rootId);
+    }
+
+    if (url) {
+      importBoardSet(`/${url}`);
+    }
+  }, [url, nav]);
 
   function playAudio(url) {
     utils.playAudio(url);
