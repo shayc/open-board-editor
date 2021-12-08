@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
+import { Selection, CommandBarButton, IconButton, Link } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorageState from 'use-local-storage-state';
@@ -376,7 +376,15 @@ function BoardEditorPage() {
             <ViewButton onClick={handleViewClick} />
           </>
         }
-        title={isSmallScreen ? board?.name : 'Board Editor'}
+        title={
+          isSmallScreen ? (
+            board?.name
+          ) : (
+            <Link style={{ color: '#fff', textDecoration: 'none' }} href={'/'}>
+              Board Editor
+            </Link>
+          )
+        }
       />
 
       <BoardCommandBar
