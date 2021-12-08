@@ -138,10 +138,7 @@ function BoardViewer(props) {
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      <AppBar
-        actions={actions}
-        title={isSmallScreen ? board?.name : 'Board Editor'}
-      />
+      <AppBar actions={actions} title={isSmallScreen && board?.name} />
 
       <div className={styles.outputWrapper}>
         <Output
