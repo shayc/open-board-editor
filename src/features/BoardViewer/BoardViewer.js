@@ -13,19 +13,11 @@ import {
   useBoardOutput,
   useBoardNavigation,
 } from '../../hooks/board';
-import {
-  Board,
-  NavBar,
-  Tile,
-  Pictogram,
-  Output,
-  Seo,
-  AppBar,
-} from '../../components';
+import { Board, NavBar, Tile, Pictogram, Output, Seo } from '../../components';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
-  const { actions, boardId, navigate, boardUrl } = props;
+  const { boardId, navigate, boardUrl } = props;
 
   const [rootBoardId, setRootBoardId] = useState();
   const { board: boardSettings } = useSettings();
@@ -148,8 +140,6 @@ function BoardViewer(props) {
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
-
-      <AppBar actions={actions} title={isSmallScreen && board?.name} />
 
       <div className={styles.outputWrapper}>
         <Output

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, CommandBarButton, IconButton, Link } from '@fluentui/react';
+import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorageState from 'use-local-storage-state';
@@ -21,12 +21,9 @@ import {
   Bar,
   NavButtons,
   NavText,
-  AppBar,
   BoardCommandBar,
   GridSizeSelect,
   SelectedBoardsPage,
-  ViewButton,
-  SettingsButton,
 } from '../../components';
 
 import { BoardEditor } from '../../features';
@@ -37,7 +34,6 @@ import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
 
 function BoardEditorPage() {
-  const { toggleSettings } = useSettings();
   const intl = useIntl();
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -272,14 +268,6 @@ function BoardEditorPage() {
     boardDB.update(board);
   }
 
-  function handleViewClick() {
-    navigate(`/view/boards/${boardId}`);
-  }
-
-  function handleSettingsClick() {
-    toggleSettings();
-  }
-
   function handleBoardSelectionChange(selection) {
     boardSelectionRef.current = selection;
     const boardSelection = selection.getSelection();
@@ -368,24 +356,6 @@ function BoardEditorPage() {
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
-
-      <AppBar
-        actions={
-          <>
-            <SettingsButton onClick={handleSettingsClick} />
-            <ViewButton onClick={handleViewClick} />
-          </>
-        }
-        title={
-          isSmallScreen ? (
-            board?.name
-          ) : (
-            <Link style={{ color: '#fff', textDecoration: 'none' }} href={'/'}>
-              Board Editor
-            </Link>
-          )
-        }
-      />
 
       <BoardCommandBar
         isBoardSelected={isBoardSelected}
