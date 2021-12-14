@@ -1,4 +1,4 @@
-export default function init(plop) {
+module.exports = (plop) => {
   plop.setGenerator('component', {
     description: 'Add a reusable component',
     prompts: [
@@ -296,7 +296,7 @@ export default function init(plop) {
       },
     ],
   });
-}
+};
 
 function requireField(fieldName) {
   return (value) => {
