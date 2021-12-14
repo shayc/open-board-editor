@@ -2,7 +2,7 @@ import Pictogram from '../Pictogram';
 import Tile from './Tile';
 
 const story = {
-  title: 'Core/Tile',
+  title: 'Board/Components/Tile',
   component: Tile,
   argTypes: {
     backgroundColor: { control: 'color' },

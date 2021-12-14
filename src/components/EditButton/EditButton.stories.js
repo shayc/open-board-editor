@@ -1,7 +1,7 @@
 import EditButton from './EditButton';
 
 const story = {
-  title: 'Example/EditButton',
+  title: 'Web App/Components/EditButton',
   component: EditButton,
 };
 

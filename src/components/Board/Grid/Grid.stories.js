@@ -2,7 +2,7 @@ import Tile from '../../Tile';
 import Grid from './Grid';
 
 const story = {
-  title: 'Core/Grid',
+  title: 'Board/Components/Grid',
   component: Grid,
 };
 

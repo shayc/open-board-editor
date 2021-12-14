@@ -1,7 +1,7 @@
 import Pictogram from './Pictogram';
 
 const story = {
-  title: 'Core/Pictogram',
+  title: 'Board/Components/Pictogram',
   component: Pictogram,
   decorators: [
     (Story) => (

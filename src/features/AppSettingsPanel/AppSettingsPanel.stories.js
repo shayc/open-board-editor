@@ -1,7 +1,7 @@
 import AppSettingsPanel from './AppSettingsPanel';
 
 const story = {
-  title: 'Example/AppSettingsPanel',
+  title: 'Web App/Features/AppSettingsPanel',
   component: AppSettingsPanel,
 };
 

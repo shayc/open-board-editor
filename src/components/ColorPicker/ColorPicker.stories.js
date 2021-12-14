@@ -1,7 +1,7 @@
 import ColorPicker from './ColorPicker';
 
 const story = {
-  title: 'Example/ColorPicker',
+  title: 'Web App/Components/ColorPicker',
   component: ColorPicker,
 };
 

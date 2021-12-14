@@ -1,7 +1,7 @@
 import NavBar from './NavBar';
 
 const story = {
-  title: 'Example/NavBar',
+  title: 'Web App/Components/NavBar',
   component: NavBar,
 };
 

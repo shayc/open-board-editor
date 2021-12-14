@@ -1,7 +1,7 @@
 import Output from './Output';
 
 const story = {
-  title: 'Core/Output',
+  title: 'Board/Components/Output',
   component: Output,
 };
 export default story;

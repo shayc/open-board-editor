@@ -1,7 +1,7 @@
 import ViewButton from './ViewButton';
 
 const story = {
-  title: 'Example/ViewButton',
+  title: 'Web App/Components/ViewButton',
   component: ViewButton,
 };
 

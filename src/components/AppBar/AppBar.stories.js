@@ -1,7 +1,7 @@
 import AppBar from './AppBar';
 
 const story = {
-  title: 'Example/AppBar',
+  title: 'Web App/Components/AppBar',
   component: AppBar,
 };
 

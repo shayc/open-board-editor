@@ -1,7 +1,7 @@
 import BoardCommandBar from './BoardCommandBar';
 
 const story = {
-  title: 'Example/BoardCommandBar',
+  title: 'Web App/Components/BoardCommandBar',
   component: BoardCommandBar,
 };
 

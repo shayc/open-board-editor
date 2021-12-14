@@ -1,7 +1,7 @@
 import ImagePicker from './ImagePicker';
 
 const story = {
-  title: 'Example/ImagePicker',
+  title: 'Web App/Components/ImagePicker',
   component: ImagePicker,
 };
 

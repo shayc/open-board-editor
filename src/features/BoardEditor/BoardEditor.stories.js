@@ -23,7 +23,7 @@ const boardSet = {
 const board = boardSet.boards[boardSet.manifest.root];
 
 const story = {
-  title: 'Example/BoardEditor',
+  title: 'Web App/Features/BoardEditor',
   component: BoardEditor,
 };
 export default story;

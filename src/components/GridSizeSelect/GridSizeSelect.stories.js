@@ -1,7 +1,7 @@
 import GridSizeSelect from './GridSizeSelect';
 
 const story = {
-  title: 'Example/GridSizeSelect',
+  title: 'Web App/Components/GridSizeSelect',
   component: GridSizeSelect,
 };
 

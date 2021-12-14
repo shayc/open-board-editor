@@ -39,7 +39,7 @@ const board = {
 };
 
 const story = {
-  title: 'Core/Board',
+  title: 'Board/Components/Board',
   component: Board,
 };
 

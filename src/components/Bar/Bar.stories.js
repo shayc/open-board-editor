@@ -1,7 +1,7 @@
 import Bar from './Bar';
 
 const story = {
-  title: 'Example/Bar',
+  title: 'Web App/Components/Bar',
   component: Bar,
 };
 

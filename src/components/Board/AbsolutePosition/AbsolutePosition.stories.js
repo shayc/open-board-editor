@@ -3,7 +3,7 @@ import Tile from '../../Tile';
 import AbsolutePosition from './AbsolutePosition';
 
 const story = {
-  title: 'Core/AbsolutePosition',
+  title: 'Board/Components/AbsolutePosition',
   component: AbsolutePosition,
 };
 

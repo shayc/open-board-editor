@@ -1,7 +1,7 @@
 import BoardsList from './BoardsList';
 
 const story = {
-  title: 'Example/BoardsList',
+  title: 'Web App/Components/BoardsList',
   component: BoardsList,
 };
 export default story;

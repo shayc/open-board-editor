@@ -1,7 +1,7 @@
 import NavText from './NavText';
 
 const story = {
-  title: 'Example/NavText',
+  title: 'Web App/Components/NavText',
   component: NavText,
 };
 
