@@ -2,25 +2,19 @@
 import BoardEditor from './BoardEditor';
 import { Selection } from '@fluentui/react';
 
-const boardSet = {
-  boards: {
-    'path/board': {
-      id: 'board',
-      name: 'shay',
-      buttons: [
-        { label: 'hi', backgroundColor: 'green' },
-        { label: 'bye', backgroundColor: 'red' },
-      ],
-      grid: {
-        columns: 4,
-        rows: 3,
-        order: [],
-      },
-    },
+const board = {
+  id: 'board',
+  name: 'shay',
+  buttons: [
+    { id: '1', label: 'hi', backgroundColor: 'green' },
+    { id: '2', label: 'bye', backgroundColor: 'red' },
+  ],
+  grid: {
+    columns: 4,
+    rows: 3,
+    order: [[], [], []],
   },
-  manifest: { root: 'path/board' },
 };
-const board = boardSet.boards[boardSet.manifest.root];
 
 const story = {
   title: 'Web App/Features/BoardEditor',
@@ -35,11 +29,11 @@ export const Default = Template.bind({});
 Default.args = {
   style: { height: '600px' },
   board,
-  boards: [],
-  colors: [],
-  images: [],
+  linkableBoards: [],
+  buttonColors: [{ backgroundColor: 'green' }, { backgroundColor: 'red' }],
+  buttonImages: [],
   selection: new Selection(),
-  selectionEnabled: true,
+  selectionEnabled: false,
   onButtonChange: (button, position) => {},
   onButtonChangeDiscard: () => {},
   onButtonChangeSave: (button, position) => {},
