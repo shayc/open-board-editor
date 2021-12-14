@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import useLocalStorageState from 'use-local-storage-state';
+
 import { IntlProvider } from 'react-intl';
 import { setRTL } from '@fluentui/react';
 
@@ -19,7 +19,7 @@ function getLocaleDirection(locale) {
 function LocaleProvider(props) {
   const { locale: initialLocale } = props;
 
-  const [locale, setLocale] = useLocalStorageState('locale', initialLocale);
+  const [locale, setLocale] = useState(initialLocale);
   const [localeList, setLocaleList] = useState([]);
   const [messages, setMessages] = useState(null);
 

@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useContext } from 'react';
-import useLocalStorageState from 'use-local-storage-state';
 
 const SettingsContext = React.createContext(null);
 
@@ -8,13 +7,10 @@ function SettingsProvider(props) {
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const [boardSettings, setBoardSettings] = useLocalStorageState(
-    'boardSettings',
-    {
-      labelPosition: 'bottom',
-      isLabelHidden: false,
-    }
-  );
+  const [boardSettings, setBoardSettings] = useState({
+    labelPosition: 'bottom',
+    isLabelHidden: false,
+  });
 
   const context = useMemo(() => {
     function toggleSettings() {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import useLocalStorageState from 'use-local-storage-state';
 
 import {
   createAsyncSpeech,
@@ -31,7 +30,7 @@ const SpeechContext = React.createContext({} as SpeechContextValue);
 const SpeechProvider: React.FC = (props) => {
   const { children } = props;
 
-  const [voiceURI, setVoiceURI] = useLocalStorageState('voiceURI', '');
+  const [voiceURI, setVoiceURI] = useState('');
   const [lang, setLang] = useState('en');
   const [pitch, setPitch] = useState(DEFAULT_PITCH);
   const [rate, setRate] = useState(DEFAULT_RATE);

@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
-import useLocalStorageState from 'use-local-storage-state';
 
 import { debounce, playAudio } from '../../utils';
 import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
@@ -39,10 +38,7 @@ function BoardEditorPage() {
   const navigate = useNavigate();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
-  const [isBoardsPanelOpen, setIsBoardsPanelOpen] = useLocalStorageState(
-    'isBoardsPanelOpen',
-    !isSmallScreen
-  );
+  const [isBoardsPanelOpen, setIsBoardsPanelOpen] = useState(!isSmallScreen);
   const [isDetailsPanelOpen, setIsDetailsPanelOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
