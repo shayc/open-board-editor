@@ -116,6 +116,12 @@ function ButtonCallout(props) {
             />
 
             <Text className={styles.label} variant="medium" block>
+              <FormattedMessage {...messages.color} />
+            </Text>
+
+            <ColorPicker colors={colors} onChange={handleColorChange} />
+
+            <Text className={styles.label} variant="medium" block>
               <FormattedMessage {...messages.image} />
             </Text>
             <SearchBox
@@ -123,12 +129,6 @@ function ButtonCallout(props) {
               onChange={handleImageSearchChange}
             />
             <ImagePicker images={images} onChange={handleImageChange} />
-
-            <Text className={styles.label} variant="medium" block>
-              <FormattedMessage {...messages.color} />
-            </Text>
-
-            <ColorPicker colors={colors} onChange={handleColorChange} />
 
             <Dropdown
               label={intl.formatMessage(messages.linkTo)}

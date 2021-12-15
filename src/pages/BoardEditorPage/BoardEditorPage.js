@@ -382,6 +382,16 @@ function BoardEditorPage() {
         <div className={styles.container}>
           {isBoardsPanelOpen && (
             <div className={styles.panel}>
+              {!isSmallScreen && (
+                <NavButtons
+                  className={styles.panelNavButtons}
+                  backDisabled={nav.backDisabled}
+                  forwardDisabled={nav.forwardDisabled}
+                  onBackClick={nav.goBack}
+                  onForwardClick={nav.goForward}
+                  onHomeClick={nav.goToRoot}
+                />
+              )}
               <BoardsList
                 activeId={boardId}
                 rootId={boardDB.rootId}
@@ -400,13 +410,15 @@ function BoardEditorPage() {
                   <Bar
                     startGroup={
                       !isButtonSelected ? (
-                        <NavButtons
-                          backDisabled={nav.backDisabled}
-                          forwardDisabled={nav.forwardDisabled}
-                          onBackClick={nav.goBack}
-                          onForwardClick={nav.goForward}
-                          onHomeClick={nav.goToRoot}
-                        />
+                        !isBoardsPanelOpen && (
+                          <NavButtons
+                            backDisabled={nav.backDisabled}
+                            forwardDisabled={nav.forwardDisabled}
+                            onBackClick={nav.goBack}
+                            onForwardClick={nav.goForward}
+                            onHomeClick={nav.goToRoot}
+                          />
+                        )
                       ) : (
                         <>
                           <CommandBarButton
