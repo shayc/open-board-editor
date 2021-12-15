@@ -189,10 +189,6 @@ function BoardViewer(props) {
 
 BoardViewer.propTypes = {
   /**
-   * Actions to render on the actions bar.
-   */
-  actions: PropTypes.node,
-  /**
    * The id of the board to display, loads from IndexedDB.
    */
   boardId: PropTypes.string,
