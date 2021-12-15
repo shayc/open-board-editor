@@ -42,6 +42,13 @@ function BoardViewer(props) {
   const speech = useSpeech();
   const { isSmallScreen } = useMediaQuery();
 
+  const navBarProps = {
+    backDisabled: nav.backDisabled,
+    forwardHidden: true,
+    onBackClick: nav.goBack,
+    onHomeClick: nav.goToRoot,
+  };
+
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
@@ -152,17 +159,14 @@ function BoardViewer(props) {
         />
       </div>
 
-      {!isSmallScreen && (
-        <div className={styles.navBarWrapper}>
-          <NavBar
-            backDisabled={nav.backDisabled}
-            forwardHidden={true}
-            text={board?.name}
-            onBackClick={nav.goBack}
-            onHomeClick={nav.goToRoot}
-          />
-        </div>
-      )}
+      <div className={styles.navBarWrapper}>
+        <NavBar
+          {...(isSmallScreen
+            ? { backHidden: true, forwardHidden: true, homeHidden: true }
+            : navBarProps)}
+          text={board?.name}
+        />
+      </div>
 
       <div className={styles.boardWrapper}>
         <Board
@@ -176,12 +180,7 @@ function BoardViewer(props) {
 
       {isSmallScreen ? (
         <div className={styles.smallScreenBottomBar}>
-          <NavBar
-            backDisabled={nav.backDisabled}
-            onBackClick={nav.goBack}
-            forwardHidden={true}
-            onHomeClick={nav.goToRoot}
-          />
+          <NavBar {...navBarProps} />
         </div>
       ) : null}
     </div>
