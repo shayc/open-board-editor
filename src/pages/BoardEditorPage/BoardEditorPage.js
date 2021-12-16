@@ -52,7 +52,7 @@ function BoardEditorPage() {
   const forceUpdate = useForceUpdate();
 
   const { board, boardCtrl } = useBoard({
-    changeBoard: nav.goTo,
+    getBoard: nav.goTo,
     playAudio,
     speak,
   });

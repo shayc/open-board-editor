@@ -26,49 +26,26 @@ function BoardViewer(props) {
 
   const isRTL = getRTL();
   const { isSmallScreen } = useMediaQuery();
-
   const { board: boardSettings } = useSettings();
-
-  const output = useBoardOutput({
-    playAudio,
-    speak,
-  });
-
-  const handleButtonClick = OBF.createButtonClickHandler({
-    changeBoard: (id) => {
-      navigation.goTo(id);
-      onBoardRequested(id);
-    },
-    actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    fetchBoard: onFetchBoardRequested,
-    redirect: onRedirectRequested,
-    playAudio,
-    speak,
-    pushOutput: output.push,
-  });
+  const speech = useSpeech();
 
   const navigation = useBoardNavigation({
     history: [{ id: board?.id }],
     index: 0,
   });
-  const speech = useSpeech();
 
   const navBarProps = {
     backDisabled: navigation.backDisabled,
     forwardDisabled: navigation.forwardDisabled,
-    onForwardClick: () => {
-      navigation.goForward();
-      onForwardClick();
-    },
-    onBackClick: () => {
-      navigation.goBack();
-      onBackClick();
-    },
-    onHomeClick: () => {
-      navigation.reset({ id: rootId });
-      onHomeClick();
-    },
+    onForwardClick: handleForwardClick,
+    onBackClick: handleBackClick,
+    onHomeClick: handleHomeClick,
   };
+
+  const output = useBoardOutput({
+    speak,
+    playAudio,
+  });
 
   const outputActions = (
     <>
@@ -97,12 +74,42 @@ function BoardViewer(props) {
     </>
   );
 
-  function playAudio(url) {
-    utils.playAudio(url);
+  const handleButtonClick = OBF.createButtonClickHandler({
+    speak,
+    playAudio,
+    actionHandlers: { ...actionHandlers, ...output.actionHandlers },
+    requestBoard: handleBoardRequested,
+    fetchBoard: onFetchBoardRequested,
+    redirect: onRedirectRequested,
+    pushOutput: output.push,
+  });
+
+  function handleHomeClick() {
+    navigation.reset({ id: rootId });
+    onHomeClick?.(rootId);
+  }
+
+  function handleBackClick() {
+    navigation.goBack();
+    onBackClick?.();
+  }
+
+  function handleForwardClick() {
+    navigation.goForward();
+    onForwardClick?.();
+  }
+
+  function handleBoardRequested(id) {
+    navigation.goTo({ id });
+    onBoardRequested?.(id);
   }
 
   function speak(text) {
     speech.speak(text);
+  }
+
+  function playAudio(url) {
+    utils.playAudio(url);
   }
 
   function renderTile(button) {
@@ -195,7 +202,35 @@ BoardViewer.propTypes = {
   /**
    *
    */
+  actionHandlers: PropTypes.object,
+  /**
+   *
+   */
   board: PropTypes.object,
+  /**
+   *
+   */
+  onBackClick: PropTypes.func,
+  /**
+   *
+   */
+  onBoardRequested: PropTypes.func,
+  /**
+   *
+   */
+  onFetchBoardRequested: PropTypes.func,
+  /**
+   *
+   */
+  onForwardClick: PropTypes.func,
+  /**
+   *
+   */
+  onHomeClick: PropTypes.func,
+  /**
+   *
+   */
+  onRedirectRequested: PropTypes.func,
   /**
    *
    */

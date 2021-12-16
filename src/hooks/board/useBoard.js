@@ -4,7 +4,7 @@ import useBoardState from './useBoardState';
 export function useBoard(params) {
   const {
     actionHandlers,
-    changeBoard,
+    getBoard,
     fetchBoard,
     redirect,
     playAudio,
@@ -15,7 +15,7 @@ export function useBoard(params) {
   const [board, boardCtrl] = useBoardState();
 
   const handleButtonClick = OBF.createButtonClickHandler({
-    changeBoard,
+    getBoard,
     actionHandlers,
     fetchBoard,
     redirect,

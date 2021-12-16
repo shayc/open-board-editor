@@ -14,7 +14,7 @@ function BoardViewerPage() {
   const [rootId, setRootId] = useState();
   const [board, setBoard] = useState();
 
-  const boardUrl = searchParams.get('boardUrl');
+  const boardSetUrl = searchParams.get('boardSetUrl');
 
   useEffect(() => {
     async function getBoard(id) {
@@ -50,10 +50,10 @@ function BoardViewerPage() {
       navigate(rootId);
     }
 
-    if (boardUrl) {
-      importBoardSet(`${boardUrl}`);
+    if (boardSetUrl) {
+      importBoardSet(`${boardSetUrl}`);
     }
-  }, [boardUrl, navigate]);
+  }, [boardSetUrl, navigate]);
 
   function goBack() {
     navigate(-1);
@@ -63,8 +63,8 @@ function BoardViewerPage() {
     navigate(1);
   }
 
-  function goHome() {
-    navigate(rootId);
+  function goHome(id) {
+    navigate(id);
   }
 
   function goTo(id) {
