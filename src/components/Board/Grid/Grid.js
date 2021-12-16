@@ -19,7 +19,7 @@ function Grid(props) {
     className,
     columns,
     draggable,
-    gap = '6px',
+    gap = '8px',
     items,
     onDragEnd,
     onDragStart,
