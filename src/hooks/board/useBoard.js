@@ -9,22 +9,22 @@ export function useBoard(params) {
     redirect,
     playAudio,
     speak,
-    addOutput,
+    pushOutput,
   } = params;
 
   const [board, boardCtrl] = useBoardState();
 
-  const { activateButton } = OBF.createBoardBehavior({
+  const handleButtonClick = OBF.createButtonClickHandler({
     changeBoard,
     actionHandlers,
     fetchBoard,
     redirect,
     playAudio,
     speak,
-    addOutput,
+    pushOutput,
   });
 
-  boardCtrl.activateButton = activateButton;
+  boardCtrl.handleButtonClick = handleButtonClick;
 
   return {
     board,

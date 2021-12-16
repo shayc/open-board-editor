@@ -8,7 +8,7 @@ function NavBar(props) {
   const {
     backDisabled,
     backHidden,
-    children,
+    actions,
     forwardDisabled,
     forwardHidden,
     homeHidden,
@@ -36,7 +36,7 @@ function NavBar(props) {
         />
       }
       middleGroup={<NavText>{text}</NavText>}
-      endGroup={children}
+      endGroup={actions}
     />
   );
 }

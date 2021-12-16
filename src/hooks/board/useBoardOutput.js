@@ -2,19 +2,19 @@ import { useState } from 'react';
 import * as OBF from '../../open-board-format';
 
 export function useBoardOutput(params) {
-  const { playAudio, speak } = params;
+  const { output = [], playAudio, speak } = params;
 
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState(output);
 
   const actionHandlers = {
-    [OBF.SpecialtyActions.Backspace]: backspace,
+    [OBF.SpecialtyActions.Backspace]: pop,
     [OBF.SpecialtyActions.Clear]: clear,
     [OBF.SpecialtyActions.Space]: space,
     [OBF.SpecialtyActions.Speak]: activate,
     [OBF.SpecialtyActions.Spell]: spellValue,
   };
 
-  function addValue(value) {
+  function push(value) {
     setValues((values) => [...values, value]);
   }
 
@@ -26,7 +26,7 @@ export function useBoardOutput(params) {
     setValues([]);
   }
 
-  function backspace() {
+  function pop() {
     setValues((values) => values.slice(0, values.length - 1));
   }
 
@@ -55,19 +55,17 @@ export function useBoardOutput(params) {
     }
   }
 
-  const output = {
+  return {
     actionHandlers,
     activate,
-    addValue,
-    backspace,
+    pop,
     clear,
+    push,
     setValues,
     space,
     spellValue,
-    data: values,
+    values,
   };
-
-  return output;
 }
 
 function modifyLastValue(values, fn) {

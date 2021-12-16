@@ -1,5 +1,5 @@
 import * as OBF from '../../open-board-format';
-import { createBoardBehavior } from './board.behavior';
+import { createButtonClickHandler } from './board.behavior';
 
 const CustomSpecialtyAction = 'PLAY_VIDEO';
 
@@ -16,7 +16,7 @@ describe('Board behavior', () => {
     redirect: jest.fn(),
     playAudio: jest.fn(),
     speak: jest.fn(),
-    addOutput: jest.fn(),
+    pushOutput: jest.fn(),
   };
 
   beforeEach(() => {
@@ -30,16 +30,16 @@ describe('Board behavior', () => {
         label: '',
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
     });
   });
 
@@ -50,12 +50,12 @@ describe('Board behavior', () => {
         label: 'Hi',
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.speak).toHaveBeenCalledWith(buttonDTO.label);
-      expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
+      expect(behaviorParams.pushOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
@@ -71,12 +71,12 @@ describe('Board behavior', () => {
         vocalization: 'This text should override the label text',
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.speak).toHaveBeenCalledWith(buttonDTO.vocalization);
-      expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
+      expect(behaviorParams.pushOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
@@ -95,14 +95,14 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.playAudio).toHaveBeenCalledWith(
         buttonDTO.sound.data
       );
-      expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
+      expect(behaviorParams.pushOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.speak).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
@@ -122,14 +122,14 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.playAudio).toHaveBeenCalledWith(
         buttonDTO.sound.data
       );
-      expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
+      expect(behaviorParams.pushOutput).toHaveBeenCalledWith(buttonDTO);
       expect(behaviorParams.speak).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
@@ -148,9 +148,9 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
@@ -159,7 +159,7 @@ describe('Board behavior', () => {
         buttonDTO.sound.data
       );
       expect(behaviorParams.speak).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).toHaveBeenCalledWith(buttonDTO);
+      expect(behaviorParams.pushOutput).toHaveBeenCalledWith(buttonDTO);
     });
   });
 
@@ -173,14 +173,14 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.changeBoard).toHaveBeenCalledWith(
         buttonDTO.loadBoard.id
       );
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
@@ -199,15 +199,15 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.changeBoard).toHaveBeenCalledWith(
         buttonDTO.loadBoard.id
       );
       expect(behaviorParams.speak).toHaveBeenCalledWith(buttonDTO.vocalization);
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
@@ -224,15 +224,15 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.fetchBoard).toHaveBeenCalledWith(
         buttonDTO.loadBoard.dataUrl
       );
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
@@ -249,16 +249,16 @@ describe('Board behavior', () => {
         },
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.redirect).toHaveBeenCalledWith(
         buttonDTO.loadBoard.url
       );
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -272,15 +272,15 @@ describe('Board behavior', () => {
         actions: [OBF.SpecialtyActions.Clear],
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(behaviorParams.actionHandlers[':clear']).toHaveBeenCalled();
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -294,9 +294,9 @@ describe('Board behavior', () => {
         actions: [OBF.SpecialtyActions.Clear, OBF.SpecialtyActions.Home],
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(
         behaviorParams.actionHandlers[OBF.SpecialtyActions.Clear]
@@ -307,7 +307,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -321,9 +321,9 @@ describe('Board behavior', () => {
         actions: ['+less'] as any,
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(
         behaviorParams.actionHandlers[OBF.SpecialtyActions.Spell]
@@ -331,7 +331,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });
@@ -345,9 +345,9 @@ describe('Board behavior', () => {
         actions: [CustomSpecialtyAction] as any,
       };
 
-      const { activateButton } = createBoardBehavior(behaviorParams);
+      const handleButtonClick = createButtonClickHandler(behaviorParams);
 
-      activateButton(buttonDTO);
+      handleButtonClick(buttonDTO);
 
       expect(
         behaviorParams.actionHandlers[CustomSpecialtyAction]
@@ -355,7 +355,7 @@ describe('Board behavior', () => {
       expect(behaviorParams.redirect).not.toHaveBeenCalled();
       expect(behaviorParams.fetchBoard).not.toHaveBeenCalled();
       expect(behaviorParams.changeBoard).not.toHaveBeenCalled();
-      expect(behaviorParams.addOutput).not.toHaveBeenCalled();
+      expect(behaviorParams.pushOutput).not.toHaveBeenCalled();
       expect(behaviorParams.playAudio).not.toHaveBeenCalled();
       expect(behaviorParams.speak).not.toHaveBeenCalled();
     });

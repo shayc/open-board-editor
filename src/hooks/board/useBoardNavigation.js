@@ -1,20 +1,21 @@
 import { useState, useMemo } from 'react';
 
-export function useBoardNavigation(params) {
+const defaultHistory = [];
+const defaultIndex = -1;
+
+export function useBoardNavigation(params = {}) {
   const {
-    navigate,
-    navigation: initialNav = [],
-    index: initialIndex = -1,
-    rootState,
+    history: initialHistory = defaultHistory,
+    index: initialIndex = defaultIndex,
   } = params;
 
-  const [nav, setNav] = useState(initialNav);
+  const [history, setHistory] = useState(initialHistory);
   const [index, setIndex] = useState(initialIndex);
 
   const navigation = useMemo(() => {
-    const activeState = nav[index];
+    const activeState = history[index];
     const backDisabled = index <= 0;
-    const forwardDisabled = index >= nav.length - 1;
+    const forwardDisabled = index >= history.length - 1;
 
     function goBack() {
       if (backDisabled) {
@@ -22,7 +23,6 @@ export function useBoardNavigation(params) {
       }
 
       setIndex((i) => i - 1);
-      navigate(-1);
     }
 
     function goForward() {
@@ -31,34 +31,23 @@ export function useBoardNavigation(params) {
       }
 
       setIndex((i) => i + 1);
-      navigate(1);
     }
 
     function goTo(id) {
       push({ id });
     }
 
-    function goToRoot() {
-      if (!rootState?.id) {
-        return;
-      }
-
-      set({ id: rootState.id });
+    function reset(state) {
+      setHistory(state ? [state] : defaultHistory);
+      setIndex(state ? 0 : defaultIndex);
     }
 
     function push(state) {
-      setNav((nav) => {
-        return [...nav.slice(0, index + 1), state];
+      setHistory((history) => {
+        return [...history.slice(0, index + 1), state];
       });
 
       setIndex((i) => i + 1);
-      navigate(state.id, { state });
-    }
-
-    function set(state) {
-      setNav([state]);
-      setIndex(0);
-      navigate(state.id, { state });
     }
 
     return {
@@ -67,10 +56,10 @@ export function useBoardNavigation(params) {
       goBack,
       goForward,
       goTo,
-      goToRoot,
+      reset,
       activeState,
     };
-  }, [navigate, index, nav, rootState.id]);
+  }, [index, history]);
 
   return navigation;
 }

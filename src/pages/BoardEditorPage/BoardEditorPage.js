@@ -47,10 +47,7 @@ function BoardEditorPage() {
   const { board: boardSettings } = useSettings();
 
   const boardDB = useBoardDB();
-  const nav = useBoardNavigation({
-    navigate,
-    rootState: { id: boardDB.rootId },
-  });
+  const nav = useBoardNavigation();
 
   const forceUpdate = useForceUpdate();
 
@@ -96,6 +93,7 @@ function BoardEditorPage() {
   const handleActiveBoardIdChange = useCallback(
     debounce((id) => {
       nav.goTo(id);
+      navigate(id);
     }, 50),
     []
   );
@@ -481,7 +479,7 @@ function BoardEditorPage() {
                   buttonColors={[...boardDB.boardsColors, ...defaultColors]}
                   buttonImages={images}
                   onImagesRequested={handleImagesRequested}
-                  onButtonClick={boardCtrl.activateButton}
+                  onButtonClick={boardCtrl.handleButtonClick}
                   onButtonChange={handleButtonChange}
                   onButtonChangeDiscard={handleButtonChangeDiscard}
                   onButtonChangeSave={handleButtonChangeSave}

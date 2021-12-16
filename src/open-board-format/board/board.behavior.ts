@@ -1,16 +1,16 @@
 import * as OBF from '../';
 
-interface BoardBehaviorParams {
+interface ButtonClickHandlerParams {
   actionHandlers: any;
   changeBoard: (id: string) => void;
   fetchBoard: (url: string) => Promise<OBF.Board>;
   redirect: (url: string) => void;
   playAudio: (url: string) => void;
   speak: (text: string) => void;
-  addOutput?: (button: OBF.ButtonDTO) => void;
+  pushOutput?: (button: OBF.ButtonDTO) => void;
 }
 
-export function createBoardBehavior(params: BoardBehaviorParams) {
+export function createButtonClickHandler(params: ButtonClickHandlerParams) {
   const {
     actionHandlers,
     changeBoard,
@@ -18,7 +18,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     redirect,
     playAudio,
     speak,
-    addOutput,
+    pushOutput,
   } = params;
 
   function handleLoadBoard(loadBoard: OBF.LoadBoardDTO) {
@@ -52,7 +52,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     actions.forEach(handleAction);
   }
 
-  function activateButton(button: OBF.ButtonDTO) {
+  function handleButtonClick(button: OBF.ButtonDTO) {
     const {
       action,
       actions: actionsProp,
@@ -73,7 +73,7 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     if (loadBoard) {
       handleLoadBoard(loadBoard);
     } else if (label || sound) {
-      addOutput?.(button);
+      pushOutput?.(button);
     }
 
     if (sound) {
@@ -91,7 +91,5 @@ export function createBoardBehavior(params: BoardBehaviorParams) {
     }
   }
 
-  return {
-    activateButton,
-  };
+  return handleButtonClick;
 }

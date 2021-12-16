@@ -3,12 +3,8 @@ import {
   FocusZone,
   FocusZoneDirection,
   FocusZoneTabbableElements,
-  DefaultButton,
-  getRTL,
 } from '@fluentui/react';
 import clsx from 'clsx';
-import BackspaceSvg from './BackspaceSvg';
-import ClearSvg from './ClearSvg';
 
 import Scroll from './Scroll/Scroll';
 import styles from './Output.module.css';
@@ -19,16 +15,7 @@ const KeyCodes = {
 };
 
 function Output(props) {
-  const {
-    className,
-    onBackspaceClick,
-    onClearClick,
-    onClick,
-    renderValue,
-    values,
-  } = props;
-
-  const isRTL = getRTL();
+  const { actions, className, onClick, renderValue, values } = props;
 
   function handleKeyDown(event) {
     if (event.keyCode === KeyCodes.space) {
@@ -77,42 +64,12 @@ function Output(props) {
         ))}
       </Scroll>
 
-      <DefaultButton
-        className={styles.button}
-        aria-label="Clear"
-        disabled={!values.length}
-        onClick={onClearClick}
-        style={{ visibility: !values.length ? 'hidden' : 'visible' }}
-      >
-        <ClearSvg
-          className={styles.icon}
-          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
-        />
-      </DefaultButton>
-
-      <DefaultButton
-        className={styles.button}
-        aria-label="Backspace"
-        onClick={onBackspaceClick}
-      >
-        <BackspaceSvg
-          className={styles.icon}
-          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
-        />
-      </DefaultButton>
+      <div className={styles.actions}>{actions}</div>
     </FocusZone>
   );
 }
 
 Output.propTypes = {
-  /**
-   * Callback, fired when backspace button is clicked.
-   */
-  onBackspaceClick: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when clear button is clicked.
-   */
-  onClearClick: PropTypes.func.isRequired,
   /**
    * Callback, fired when output is clicked.
    */

@@ -1,25 +1,32 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
-import * as utils from '../../utils';
+import { DefaultButton, getRTL } from '@fluentui/react';
 import * as OBF from '../../open-board-format';
-import { boardRepo } from '../../open-board-format/board/board.repo';
-import { boardMap } from '../../open-board-format/board/board.map';
+import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../contexts/media-query';
-import {
-  useBoard,
-  useBoardOutput,
-  useBoardNavigation,
-} from '../../hooks/board';
+import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 import { Board, NavBar, Tile, Pictogram, Output, Seo } from '../../components';
+import BackspaceSvg from './BackspaceSvg';
+import ClearSvg from './ClearSvg';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
-  const { boardId, navigate, boardUrl } = props;
+  const {
+    actionHandlers,
+    board,
+    onBackClick,
+    onBoardRequested,
+    onFetchBoardRequested,
+    onForwardClick,
+    onHomeClick,
+    onRedirectRequested,
+    rootId,
+  } = props;
 
-  const [rootBoardId, setRootBoardId] = useState();
+  const isRTL = getRTL();
+  const { isSmallScreen } = useMediaQuery();
+
   const { board: boardSettings } = useSettings();
 
   const output = useBoardOutput({
@@ -27,66 +34,68 @@ function BoardViewer(props) {
     speak,
   });
 
-  const { board, boardCtrl } = useBoard({
+  const handleButtonClick = OBF.createButtonClickHandler({
+    changeBoard: (id) => {
+      navigation.goTo(id);
+      onBoardRequested(id);
+    },
+    actionHandlers: { ...actionHandlers, ...output.actionHandlers },
+    fetchBoard: onFetchBoardRequested,
+    redirect: onRedirectRequested,
     playAudio,
     speak,
-    changeBoard,
-    actionHandlers: output.actionHandlers,
-    addOutput: output.addValue,
+    pushOutput: output.push,
   });
 
-  const nav = useBoardNavigation({
-    navigate,
-    rootState: { id: rootBoardId },
+  const navigation = useBoardNavigation({
+    history: [{ id: board?.id }],
+    index: 0,
   });
   const speech = useSpeech();
-  const { isSmallScreen } = useMediaQuery();
 
   const navBarProps = {
-    backDisabled: nav.backDisabled,
-    forwardHidden: true,
-    onBackClick: nav.goBack,
-    onHomeClick: nav.goToRoot,
+    backDisabled: navigation.backDisabled,
+    forwardDisabled: navigation.forwardDisabled,
+    onForwardClick: () => {
+      navigation.goForward();
+      onForwardClick();
+    },
+    onBackClick: () => {
+      navigation.goBack();
+      onBackClick();
+    },
+    onHomeClick: () => {
+      navigation.reset({ id: rootId });
+      onHomeClick();
+    },
   };
 
-  useEffect(() => {
-    async function getBoard(id) {
-      const board = await boardRepo.getById(id);
-      const rootId = await boardRepo.getRootId();
-
-      if (board) {
-        boardCtrl.setBoard(boardMap.toDTO(board));
-        setRootBoardId(rootId);
-      }
-    }
-
-    if (boardId) {
-      getBoard(boardId);
-    }
-  }, [boardId, boardCtrl]);
-
-  useEffect(() => {
-    async function fetchFile(url) {
-      const response = await fetch(`${url}`);
-      const blob = await response.blob();
-      const file = new File([blob], url.slice(1));
-
-      return file;
-    }
-
-    async function importBoardSet(url) {
-      const file = await fetchFile(url);
-      const [boardSet] = await OBF.readFiles([file]);
-      boardRepo.importBoardSet(boardSet);
-
-      const rootId = await boardRepo.getRootId();
-      nav.goTo(rootId);
-    }
-
-    if (boardUrl) {
-      importBoardSet(`${boardUrl}`);
-    }
-  }, [boardUrl, nav]);
+  const outputActions = (
+    <>
+      <DefaultButton
+        className={styles.button}
+        aria-label="Clear"
+        disabled={!output.values.length}
+        onClick={output.clear}
+        style={{ visibility: !output.values.length ? 'hidden' : 'visible' }}
+      >
+        <ClearSvg
+          className={styles.icon}
+          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
+        />
+      </DefaultButton>
+      <DefaultButton
+        className={styles.button}
+        aria-label="Backspace"
+        onClick={output.pop}
+      >
+        <BackspaceSvg
+          className={styles.icon}
+          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
+        />
+      </DefaultButton>
+    </>
+  );
 
   function playAudio(url) {
     utils.playAudio(url);
@@ -96,10 +105,6 @@ function BoardViewer(props) {
     speech.speak(text);
   }
 
-  function changeBoard(id) {
-    nav.goTo(id);
-  }
-
   function renderTile(button) {
     const { backgroundColor, borderColor, image, label, loadBoard } = button;
 
@@ -107,7 +112,7 @@ function BoardViewer(props) {
     const pictogramSrc = image?.data || image?.url;
 
     function handleClick() {
-      boardCtrl.activateButton(button);
+      handleButtonClick(button);
     }
 
     return (
@@ -150,12 +155,11 @@ function BoardViewer(props) {
 
       <div className={styles.outputWrapper}>
         <Output
+          actions={!isSmallScreen && outputActions}
           className={styles.output}
-          values={output.data}
-          onBackspaceClick={output.backspace}
-          onClearClick={output.clear}
           onClick={output.activate}
           renderValue={renderOutputValue}
+          values={output.values}
         />
       </div>
 
@@ -180,7 +184,7 @@ function BoardViewer(props) {
 
       {isSmallScreen ? (
         <div className={styles.smallScreenBottomBar}>
-          <NavBar {...navBarProps} />
+          <NavBar {...navBarProps} actions={outputActions} />
         </div>
       ) : null}
     </div>
@@ -189,13 +193,13 @@ function BoardViewer(props) {
 
 BoardViewer.propTypes = {
   /**
-   * The id of the board to display, loads from IndexedDB.
+   *
    */
-  boardId: PropTypes.string,
+  board: PropTypes.object,
   /**
    *
    */
-  navigate: PropTypes.func,
+  rootId: PropTypes.string,
 };
 
 export default BoardViewer;
