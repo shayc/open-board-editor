@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import * as OBF from '../../open-board-format';
+import { useBoardOutputHotKeys } from './useBoardOutputHotKeys';
 
 export function useBoardOutput(params) {
   const { output = [], playAudio, speak } = params;
@@ -54,6 +55,8 @@ export function useBoardOutput(params) {
       }
     }
   }
+
+  useBoardOutputHotKeys({ backspace: pop, del: clear });
 
   return {
     actionHandlers,

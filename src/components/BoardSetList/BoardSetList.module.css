@@ -15,16 +15,19 @@
 }
 
 .itemButton {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   background: var(--neutralLight);
   color: inherit;
-  display: block;
 }
 
 .itemImage {
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  max-height: 100%;
   display: block;
   object-fit: contain;
 }

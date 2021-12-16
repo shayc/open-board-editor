@@ -29,7 +29,6 @@ function BoardViewer(props) {
   const { isSmallScreen } = useMediaQuery();
   const { board: boardSettings } = useSettings();
   const speech = useSpeech();
-
   const navigation = useBoardNavigation({
     history: [{ id: board?.id }],
     index: 0,
