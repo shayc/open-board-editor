@@ -474,6 +474,10 @@ function BoardEditorPage() {
                   />
                 )}
 
+                {isSmallScreen && (
+                  <Bar middleGroup={<NavText>{board?.name}</NavText>} />
+                )}
+
                 <BoardEditor
                   board={{ ...board, grid }}
                   linkableBoards={linkableBoards}
