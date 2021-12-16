@@ -54,7 +54,7 @@ function BoardViewer(props) {
   const outputActions = (
     <>
       <DefaultButton
-        className={styles.button}
+        className={styles.outputActionButton}
         aria-label="Clear"
         disabled={!output.values.length}
         onClick={output.clear}
@@ -66,7 +66,7 @@ function BoardViewer(props) {
         />
       </DefaultButton>
       <DefaultButton
-        className={styles.button}
+        className={styles.outputActionButton}
         aria-label="Backspace"
         onClick={output.pop}
       >
@@ -162,7 +162,7 @@ function BoardViewer(props) {
 
   return (
     <div className={styles.root} style={style}>
-      <div className={styles.outputWrapper}>
+      <div className={`${styles.outputWrapper} ${styles.safeAreaInsetX}`}>
         <Output
           actions={!isSmallScreen && outputActions}
           className={styles.output}
@@ -172,7 +172,7 @@ function BoardViewer(props) {
         />
       </div>
 
-      <div className={styles.navBarWrapper}>
+      <div className={`${styles.navBarWrapper} ${styles.safeAreaInsetX}`}>
         <NavBar
           {...(isSmallScreen
             ? { backHidden: true, forwardHidden: true, homeHidden: true }
@@ -181,7 +181,7 @@ function BoardViewer(props) {
         />
       </div>
 
-      <div className={styles.boardWrapper}>
+      <div className={`${styles.boardWrapper} ${styles.safeAreaInsetX}`}>
         <Board
           buttons={board?.buttons}
           grid={board?.grid}

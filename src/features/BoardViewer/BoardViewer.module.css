@@ -5,8 +5,6 @@
 }
 
 .outputWrapper {
-  padding-right: env(safe-area-inset-right);
-  padding-left: env(safe-area-inset-left);
   background-color: var(--neutralLight);
   color: var(--black);
 }
@@ -20,16 +18,17 @@
   white-space: nowrap;
 }
 
-.navBarWrapper {
+.safeAreaInsetX {
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
+}
+
+.navBarWrapper {
   background-color: var(--neutralLighterAlt);
 }
 
 .boardWrapper {
   height: 100%;
-  padding-right: env(safe-area-inset-right);
-  padding-left: env(safe-area-inset-left);
 }
 
 .smallScreenBar {
@@ -42,4 +41,9 @@
 
 .smallScreenBottomBar {
   padding-bottom: env(safe-area-inset-bottom);
+  background-color: var(--neutralLighterAlt);
+}
+
+.outputActionButton {
+  align-self: center;
 }
