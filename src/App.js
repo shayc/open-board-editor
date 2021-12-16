@@ -9,7 +9,7 @@ import {
   DelayedRender,
   SpinnerProgress,
   AppBar,
-  ViewButton,
+  EditToggleButton,
   SettingsButton,
 } from './components';
 import { AppSettingsPanel } from './features';
@@ -52,7 +52,9 @@ function App() {
         actions={
           <>
             {!isView && <SettingsButton onClick={toggleSettings} />}
-            {(isEdit || isView) && <ViewButton onClick={toggleEdit} />}
+            {(isEdit || isView) && (
+              <EditToggleButton checked={isEdit} onClick={toggleEdit} />
+            )}
           </>
         }
       />

@@ -1,13 +1,13 @@
 import React from 'react';
 import { renderWithReactIntl } from '../../setupTests';
-import EditButton from './EditButton';
+import EditToggleButton from './EditToggleButton';
 
-describe('<EditButton />', () => {
+describe('<EditToggleButton />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
     const props = {};
 
-    renderWithReactIntl(<EditButton {...props} />);
+    renderWithReactIntl(<EditToggleButton {...props} />);
     expect(spy).not.toHaveBeenCalled();
   });
 });

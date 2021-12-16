@@ -1,7 +1,6 @@
 /* PLOP_INJECT_IMPORT */
 import SettingsButton from './SettingsButton';
-import ViewButton from './ViewButton';
-import EditButton from './EditButton';
+import EditToggleButton from './EditToggleButton';
 import NavText from './NavText';
 import SelectedBoardsPage from './SelectedBoardsPage';
 import GridSizeSelect from './GridSizeSelect';
@@ -26,8 +25,7 @@ import NavButtons from './NavButtons';
 export {
   /* PLOP_INJECT_EXPORT */
   SettingsButton,
-  ViewButton,
-  EditButton,
+  EditToggleButton,
   NavText,
   SelectedBoardsPage,
   GridSizeSelect,
