@@ -8,7 +8,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { debounce, playAudio } from '../../utils';
 import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 import { useSpeech } from '../../contexts/speech';
-import { useMediaQuery } from '../../contexts/media-query';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useSettings } from '../../contexts/settings';
 
 import {

@@ -9,7 +9,6 @@ import { setIconOptions } from '@fluentui/react';
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-import { MediaQueryProvider } from './contexts/media-query';
 import { LocaleProvider } from './contexts/locale';
 import { ThemeProvider } from './contexts/theme';
 import { SpeechProvider } from './contexts/speech';
@@ -37,13 +36,11 @@ export function renderWithProviders(component) {
 
   return render(
     <MemoryRouter>
-      <MediaQueryProvider>
-        <ThemeProvider>
-          <LocaleProvider locale={locale}>
-            <SpeechProvider>{component}</SpeechProvider>
-          </LocaleProvider>
-        </ThemeProvider>
-      </MediaQueryProvider>
+      <ThemeProvider>
+        <LocaleProvider locale={locale}>
+          <SpeechProvider>{component}</SpeechProvider>
+        </LocaleProvider>
+      </ThemeProvider>
     </MemoryRouter>
   );
 }

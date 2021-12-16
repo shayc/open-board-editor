@@ -4,7 +4,7 @@ import {
   ThemeProvider as FluentThemeProvider,
 } from '@fluentui/react';
 
-import { useMediaQuery } from '../media-query';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { darkTheme, lightTheme } from './themes';
 
 initializeIcons();

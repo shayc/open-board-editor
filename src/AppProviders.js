@@ -5,7 +5,6 @@ import { APP_LOCALES, DEFAULT_LOCALE } from './i18n/i18n';
 import { SpeechProvider } from './contexts/speech';
 import { LocaleProvider } from './contexts/locale';
 import { ThemeProvider } from './contexts/theme';
-import { MediaQueryProvider } from './contexts/media-query';
 import { SettingsProvider } from './contexts/settings';
 
 const userLocale = APP_LOCALES.find((locale) => {
@@ -21,15 +20,13 @@ function AppProviders(props) {
   return (
     <HelmetProvider>
       <Router>
-        <MediaQueryProvider>
-          <ThemeProvider>
-            <LocaleProvider locale={initialLocale}>
-              <SpeechProvider>
-                <SettingsProvider>{children}</SettingsProvider>
-              </SpeechProvider>
-            </LocaleProvider>
-          </ThemeProvider>
-        </MediaQueryProvider>
+        <ThemeProvider>
+          <LocaleProvider locale={initialLocale}>
+            <SpeechProvider>
+              <SettingsProvider>{children}</SettingsProvider>
+            </SpeechProvider>
+          </LocaleProvider>
+        </ThemeProvider>
       </Router>
     </HelmetProvider>
   );

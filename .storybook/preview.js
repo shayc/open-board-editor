@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { MediaQueryProvider } from '../src/contexts/media-query';
 import { SpeechProvider } from '../src/contexts/speech';
 import { LocaleProvider } from '../src/contexts/locale';
 import { ThemeProvider } from '../src/contexts/theme';
@@ -50,14 +49,6 @@ const withSpeechProvider = (Story, { globals }) => {
   );
 };
 
-const withMediaQueryProvider = (Story, { globals }) => {
-  return (
-    <MediaQueryProvider>
-      <Story />
-    </MediaQueryProvider>
-  );
-};
-
 const withSettingsProvider = (Story, { globals }) => {
   return (
     <SettingsProvider>
@@ -78,7 +69,6 @@ export const decorators = [
   withThemeProvider,
   withLocaleProvider,
   withSpeechProvider,
-  withMediaQueryProvider,
   withSettingsProvider,
   withRouterProvider,
 ];

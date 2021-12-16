@@ -4,7 +4,7 @@ import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
-import { useMediaQuery } from '../../contexts/media-query';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 import { Board, NavBar, Tile, Pictogram, Output } from '../../components';
 import BackspaceSvg from './images/BackspaceSvg';
