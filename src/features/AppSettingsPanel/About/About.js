@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Text, Link } from '@fluentui/react';
 
+import * as constants from '../../../constants';
 import messages from './About.messages';
 import styles from './About.module.css';
 
@@ -14,7 +15,7 @@ function About(props) {
   return (
     <div className={rootClassName}>
       <Text as="p" variant="large" block>
-        <FormattedMessage {...messages.about} />
+        <FormattedMessage {...messages.about} /> {constants.APP_NAME}
       </Text>
 
       <Text as="p" variant="medium" block>
@@ -54,16 +55,12 @@ function About(props) {
       </Text>
 
       <Text as="p" variant="medium" block>
-        <Link
-          href="https://opensource.org/licenses/MIT"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <FormattedMessage {...messages.mitLicense} />
+        <Link href={constants.APP_LICENSE_URL} target="_blank" rel="noreferrer">
+          {constants.APP_LICENSE} <FormattedMessage {...messages.license} />
         </Link>{' '}
         <FormattedMessage {...messages.copyright} />{' '}
-        <Link href="https://github.com/shayc" target="_blank" rel="noreferrer">
-          Shay C.
+        <Link href={constants.APP_AUTHOR_URL} target="_blank" rel="noreferrer">
+          {constants.APP_AUTHOR}
         </Link>
       </Text>
     </div>

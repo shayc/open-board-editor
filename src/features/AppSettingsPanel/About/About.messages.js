@@ -11,11 +11,11 @@ export const scope = 'app.components.About';
 export default defineMessages({
   about: {
     id: `${scope}.about`,
-    defaultMessage: 'About OBE',
+    defaultMessage: 'About',
   },
-  mitLicense: {
-    id: `${scope}.mitLicense`,
-    defaultMessage: 'MIT License',
+  license: {
+    id: `${scope}.license`,
+    defaultMessage: 'license',
   },
   copyright: {
     id: `${scope}.copyright`,

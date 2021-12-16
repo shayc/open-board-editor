@@ -282,16 +282,16 @@ function BoardEditorPage() {
     function renderBoardActions(board) {
       const items = [
         {
-          key: 'info',
-          text: intl.formatMessage(messages.boardInfo),
+          key: 'details',
+          text: intl.formatMessage(messages.details),
           iconProps: { iconName: 'Info' },
           onClick: () => {
             handleBoardDetails(board.id);
           },
         },
         {
-          key: 'setAsHomeBoard',
-          text: intl.formatMessage(messages.setAsHomeBoard),
+          key: 'setAsHome',
+          text: intl.formatMessage(messages.setAsHome),
           iconProps: { iconName: 'Home' },
           onClick: () => {
             handleRootIdChange(board.id);
@@ -299,7 +299,7 @@ function BoardEditorPage() {
         },
         {
           key: 'delete',
-          text: intl.formatMessage(messages.deleteBoard),
+          text: intl.formatMessage(messages.delete),
           iconProps: { iconName: 'Delete' },
           onClick: () => {
             handleBoardDelete(board.id);
@@ -451,7 +451,7 @@ function BoardEditorPage() {
                           <GridSizeSelect onChange={handleGridSizeChange} />
                           <CommandBarButton
                             title={intl.formatMessage(
-                              messages.viewBoardInformation
+                              messages.viewBoardDetails
                             )}
                             iconProps={{ iconName: 'Info' }}
                             onClick={handleBoardDetails}
@@ -520,9 +520,7 @@ function BoardEditorPage() {
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
                       <CommandBarButton
-                        title={intl.formatMessage(
-                          messages.viewBoardInformation
-                        )}
+                        title={intl.formatMessage(messages.viewBoardDetails)}
                         iconProps={{ iconName: 'Info' }}
                         onClick={handleBoardDetails}
                       />

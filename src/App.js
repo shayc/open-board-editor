@@ -7,7 +7,6 @@ import {
   Link,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Link as FluentLink } from '@fluentui/react';
 import { useSettings } from './contexts/settings';
 import { useSpeech } from './contexts/speech';
 import { useLocale } from './contexts/locale';
