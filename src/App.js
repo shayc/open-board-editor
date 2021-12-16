@@ -1,7 +1,13 @@
 import { Suspense, lazy, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Link,
+} from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
+import { Link as FluentLink } from '@fluentui/react';
 import { useSettings } from './contexts/settings';
 import { useSpeech } from './contexts/speech';
 import { useLocale } from './contexts/locale';
@@ -13,6 +19,7 @@ import {
   SettingsButton,
 } from './components';
 import { AppSettingsPanel } from './features';
+import { APP_NAME } from './constants';
 import styles from './App.module.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -23,11 +30,26 @@ function App() {
   const { isSettingsOpen, toggleSettings } = useSettings();
   const { locale } = useLocale();
   const speech = useSpeech();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const isView = pathname.includes('view/boards');
   const isEdit = pathname.includes('edit/boards');
+
+  const appTitle = !isView && (
+    <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+      {APP_NAME}
+    </Link>
+  );
+
+  const appActions = (
+    <>
+      {isEdit && <SettingsButton onClick={toggleSettings} />}
+      {(isEdit || isView) && (
+        <EditToggleButton checked={isEdit} onClick={toggleEdit} />
+      )}
+    </>
+  );
 
   useEffect(() => {
     speech.setLang(locale);
@@ -48,18 +70,7 @@ function App() {
         <html lang={locale} />
       </Helmet>
 
-      <AppBar
-        actions={
-          <>
-            {!isView && <SettingsButton onClick={toggleSettings} />}
-            {(isEdit || isView) && (
-              <EditToggleButton checked={isEdit} onClick={toggleEdit} />
-            )}
-          </>
-        }
-      />
-
-      <AppSettingsPanel open={isSettingsOpen} onDismiss={toggleSettings} />
+      <AppBar title={appTitle} actions={appActions} />
 
       <Suspense
         fallback={
@@ -80,6 +91,8 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
+
+      <AppSettingsPanel open={isSettingsOpen} onDismiss={toggleSettings} />
     </div>
   );
 }

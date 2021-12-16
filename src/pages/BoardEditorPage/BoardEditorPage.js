@@ -52,9 +52,7 @@ function BoardEditorPage() {
   const forceUpdate = useForceUpdate();
 
   const { board, boardCtrl } = useBoard({
-    requestBoard: (id) => {
-      nav.push({ id });
-    },
+    requestBoard: goToBoard,
     playAudio,
     speak,
   });
@@ -83,6 +81,16 @@ function BoardEditorPage() {
   const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardSelected = Boolean(selectedBoards?.length);
 
+  const navButtons = (
+    <NavButtons
+      backDisabled={nav.backDisabled}
+      forwardDisabled={nav.forwardDisabled}
+      onBackClick={goBack}
+      onForwardClick={goForward}
+      onHomeClick={goHome}
+    />
+  );
+
   useHotkeys(
     'del',
     () => {
@@ -92,13 +100,7 @@ function BoardEditorPage() {
   );
 
   // eslint-disable-next-line
-  const handleActiveBoardIdChange = useCallback(
-    debounce((id) => {
-      nav.push({ id });
-      navigate(id);
-    }, 50),
-    []
-  );
+  const handleActiveBoardIdChange = useCallback(debounce(goToBoard, 50), []);
 
   const handleImagesRequested = useMemo(
     () =>
@@ -123,9 +125,9 @@ function BoardEditorPage() {
       const nextBoard =
         boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
 
-      nav.goTo(nextBoard?.id || '/edit/boards/');
+      goToBoard(nextBoard?.id);
     },
-    [nav]
+    [goToBoard]
   );
 
   // function handleButtonColorChange(ids, color) {
@@ -141,7 +143,7 @@ function BoardEditorPage() {
     const rootId = await boardDB.importFile(files[0]);
     setIsLoading(false);
 
-    nav.goTo(rootId);
+    goToBoard(rootId);
   }
 
   async function handleExportFile() {
@@ -158,7 +160,13 @@ function BoardEditorPage() {
     if (!boardDB.boardsList.length) {
       boardDB.setRootId(id);
     }
-    nav.goTo(id);
+
+    goToBoard(id);
+  }
+
+  function goToBoard(id) {
+    nav.push({ id });
+    navigate(id);
   }
 
   const handleBoardDelete = useCallback(
@@ -349,6 +357,20 @@ function BoardEditorPage() {
     }
   }, [isSmallScreen, setIsBoardsPanelOpen]);
 
+  function goBack() {
+    nav.goBack();
+    navigate(-1);
+  }
+
+  function goForward() {
+    nav.goForward();
+    navigate(1);
+  }
+
+  function goHome() {
+    nav.reset({ id: boardDB.rootId });
+    navigate(boardDB.rootId);
+  }
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
@@ -382,16 +404,8 @@ function BoardEditorPage() {
         <div className={styles.container}>
           {isBoardsPanelOpen && (
             <div className={styles.panel}>
-              {!isSmallScreen && (
-                <NavButtons
-                  className={styles.panelNavButtons}
-                  backDisabled={nav.backDisabled}
-                  forwardDisabled={nav.forwardDisabled}
-                  onBackClick={nav.goBack}
-                  onForwardClick={nav.goForward}
-                  onHomeClick={nav.goToRoot}
-                />
-              )}
+              {!isSmallScreen && navButtons}
+
               <BoardsList
                 activeId={boardId}
                 rootId={boardDB.rootId}
@@ -410,15 +424,7 @@ function BoardEditorPage() {
                   <Bar
                     startGroup={
                       !isButtonSelected ? (
-                        !isBoardsPanelOpen && (
-                          <NavButtons
-                            backDisabled={nav.backDisabled}
-                            forwardDisabled={nav.forwardDisabled}
-                            onBackClick={nav.goBack}
-                            onForwardClick={nav.goForward}
-                            onHomeClick={nav.goToRoot}
-                          />
-                        )
+                        !isBoardsPanelOpen && navButtons
                       ) : (
                         <>
                           <CommandBarButton
@@ -494,15 +500,7 @@ function BoardEditorPage() {
               <Bar
                 className={styles.bottomNavBar}
                 startGroup={
-                  (!isButtonSelected && (
-                    <NavButtons
-                      backDisabled={nav.backDisabled}
-                      forwardDisabled={nav.forwardDisabled}
-                      onBackClick={nav.goBack}
-                      onForwardClick={nav.goForward}
-                      onHomeClick={nav.goToRoot}
-                    />
-                  )) || (
+                  (!isButtonSelected && navButtons) || (
                     <>
                       <CommandBarButton
                         iconProps={{ iconName: 'Delete' }}
