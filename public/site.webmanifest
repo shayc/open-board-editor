@@ -21,7 +21,7 @@
   "start_url": "/?source=pwa",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "background_color": "#181818",
   "shortcuts": [
     {
       "name": "Edit Board",
