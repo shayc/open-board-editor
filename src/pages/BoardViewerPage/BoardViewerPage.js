@@ -55,25 +55,33 @@ function BoardViewerPage() {
     }
   }, [boardUrl, navigate]);
 
+  function goBack() {
+    navigate(-1);
+  }
+
+  function goForward() {
+    navigate(1);
+  }
+
+  function goHome() {
+    navigate(rootId);
+  }
+
+  function goTo(id) {
+    navigate(id);
+  }
+
   return (
     <div className={styles.root}>
       <BoardViewer
         board={board}
         rootId={rootId}
-        onBoardRequested={(id) => {
-          navigate(id);
-        }}
+        onBoardRequested={goTo}
         onFetchBoardRequested={(url) => {}}
         onRedirectRequested={(url) => {}}
-        onBackClick={() => {
-          navigate(-1);
-        }}
-        onForwardClick={() => {
-          navigate(1);
-        }}
-        onHomeClick={() => {
-          navigate(rootId);
-        }}
+        onBackClick={goBack}
+        onForwardClick={goForward}
+        onHomeClick={goHome}
       />
     </div>
   );
