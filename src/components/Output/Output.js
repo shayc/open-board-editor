@@ -17,6 +17,11 @@ const KeyCodes = {
 function Output(props) {
   const { actions, className, onClick, renderValue, values } = props;
 
+  const outputClassName = clsx(styles.root, className);
+  const isFocusable = Boolean(values.length);
+  const tabIndex = values.length ? '0' : '-1';
+  const role = values.length ? 'button' : '';
+
   function handleKeyDown(event) {
     if (event.keyCode === KeyCodes.space) {
       event.preventDefault();
@@ -34,12 +39,6 @@ function Output(props) {
       // no default
     }
   }
-
-  const outputClassName = clsx(styles.root, className);
-
-  const isFocusable = Boolean(values.length);
-  const tabIndex = values.length ? '0' : '-1';
-  const role = values.length ? 'button' : '';
 
   return (
     <FocusZone

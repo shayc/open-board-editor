@@ -6,9 +6,9 @@ import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../contexts/media-query';
 import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
-import { Board, NavBar, Tile, Pictogram, Output, Seo } from '../../components';
-import BackspaceSvg from './BackspaceSvg';
-import ClearSvg from './ClearSvg';
+import { Board, NavBar, Tile, Pictogram, Output } from '../../components';
+import BackspaceSvg from './images/BackspaceSvg';
+import ClearSvg from './images/ClearSvg';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
@@ -22,6 +22,7 @@ function BoardViewer(props) {
     onHomeClick,
     onRedirectRequested,
     rootId,
+    style,
   } = props;
 
   const isRTL = getRTL();
@@ -37,6 +38,9 @@ function BoardViewer(props) {
   const navBarProps = {
     backDisabled: navigation.backDisabled,
     forwardDisabled: navigation.forwardDisabled,
+    backHidden: !onBackClick,
+    forwardHidden: !onForwardClick,
+    homeHidden: !onHomeClick,
     onForwardClick: handleForwardClick,
     onBackClick: handleBackClick,
     onHomeClick: handleHomeClick,
@@ -100,7 +104,7 @@ function BoardViewer(props) {
   }
 
   function handleBoardRequested(id) {
-    navigation.goTo({ id });
+    navigation.push({ id });
     onBoardRequested?.(id);
   }
 
@@ -157,9 +161,7 @@ function BoardViewer(props) {
   }
 
   return (
-    <div className={styles.root}>
-      <Seo title={board?.name} />
-
+    <div className={styles.root} style={style}>
       <div className={styles.outputWrapper}>
         <Output
           actions={!isSmallScreen && outputActions}

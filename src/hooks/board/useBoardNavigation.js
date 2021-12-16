@@ -33,10 +33,6 @@ export function useBoardNavigation(params = {}) {
       setIndex((i) => i + 1);
     }
 
-    function goTo(id) {
-      push({ id });
-    }
-
     function reset(state) {
       setHistory(state ? [state] : defaultHistory);
       setIndex(state ? 0 : defaultIndex);
@@ -51,13 +47,13 @@ export function useBoardNavigation(params = {}) {
     }
 
     return {
+      activeState,
       backDisabled,
       forwardDisabled,
       goBack,
       goForward,
-      goTo,
+      push,
       reset,
-      activeState,
     };
   }, [index, history]);
 

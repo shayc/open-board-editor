@@ -52,7 +52,9 @@ function BoardEditorPage() {
   const forceUpdate = useForceUpdate();
 
   const { board, boardCtrl } = useBoard({
-    getBoard: nav.goTo,
+    requestBoard: (id) => {
+      nav.push({ id });
+    },
     playAudio,
     speak,
   });
@@ -92,7 +94,7 @@ function BoardEditorPage() {
   // eslint-disable-next-line
   const handleActiveBoardIdChange = useCallback(
     debounce((id) => {
-      nav.goTo(id);
+      nav.push({ id });
       navigate(id);
     }, 50),
     []

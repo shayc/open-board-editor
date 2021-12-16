@@ -4,15 +4,15 @@ import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import BoardViewer from '../../features/BoardViewer';
-
+import { Seo } from '../../components';
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage() {
   const navigate = useNavigate();
-  const { boardId } = useParams();
   const [searchParams] = useSearchParams();
-  const [rootId, setRootId] = useState();
+  const { boardId } = useParams();
   const [board, setBoard] = useState();
+  const [rootId, setRootId] = useState();
 
   const boardSetUrl = searchParams.get('boardSetUrl');
 
@@ -59,10 +59,6 @@ function BoardViewerPage() {
     navigate(-1);
   }
 
-  function goForward() {
-    navigate(1);
-  }
-
   function goHome(id) {
     navigate(id);
   }
@@ -73,6 +69,8 @@ function BoardViewerPage() {
 
   return (
     <div className={styles.root}>
+      <Seo title={board?.name} />
+
       <BoardViewer
         board={board}
         rootId={rootId}
@@ -80,7 +78,6 @@ function BoardViewerPage() {
         onFetchBoardRequested={(url) => {}}
         onRedirectRequested={(url) => {}}
         onBackClick={goBack}
-        onForwardClick={goForward}
         onHomeClick={goHome}
       />
     </div>
