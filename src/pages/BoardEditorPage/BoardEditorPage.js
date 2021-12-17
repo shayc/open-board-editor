@@ -51,6 +51,14 @@ function BoardEditorPage() {
 
   const forceUpdate = useForceUpdate();
 
+  const goToBoard = useCallback(
+    function goToBoard(id) {
+      nav.push({ id });
+      navigate(id);
+    },
+    [navigate, nav]
+  );
+
   const { board, boardCtrl } = useBoard({
     requestBoard: goToBoard,
     playAudio,
@@ -91,6 +99,17 @@ function BoardEditorPage() {
     />
   );
 
+  const navigateToNextBoard = useCallback(
+    function navigateToNextBoard(boardId, boardsList) {
+      const boardIndex = boardsList.findIndex((board) => board.id === boardId);
+      const nextBoard =
+        boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
+
+      goToBoard(nextBoard?.id);
+    },
+    [goToBoard]
+  );
+
   useHotkeys(
     'del',
     () => {
@@ -118,17 +137,6 @@ function BoardEditorPage() {
   function toggleDetailsPanel() {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
-
-  const navigateToNextBoard = useCallback(
-    function navigateToNextBoard(boardId, boardsList) {
-      const boardIndex = boardsList.findIndex((board) => board.id === boardId);
-      const nextBoard =
-        boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
-
-      goToBoard(nextBoard?.id);
-    },
-    [goToBoard]
-  );
 
   // function handleButtonColorChange(ids, color) {
   //   const board = boardCtrl.setButtonColor(ids, color);
@@ -162,11 +170,6 @@ function BoardEditorPage() {
     }
 
     goToBoard(id);
-  }
-
-  function goToBoard(id) {
-    nav.push({ id });
-    navigate(id);
   }
 
   const handleBoardDelete = useCallback(
