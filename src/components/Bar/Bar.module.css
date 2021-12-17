@@ -23,6 +23,10 @@
   min-width: 0;
 }
 
+.middleGroup:empty {
+  padding: 0;
+}
+
 .endGroup {
   justify-content: flex-end;
   flex: 1;

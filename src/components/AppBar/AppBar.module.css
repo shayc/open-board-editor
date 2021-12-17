@@ -2,7 +2,7 @@
   flex-shrink: 0;
   width: 100%;
   height: 3rem;
-  background: var(--neutralLight);
+  background: var(--neutralLighterAlt);
   color: var(--black);
   user-select: none;
 }

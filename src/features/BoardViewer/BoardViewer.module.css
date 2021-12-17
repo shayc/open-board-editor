@@ -5,7 +5,7 @@
 }
 
 .outputWrapper {
-  background-color: var(--neutralLight);
+  background-color: var(--neutralLighterAlt);
   color: var(--black);
 }
 
@@ -46,4 +46,5 @@
 
 .outputActionButton {
   align-self: center;
+  margin-inline-end: 16px;
 }
