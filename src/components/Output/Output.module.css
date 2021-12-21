@@ -1,7 +1,6 @@
 .root {
   --rootHeight: 8rem;
   --valueHeight: var(--rootHeight);
-  --valueWidth: var(--rootHeight);
 }
 
 .root {
@@ -30,7 +29,6 @@
 .value {
   box-sizing: border-box;
   height: var(--valueHeight);
-  min-width: var(--valueWidth);
   padding: 12px;
 }
 

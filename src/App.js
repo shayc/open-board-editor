@@ -34,7 +34,7 @@ function App() {
   const isView = pathname.includes('view/boards');
   const isEdit = pathname.includes('edit/boards');
 
-  const appTitle = !isView && (
+  const appTitle = isEdit && (
     <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
       {APP_NAME}
     </Link>

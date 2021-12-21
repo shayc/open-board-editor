@@ -11,7 +11,7 @@ function NavText(props) {
   return (
     <Text
       className={rootClassName}
-      variant={'mediumPlus'}
+      variant={'large'}
       nowrap={true}
       styles={{ root: { fontWeight: '600' } }}
       {...other}

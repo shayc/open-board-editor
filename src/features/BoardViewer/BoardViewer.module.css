@@ -5,7 +5,7 @@
 }
 
 .outputWrapper {
-  background-color: var(--neutralQuaternary);
+  background-color: var(--neutralLighterAlt);
   color: var(--black);
 }
 
@@ -21,10 +21,6 @@
 .safeAreaInsetX {
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
-}
-
-.navBarWrapper {
-  background-color: var(--neutralLighterAlt);
 }
 
 .boardWrapper {

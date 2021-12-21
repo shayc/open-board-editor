@@ -48,7 +48,7 @@ function BoardViewer(props) {
       clearHidden={!output.values.length}
       onClearClick={output.clear}
       onBackspaceClick={output.pop}
-      size={isSmallScreen ? 'medium' : 'large'}
+      size={'large'}
     />
   );
 
@@ -125,7 +125,7 @@ function BoardViewer(props) {
     <div className={styles.root} style={style}>
       <div className={`${styles.outputWrapper} ${styles.safeAreaInsetX}`}>
         <Output
-          actions={!isSmallScreen && outputActions}
+          actions={outputActions}
           className={styles.output}
           onClick={output.activate}
           renderValue={renderOutputValue}
@@ -133,7 +133,7 @@ function BoardViewer(props) {
         />
       </div>
 
-      <div className={`${styles.navBarWrapper} ${styles.safeAreaInsetX}`}>
+      <div className={styles.safeAreaInsetX}>
         <NavBar
           {...(isSmallScreen
             ? { backHidden: true, forwardHidden: true, homeHidden: true }
@@ -154,7 +154,7 @@ function BoardViewer(props) {
 
       {isSmallScreen ? (
         <div className={styles.smallScreenBottomBar}>
-          <NavBar {...navBarProps} actions={outputActions} />
+          <NavBar {...navBarProps} />
         </div>
       ) : null}
     </div>
