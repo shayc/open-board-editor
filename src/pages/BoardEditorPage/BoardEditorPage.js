@@ -377,6 +377,7 @@ function BoardEditorPage() {
         isBoardSelected={isBoardSelected}
         isBoardActive={board?.id}
         isPanelOpen={isBoardsPanelOpen}
+        isSmallScreen={isSmallScreen}
         selectedCount={buttonsSelection.getSelectedCount()}
         onPanelToggleClick={toggleBoardsPanel}
         onNewBoardClick={handleNewBoard}

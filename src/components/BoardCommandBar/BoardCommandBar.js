@@ -17,6 +17,7 @@ function BoardCommandBar(props) {
     isBoardActive,
     isBoardSelected,
     isPanelOpen,
+    isSmallScreen,
     onPanelToggleClick,
     onOpenFileClick,
     onDownloadFileClick,
@@ -110,10 +111,11 @@ function BoardCommandBar(props) {
     panelToggleItem,
     newBoardItem,
     ...(isBoardSelected ? selectedBoardItems : []),
-    ...(isBoardActive ? activeBoardItems : []),
+    ...(!isSmallScreen && isBoardActive ? activeBoardItems : []),
   ];
 
   const overflowItems = [
+    ...(isSmallScreen && isBoardActive ? activeBoardItems : []),
     { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
     openFileItem,
     {
