@@ -1,0 +1,26 @@
+.button {
+  width: 44px;
+  height: 44px;
+  color: inherit !important;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.buttonLarge {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.buttonLarge:focus-visible {
+  outline: 3px solid;
+  outline-offset: -3px;
+}
+
+.iconLarge {
+  width: 32px;
+  height: 32px;
+}

@@ -39,7 +39,7 @@ export function useBoardDB() {
   }
 
   async function getRootId() {
-    const id = await boardRepo.getRootId();
+    const { id } = await boardRepo.getRoot();
 
     if (id) {
       setRootId(id);

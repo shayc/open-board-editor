@@ -35,7 +35,6 @@ import styles from './BoardEditorPage.module.css';
 function BoardEditorPage() {
   const intl = useIntl();
   const { boardId } = useParams();
-  const navigate = useNavigate();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
   const [isBoardsPanelOpen, setIsBoardsPanelOpen] = useState(!isSmallScreen);
@@ -47,16 +46,19 @@ function BoardEditorPage() {
   const { board: boardSettings } = useSettings();
 
   const boardDB = useBoardDB();
-  const nav = useBoardNavigation();
+  const boardNavigation = useBoardNavigation({
+    navigate: useNavigate(),
+    history: [{ id: boardId }],
+    index: 0,
+  });
 
   const forceUpdate = useForceUpdate();
 
   const goToBoard = useCallback(
     function goToBoard(id) {
-      nav.push({ id });
-      navigate(id);
+      boardNavigation.push({ id });
     },
-    [navigate, nav]
+    [boardNavigation]
   );
 
   const { board, boardCtrl } = useBoard({
@@ -91,8 +93,8 @@ function BoardEditorPage() {
 
   const navButtons = (
     <NavButtons
-      backDisabled={nav.backDisabled}
-      forwardDisabled={nav.forwardDisabled}
+      backDisabled={boardNavigation.backDisabled}
+      forwardDisabled={boardNavigation.forwardDisabled}
       onBackClick={goBack}
       onForwardClick={goForward}
       onHomeClick={goHome}
@@ -117,9 +119,6 @@ function BoardEditorPage() {
     },
     [buttonsSelection]
   );
-
-  // eslint-disable-next-line
-  const handleActiveBoardIdChange = useCallback(debounce(goToBoard, 50), []);
 
   const handleImagesRequested = useMemo(
     () =>
@@ -342,8 +341,6 @@ function BoardEditorPage() {
 
       if (board) {
         boardCtrl.setBoard(board);
-      } else {
-        navigate('/edit/boards/');
       }
     };
 
@@ -352,7 +349,7 @@ function BoardEditorPage() {
     } else {
       boardCtrl.setBoard({ buttons: [], grid: {} });
     }
-  }, [boardCtrl, boardDB, navigate, boardId]);
+  }, [boardCtrl, boardDB, boardId]);
 
   useEffect(() => {
     if (isSmallScreen) {
@@ -361,19 +358,17 @@ function BoardEditorPage() {
   }, [isSmallScreen, setIsBoardsPanelOpen]);
 
   function goBack() {
-    nav.goBack();
-    navigate(-1);
+    boardNavigation.goBack();
   }
 
   function goForward() {
-    nav.goForward();
-    navigate(1);
+    boardNavigation.goForward();
   }
 
   function goHome() {
-    nav.reset({ id: boardDB.rootId });
-    navigate(boardDB.rootId);
+    boardNavigation.reset({ id: boardDB.rootId });
   }
+
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
@@ -413,7 +408,7 @@ function BoardEditorPage() {
                 activeId={boardId}
                 rootId={boardDB.rootId}
                 items={boardDB.boardsList}
-                onActiveIdChange={handleActiveBoardIdChange}
+                onActiveIdChange={goToBoard}
                 onSelectionChange={handleBoardSelectionChange}
                 renderItemActions={renderBoardActions}
               />

@@ -4,22 +4,42 @@ import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import BoardViewer from '../../features/BoardViewer';
+import { useBoardNavigation } from '../../hooks/board';
 import { Seo } from '../../components';
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage() {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { boardId } = useParams();
   const [board, setBoard] = useState();
   const [rootId, setRootId] = useState();
 
+  const boardNavigation = useBoardNavigation({
+    navigate: useNavigate(),
+    history: [{ id: board?.id }],
+    index: 0,
+  });
+
   const boardSetUrl = searchParams.get('boardSetUrl');
+
+  const navProps = {
+    backDisabled: boardNavigation.backDisabled,
+    forwardDisabled: boardNavigation.forwardDisabled,
+    onBackClick: () => {
+      boardNavigation.goBack();
+    },
+    onForwardClick: () => {
+      boardNavigation.goForward();
+    },
+    onHomeClick: () => {
+      boardNavigation.reset({ id: rootId });
+    },
+  };
 
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
-      const rootId = await boardRepo.getRootId();
+      const { id: rootId } = await boardRepo.getRoot();
 
       if (board) {
         setBoard(boardMap.toDTO(board));
@@ -33,38 +53,34 @@ function BoardViewerPage() {
   }, [boardId]);
 
   useEffect(() => {
-    async function fetchFile(url) {
-      const response = await fetch(`${url}`);
-      const blob = await response.blob();
-      const file = new File([blob], url.slice(1));
-
-      return file;
-    }
-
     async function importBoardSet(url) {
-      const file = await fetchFile(url);
-      const [boardSet] = await OBF.readFiles([file]);
-      boardRepo.importBoardSet(boardSet);
+      const boardSet = await fetchBoardSet(url);
+      await boardRepo.importBoardSet(boardSet);
 
-      const rootId = await boardRepo.getRootId();
-      navigate(rootId);
+      const { id, name } = await boardRepo.getRoot();
+      boardNavigation.reset({ id, name });
     }
 
     if (boardSetUrl) {
       importBoardSet(`${boardSetUrl}`);
     }
-  }, [boardSetUrl, navigate]);
+  }, [boardSetUrl, boardNavigation]);
 
-  function goBack() {
-    navigate(-1);
+  function handleBoardRequest(id) {
+    boardNavigation.push({ id });
   }
 
-  function goHome(id) {
-    navigate(id);
+  async function handleFetchRequest(url) {
+    const boardSet = await fetchBoardSet(url);
+
+    const rootBoard =
+      boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
+
+    setBoard(rootBoard);
   }
 
-  function goTo(id) {
-    navigate(id);
+  function handleRedirectRequest(url) {
+    window.open(url);
   }
 
   return (
@@ -73,15 +89,29 @@ function BoardViewerPage() {
 
       <BoardViewer
         board={board}
-        rootId={rootId}
-        onBoardRequested={goTo}
-        onFetchBoardRequested={(url) => {}}
-        onRedirectRequested={(url) => {}}
-        onBackClick={goBack}
-        onHomeClick={goHome}
+        navProps={navProps}
+        onBoardRequested={handleBoardRequest}
+        onFetchRequested={handleFetchRequest}
+        onRedirectRequested={handleRedirectRequest}
       />
     </div>
   );
+}
+
+async function fetchFile(url) {
+  const response = await fetch(`${url}`);
+  const blob = await response.blob();
+  const fileName = url.slice(1);
+  const file = new File([blob], fileName);
+
+  return file;
+}
+
+async function fetchBoardSet(url) {
+  const file = await fetchFile(url);
+  const [boardSet] = await OBF.readFiles([file]);
+
+  return boardSet;
 }
 
 export default BoardViewerPage;

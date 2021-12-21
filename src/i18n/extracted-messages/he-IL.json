@@ -60,6 +60,8 @@
   "app.components.NavButtons.goForward": "לחץ כדי לעבור קדימה",
   "app.components.NavButtons.goHome": "חזור הביתה",
   "app.components.NavButtons.home": "בית",
+  "app.components.OutputActions.backspace": "מחק",
+  "app.components.OutputActions.clear": "נקה",
   "app.components.SelectedBoardsPage.allBoardsSelected": "כל הלוחות נבחרו",
   "app.components.SelectedBoardsPage.boardsSelected": "{count} לוחות נבחרו",
   "app.components.SelectedBoardsPage.cancel": "ביטול",

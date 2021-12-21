@@ -177,14 +177,13 @@ export const boardRepo = {
     return file;
   },
 
-  async getRootId(): Promise<string | undefined> {
+  async getRoot(): Promise<string | undefined> {
     const db = await dbPromise;
 
     const rootPath = await db.get('manifest', 'root');
     const rootBoard = rootPath && (await db.get('boards', rootPath));
-    const rootBoardId = rootBoard?.id;
 
-    return rootBoardId;
+    return rootBoard;
   },
 
   async importBoardSet(boardSet: OBF.BoardSet) {

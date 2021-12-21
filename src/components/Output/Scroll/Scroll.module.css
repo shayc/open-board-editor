@@ -5,6 +5,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   outline: 0;
+  border-radius: 6px;
 }
 
 .container {

@@ -31,7 +31,6 @@ function App() {
   const speech = useSpeech();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   const isView = pathname.includes('view/boards');
   const isEdit = pathname.includes('edit/boards');
 

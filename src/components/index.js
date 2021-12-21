@@ -16,6 +16,7 @@ import Seo from './Seo';
 import Tile from './Tile';
 import Pictogram from './Pictogram';
 import Output from './Output';
+import { OutputActions } from './Output';
 import Board from './Board';
 import AppBar from './AppBar';
 import BoardsList from './BoardsList';
@@ -41,6 +42,7 @@ export {
   Tile,
   Pictogram,
   Output,
+  OutputActions,
   Board,
   AppBar,
   BoardsList,

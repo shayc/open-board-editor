@@ -5,6 +5,7 @@ const defaultIndex = -1;
 
 export function useBoardNavigation(params = {}) {
   const {
+    navigate,
     history: initialHistory = defaultHistory,
     index: initialIndex = defaultIndex,
   } = params;
@@ -21,8 +22,8 @@ export function useBoardNavigation(params = {}) {
       if (backDisabled) {
         return;
       }
-
       setIndex((i) => i - 1);
+      navigate?.(-1);
     }
 
     function goForward() {
@@ -31,11 +32,16 @@ export function useBoardNavigation(params = {}) {
       }
 
       setIndex((i) => i + 1);
+      navigate?.(1);
     }
 
     function reset(state) {
       setHistory(state ? [state] : defaultHistory);
       setIndex(state ? 0 : defaultIndex);
+
+      if (state?.id) {
+        navigate?.(state.id);
+      }
     }
 
     function push(state) {
@@ -44,6 +50,10 @@ export function useBoardNavigation(params = {}) {
       });
 
       setIndex((i) => i + 1);
+
+      if (state?.id) {
+        navigate?.(state.id);
+      }
     }
 
     return {
@@ -55,7 +65,7 @@ export function useBoardNavigation(params = {}) {
       push,
       reset,
     };
-  }, [index, history]);
+  }, [index, history, navigate]);
 
   return navigation;
 }

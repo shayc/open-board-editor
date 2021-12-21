@@ -1,48 +1,41 @@
 import PropTypes from 'prop-types';
-import { DefaultButton, getRTL } from '@fluentui/react';
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
-import { Board, NavBar, Tile, Pictogram, Output } from '../../components';
-import BackspaceSvg from './images/BackspaceSvg';
-import ClearSvg from './images/ClearSvg';
+import { useBoardOutput } from '../../hooks/board';
+import {
+  Board,
+  NavBar,
+  Tile,
+  Pictogram,
+  Output,
+  OutputActions,
+} from '../../components';
+
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
   const {
     actionHandlers,
     board,
-    onBackClick,
+    navProps,
     onBoardRequested,
-    onFetchBoardRequested,
-    onForwardClick,
-    onHomeClick,
+    onFetchRequested,
     onRedirectRequested,
-    rootId,
     style,
   } = props;
 
-  const isRTL = getRTL();
   const { isSmallScreen } = useMediaQuery();
   const { board: boardSettings } = useSettings();
   const speech = useSpeech();
-  const navigation = useBoardNavigation({
-    history: [{ id: board?.id }],
-    index: 0,
-  });
 
   const navBarProps = {
-    backDisabled: navigation.backDisabled,
-    forwardDisabled: navigation.forwardDisabled,
-    backHidden: !onBackClick,
-    forwardHidden: !onForwardClick,
-    homeHidden: !onHomeClick,
-    onForwardClick: handleForwardClick,
-    onBackClick: handleBackClick,
-    onHomeClick: handleHomeClick,
+    backHidden: !navProps.onBackClick,
+    forwardHidden: !navProps.onForwardClick,
+    homeHidden: !navProps.onHomeClick,
+    ...navProps,
   };
 
   const output = useBoardOutput({
@@ -51,61 +44,23 @@ function BoardViewer(props) {
   });
 
   const outputActions = (
-    <>
-      <DefaultButton
-        className={styles.outputActionButton}
-        aria-label="Clear"
-        disabled={!output.values.length}
-        onClick={output.clear}
-        style={{ visibility: !output.values.length ? 'hidden' : 'visible' }}
-      >
-        <ClearSvg
-          className={styles.icon}
-          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
-        />
-      </DefaultButton>
-      <DefaultButton
-        className={styles.outputActionButton}
-        aria-label="Backspace"
-        onClick={output.pop}
-      >
-        <BackspaceSvg
-          className={styles.icon}
-          style={{ transform: isRTL ? 'scaleX(-1)' : '' }}
-        />
-      </DefaultButton>
-    </>
+    <OutputActions
+      clearHidden={!output.values.length}
+      onClearClick={output.clear}
+      onBackspaceClick={output.pop}
+      size={isSmallScreen ? 'medium' : 'large'}
+    />
   );
 
   const handleButtonClick = OBF.createButtonClickHandler({
     speak,
     playAudio,
     actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    requestBoard: handleBoardRequested,
-    fetchBoard: onFetchBoardRequested,
+    requestBoard: onBoardRequested,
+    fetchBoard: onFetchRequested,
     redirect: onRedirectRequested,
     pushOutput: output.push,
   });
-
-  function handleHomeClick() {
-    navigation.reset({ id: rootId });
-    onHomeClick?.(rootId);
-  }
-
-  function handleBackClick() {
-    navigation.goBack();
-    onBackClick?.();
-  }
-
-  function handleForwardClick() {
-    navigation.goForward();
-    onForwardClick?.();
-  }
-
-  function handleBoardRequested(id) {
-    navigation.push({ id });
-    onBoardRequested?.(id);
-  }
 
   function speak(text) {
     speech.speak(text);
@@ -121,8 +76,14 @@ function BoardViewer(props) {
     const variant = loadBoard ? 'folder' : 'button';
     const pictogramSrc = image?.data || image?.url;
 
-    function handleClick() {
+    function handleClick(event) {
       handleButtonClick(button);
+    }
+
+    function handleKeyDown(event) {
+      if (event.keyCode === 32) {
+        event.preventDefault();
+      }
     }
 
     return (
@@ -131,6 +92,7 @@ function BoardViewer(props) {
         borderColor={borderColor}
         variant={variant}
         onClick={handleClick}
+        onKeyDown={handleKeyDown}
       >
         <Pictogram
           key={image?.url}
@@ -211,31 +173,15 @@ BoardViewer.propTypes = {
   /**
    *
    */
-  onBackClick: PropTypes.func,
-  /**
-   *
-   */
   onBoardRequested: PropTypes.func,
   /**
    *
    */
-  onFetchBoardRequested: PropTypes.func,
-  /**
-   *
-   */
-  onForwardClick: PropTypes.func,
-  /**
-   *
-   */
-  onHomeClick: PropTypes.func,
+  onFetchRequested: PropTypes.func,
   /**
    *
    */
   onRedirectRequested: PropTypes.func,
-  /**
-   *
-   */
-  rootId: PropTypes.string,
 };
 
 export default BoardViewer;

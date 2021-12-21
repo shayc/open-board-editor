@@ -32,14 +32,16 @@ export function useBoardOutput(params) {
   }
 
   function spellValue(string) {
-    const newValues = modifyLastValue(values, (value) => {
-      return {
-        ...value,
-        label: `${value?.label || ''}${string}`,
-      };
-    });
+    setValues((values) => {
+      const newValues = modifyLastValue(values, (value) => {
+        return {
+          ...value,
+          label: `${value?.label || ''}${string}`,
+        };
+      });
 
-    setValues(newValues);
+      return newValues;
+    });
   }
 
   async function activate() {
@@ -56,7 +58,13 @@ export function useBoardOutput(params) {
     }
   }
 
-  useBoardOutputHotKeys({ backspace: pop, del: clear });
+  useBoardOutputHotKeys({
+    backspace: pop,
+    del: clear,
+    space: space,
+    spell: spellValue,
+    activate,
+  });
 
   return {
     actionHandlers,
