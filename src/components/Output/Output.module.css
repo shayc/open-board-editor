@@ -29,6 +29,7 @@
 .value {
   box-sizing: border-box;
   height: var(--valueHeight);
+  max-height: 100%;
   padding: 12px;
 }
 
