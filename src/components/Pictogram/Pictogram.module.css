@@ -34,9 +34,10 @@
 }
 
 .label {
+  max-width: 100%;
   font-size: 32px;
-  flex-shrink: 0;
   font-weight: 700;
+  flex-shrink: 0;
   white-space: nowrap;
   text-align: center;
   text-overflow: ellipsis;
