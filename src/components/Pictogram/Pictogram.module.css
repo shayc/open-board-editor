@@ -19,8 +19,13 @@
 .imgContainer {
   height: calc(100% - var(--label-line-height));
   position: relative;
+  width: 100%;
+}
+
+.imgContainerPreserveRatio {
+  width: initial;
+  min-width: 0;
   aspect-ratio: 1 / 1;
-  max-width: 100%;
 }
 
 .img {

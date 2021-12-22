@@ -108,9 +108,11 @@ function BoardViewer(props) {
   function renderOutputValue(value) {
     const { image, label } = value;
     const imageSrc = image?.data || image?.url;
+    const preserveContainerRatio = true;
 
     return imageSrc ? (
       <Pictogram
+        preserveContainerRatio={preserveContainerRatio}
         label={label}
         src={imageSrc}
         labelHidden={boardSettings.isLabelHidden}

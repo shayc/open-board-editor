@@ -9,6 +9,7 @@ function Pictogram(props) {
     label,
     labelHidden,
     labelPosition = 'bottom',
+    preserveContainerRatio,
     src,
     ...other
   } = props;
@@ -20,7 +21,11 @@ function Pictogram(props) {
   return (
     <div className={pictogramClassName} {...other}>
       {src && (
-        <div className={styles.imgContainer}>
+        <div
+          className={`${styles.imgContainer} ${
+            preserveContainerRatio ? styles.imgContainerPreserveRatio : ''
+          }`}
+        >
           <img
             className={styles.img}
             src={src}
@@ -51,6 +56,10 @@ Pictogram.propTypes = {
    * Label position.
    */
   labelPosition: PropTypes.oneOf(['top', 'bottom']),
+  /**
+   * If `true`, image container aspect ratio is 1 / 1.
+   */
+  preserveContainerRatio: PropTypes.bool,
   /**
    * Image source.
    */
