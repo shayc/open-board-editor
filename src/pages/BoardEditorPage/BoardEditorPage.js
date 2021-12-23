@@ -6,10 +6,10 @@ import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { debounce, playAudio } from '../../utils';
-import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 import { useSpeech } from '../../contexts/speech';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useSettings } from '../../contexts/settings';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 
 import {
   Seo,
@@ -25,10 +25,10 @@ import {
   SelectedBoardsPage,
 } from '../../components';
 
-import { BoardEditor } from '../../features';
+import { defaultColors } from '../../open-board-format/color-codes';
 import globalSymbols from '../../api/pictograms/global-symbols';
+import { BoardEditor } from '../../features';
 import { openFileDialog, share, print } from './utils';
-import { defaultColors } from './colors';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
 
@@ -487,7 +487,7 @@ function BoardEditorPage() {
                   selectionEnabled={isButtonSelected}
                   buttonLabelPosition={boardSettings.labelPosition}
                   buttonLabelHidden={boardSettings.isLabelHidden}
-                  buttonColors={[...boardDB.boardsColors, ...defaultColors]}
+                  buttonColors={defaultColors}
                   buttonImages={images}
                   onImagesRequested={handleImagesRequested}
                   onButtonClick={boardCtrl.handleButtonClick}

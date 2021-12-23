@@ -12,9 +12,10 @@ import {
   FocusTrapZone,
   SearchBox,
   Dropdown,
+  SwatchColorPicker,
 } from '@fluentui/react';
 
-import { ImagePicker, ColorPicker } from '../../components';
+import { ImagePicker } from '../../components';
 import messages from './ButtonCallout.messages';
 import styles from './ButtonCallout.module.css';
 
@@ -54,19 +55,19 @@ function ButtonCallout(props) {
     }
   }
 
-  function handleDiscard(event) {
+  function handleDiscard() {
     onDiscard(button);
   }
 
-  function handleSave(event) {
+  function handleSave() {
     onSave(button);
   }
 
   function handleColorChange(color) {
     onChange({
       ...button,
-      backgroundColor: color.backgroundColor,
-      borderColor: color.borderColor,
+      backgroundColor: color,
+      borderColor: color,
     });
   }
 
@@ -119,7 +120,21 @@ function ButtonCallout(props) {
               <FormattedMessage {...messages.color} />
             </Text>
 
-            <ColorPicker colors={colors} onChange={handleColorChange} />
+            <SwatchColorPicker
+              columnCount={5}
+              cellShape={'circle'}
+              colorCells={colors}
+              cellWidth={32}
+              cellHeight={32}
+              onChange={(event, id, color) => {
+                handleColorChange(color);
+              }}
+              onCellFocused={(id, color) => {
+                if (color) {
+                  handleColorChange(color);
+                }
+              }}
+            />
 
             <Text className={styles.label} variant="medium" block>
               <FormattedMessage {...messages.image} />
