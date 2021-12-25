@@ -15,10 +15,10 @@ import {
   SwatchColorPicker,
 } from '@fluentui/react';
 
+import { getSemanticColor } from '../../open-board-format/color-codes';
 import { ImagePicker } from '../../components';
 import messages from './ButtonCallout.messages';
 import styles from './ButtonCallout.module.css';
-
 function ButtonCallout(props) {
   const {
     boards,
@@ -46,7 +46,14 @@ function ButtonCallout(props) {
   }
 
   function handleLabelChange(event, label) {
-    onChange({ ...button, label });
+    const semanticColor = getSemanticColor(label);
+
+    onChange({
+      ...button,
+      label,
+      backgroundColor: semanticColor,
+      borderColor: semanticColor,
+    });
   }
 
   function handleLabelKeyDown(event) {

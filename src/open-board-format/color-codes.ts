@@ -1,7 +1,9 @@
-const palette = {
+import { POSTags, getPartOfSpeech } from './part-of-speech';
+
+const palette: Palette = {
   blue: '#0078d4',
   brown: '#986f0b',
-  white: '#fff',
+  white: '#ffffff',
   grey: '#a0aeb2',
   red: '#d13438',
   orange: '#ffaa44',
@@ -22,83 +24,52 @@ type Palette = {
   pink: string;
   yellow: string;
   green: string;
+  [key: string]: string;
 };
 
-const modifiedFitzgeraldKey: ModifiedFitzgeraldKey = {
-  adjectives: 'blue',
-  adverbs: 'brown',
-  conjunctions: 'white',
-  determiners: 'grey',
-  emergency: 'red',
-  negation: 'red',
-  nouns: 'orange',
-  places: 'purple',
-  prepositions: 'pink',
-  pronouns: 'yellow',
-  questions: 'purple',
-  social: 'pink',
-  verbs: 'green',
-};
-
-type ModifiedFitzgeraldKey = {
-  adjectives: 'blue';
-  adverbs: 'brown';
-  conjunctions: 'white';
-  determiners: 'grey';
-  emergency: 'red';
-  negation: 'red';
-  nouns: 'orange';
-  places: 'purple';
-  prepositions: 'pink';
-  pronouns: 'yellow';
-  questions: 'purple';
-  social: 'pink';
-  verbs: 'green';
+export const modifiedFitzgeraldKey: any = {
+  [POSTags.Adjective]: 'blue',
+  [POSTags.Adverb]: 'brown',
+  [POSTags.Conjunction]: 'white',
+  [POSTags.Determiner]: 'grey',
+  [POSTags.Negative]: 'red',
+  [POSTags.Noun]: 'orange',
+  [POSTags.Place]: 'purple',
+  [POSTags.Preposition]: 'pink',
+  [POSTags.Pronoun]: 'yellow',
+  [POSTags.QuestionWord]: 'purple',
+  [POSTags.Verb]: 'green',
 };
 
 export const goossensCrainAndElder = {
-  /**
-   * words which tells action: open, come
-   */
-  verbs: 'pink',
-  /**
-   * adjectives and adverbs: pretty, slow
-   */
-  descriptors: 'blue',
-  /**
-   * position words: in, off
-   */
-  prepositions: 'green',
-  /**
-   * person, place or thing: car, string, Mary
-   */
-  nouns: 'yellow',
-  /**
-   * who, what, how
-   */
-  questions: 'orange',
-  /**
-   * no, don't
-   */
-  negation: 'orange',
-  /**
-   * personal, possessive: I, you
-   */
-  pronouns: 'orange',
-  interjections: 'orange',
+  [POSTags.Verb]: 'pink',
+  [POSTags.Adjective]: 'blue',
+  [POSTags.Adverb]: 'blue',
+  [POSTags.Preposition]: 'green',
+  [POSTags.Noun]: 'yellow',
+  [POSTags.QuestionWord]: 'orange',
+  [POSTags.Negative]: 'orange',
+  [POSTags.Pronoun]: 'orange',
 };
 
-function mapColors(colorCode: ModifiedFitzgeraldKey, palette: Palette) {
+function mapColors(colorCode: any, palette: Palette) {
   const colors = Array.from(
-    new Set(Object.values(colorCode).map((color) => palette[color]))
+    new Set(Object.values(colorCode).map((color: any) => palette[color]))
   );
 
   return colors;
 }
 
-export const defaultColors = mapColors(modifiedFitzgeraldKey, palette).map(
+export const defaultColors = mapColors(goossensCrainAndElder, palette).map(
   (color) => ({
     color,
     id: color,
   })
 );
+
+export function getSemanticColor(value: string) {
+  const pos = getPartOfSpeech(value);
+  const color = goossensCrainAndElder[pos];
+
+  return palette[color];
+}

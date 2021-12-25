@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { getContrastColor } from 'hex-a11y';
 
 import styles from './Tile.module.css';
 
@@ -31,9 +32,13 @@ function Tile(props) {
 
   const tileStyle = {
     ...style,
-    backgroundColor,
-    borderColor,
+    '--background-color': backgroundColor,
+    '--border-color': borderColor,
   };
+
+  if (CSS.supports('not (color: color-contrast(red vs black, white))')) {
+    tileStyle.color = backgroundColor ? getContrastColor(backgroundColor) : '';
+  }
 
   return (
     <ComponentProp
