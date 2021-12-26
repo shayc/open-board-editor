@@ -15,10 +15,12 @@ import {
   SwatchColorPicker,
 } from '@fluentui/react';
 
+import { getPartOfSpeech } from '../../open-board-format/part-of-speech';
 import { getSemanticColor } from '../../open-board-format/color-codes';
 import { ImagePicker } from '../../components';
 import messages from './ButtonCallout.messages';
 import styles from './ButtonCallout.module.css';
+
 function ButtonCallout(props) {
   const {
     boards,
@@ -37,6 +39,9 @@ function ButtonCallout(props) {
   const labelTextFieldRef = useRef();
   const rootClassName = clsx(className, styles.root);
 
+  const labelPartOfSpeech =
+    button.label.split(' ').length === 1 ? getPartOfSpeech(button.label) : '';
+
   function handleImageSearchChange(event, text) {
     onImagesRequested(text);
   }
@@ -46,13 +51,14 @@ function ButtonCallout(props) {
   }
 
   function handleLabelChange(event, label) {
-    const semanticColor = getSemanticColor(label);
+    const semanticColor =
+      label.split(' ').length === 1 ? getSemanticColor(label) : '';
 
     onChange({
       ...button,
       label,
-      backgroundColor: semanticColor,
-      borderColor: semanticColor,
+      ...(semanticColor ? { backgroundColor: semanticColor } : {}),
+      ...(semanticColor ? { borderColor: semanticColor } : {}),
     });
   }
 
@@ -117,7 +123,9 @@ function ButtonCallout(props) {
               elementRef={(ref) => {
                 labelTextFieldRef.current = ref?.querySelector('input');
               }}
-              label={intl.formatMessage(messages.label)}
+              label={`${intl.formatMessage(messages.label)} ${
+                labelPartOfSpeech ? `(${labelPartOfSpeech})` : ''
+              }`}
               value={button.label}
               onChange={handleLabelChange}
               onKeyDown={handleLabelKeyDown}
