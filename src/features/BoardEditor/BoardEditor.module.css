@@ -18,6 +18,10 @@
   height: 100%;
 }
 
+.tileDraggable {
+  cursor: move;
+}
+
 .tileControls {
   width: 100%;
   height: 100%;

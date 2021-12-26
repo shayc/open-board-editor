@@ -38,6 +38,12 @@ function BoardViewer(props) {
     ...navProps,
   };
 
+  const navBarPropsHidden = {
+    backHidden: true,
+    forwardHidden: true,
+    homeHidden: true,
+  };
+
   const output = useBoardOutput({
     speak,
     playAudio,
@@ -137,9 +143,7 @@ function BoardViewer(props) {
 
       <div className={styles.safeAreaInsetX}>
         <NavBar
-          {...(isSmallScreen
-            ? { backHidden: true, forwardHidden: true, homeHidden: true }
-            : navBarProps)}
+          {...(isSmallScreen ? navBarPropsHidden : navBarProps)}
           text={board?.name}
         />
       </div>
@@ -154,11 +158,11 @@ function BoardViewer(props) {
         />
       </div>
 
-      {isSmallScreen ? (
+      {isSmallScreen && (
         <div className={styles.smallScreenBottomBar}>
           <NavBar {...navBarProps} />
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

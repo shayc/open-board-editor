@@ -60,7 +60,7 @@ function mapColors(colorCode: any, palette: Palette) {
   return colors;
 }
 
-export const defaultColors = mapColors(goossensCrainAndElder, palette).map(
+export const defaultColors = mapColors(modifiedFitzgeraldKey, palette).map(
   (color) => ({
     color,
     id: color,
@@ -69,7 +69,7 @@ export const defaultColors = mapColors(goossensCrainAndElder, palette).map(
 
 export function getSemanticColor(value: string) {
   const pos = getPartOfSpeech(value);
-  const color = goossensCrainAndElder[pos];
+  const color = modifiedFitzgeraldKey[pos];
 
   return palette[color];
 }

@@ -46,8 +46,9 @@ function BoardEditor(props) {
     setButtonPosition,
     setCalloutTarget,
   } = useButtonCallout();
-
   const rootClassName = clsx(className, styles.root);
+
+  const boardDraggable = draggable && !selectionEnabled;
 
   const boardsOptions = linkableBoards.map((board) => ({
     key: board.id,
@@ -114,6 +115,10 @@ function BoardEditor(props) {
     const variant = loadBoard ? 'folder' : 'button';
     const isSelected = selection?.isIndexSelected(index);
 
+    const tileClassName = clsx(styles.tile, {
+      [styles.tileDraggable]: boardDraggable,
+    });
+
     const tileControlsClassName = clsx(styles.tileControls, {
       [styles.isTileControlsHidden]: !selectionEnabled,
       [styles.isTileControlsSelected]: isSelected,
@@ -141,6 +146,7 @@ function BoardEditor(props) {
       <div className={styles.tileContainer} data-selection-index={index}>
         <Tile
           data-selection-invoke={true}
+          className={tileClassName}
           backgroundColor={backgroundColor}
           borderColor={borderColor}
           variant={variant}
@@ -187,7 +193,7 @@ function BoardEditor(props) {
           <Board
             buttons={board.buttons}
             grid={board.grid}
-            draggable={draggable && !selectionEnabled}
+            draggable={boardDraggable}
             renderButton={renderTile}
             renderButtonPlaceholder={renderTilePlaceholder}
             onButtonPositionChange={onButtonPositionChange}
