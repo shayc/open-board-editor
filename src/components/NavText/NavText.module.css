@@ -4,3 +4,9 @@
   line-height: 44px;
   text-align: center;
 }
+
+@media print {
+  .root {
+    color: #000;
+  }
+}

@@ -1,0 +1,9 @@
+.fluentThemeProvider {
+  height: 100%;
+}
+
+@media print {
+  .fluentThemeProvider {
+    background: transparent;
+  }
+}

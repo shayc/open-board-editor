@@ -2,6 +2,12 @@
   border-block-end: 1px solid var(--themeLighterAlt);
 }
 
+@media print {
+  .root {
+    display: none;
+  }
+}
+
 .newBoardButtonContainer {
   display: flex;
   align-items: center;

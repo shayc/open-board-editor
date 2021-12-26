@@ -7,6 +7,12 @@
   user-select: none;
 }
 
+@media print {
+  .root {
+    display: none;
+  }
+}
+
 .title {
   padding-inline-start: 8px;
   padding-inline-end: 12px;

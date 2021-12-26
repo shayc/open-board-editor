@@ -6,6 +6,7 @@ import {
 
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { darkTheme, lightTheme } from './themes';
+import styles from './theme-context.module.css';
 
 initializeIcons();
 
@@ -40,7 +41,10 @@ function ThemeProvider(props) {
 
   return (
     <ThemeContext.Provider value={context} {...other}>
-      <FluentThemeProvider style={{ height: '100%' }} theme={appTheme}>
+      <FluentThemeProvider
+        className={styles.fluentThemeProvider}
+        theme={appTheme}
+      >
         {children}
       </FluentThemeProvider>
     </ThemeContext.Provider>
