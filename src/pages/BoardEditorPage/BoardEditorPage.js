@@ -137,6 +137,10 @@ function BoardEditorPage() {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
 
+  function handleBoardRequest(id) {
+    boardNavigation.push({ id });
+  }
+
   // function handleButtonColorChange(ids, color) {
   //   const board = boardCtrl.setButtonColor(ids, color);
   //   boardDB.update(board);
@@ -490,6 +494,7 @@ function BoardEditorPage() {
                   buttonColors={defaultColors}
                   buttonImages={images}
                   onImagesRequested={handleImagesRequested}
+                  onBoardRequested={handleBoardRequest}
                   onButtonClick={boardCtrl.handleButtonClick}
                   onButtonChange={handleButtonChange}
                   onButtonChangeDiscard={handleButtonChangeDiscard}

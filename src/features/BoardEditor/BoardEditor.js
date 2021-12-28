@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
+  IconButton,
   Check,
   MarqueeSelection,
   Selection,
   SelectionZone,
 } from '@fluentui/react';
 
+import * as OBF from '../../open-board-format';
+import * as utils from '../../utils';
+import { useSpeech } from '../../contexts/speech';
 import { Board, Tile, Pictogram } from '../../components';
 import {
   ButtonCallout,
@@ -18,6 +22,7 @@ import { nanoid } from 'nanoid';
 
 function BoardEditor(props) {
   const {
+    actionHandlers,
     board,
     buttonColors,
     buttonImages,
@@ -26,6 +31,7 @@ function BoardEditor(props) {
     className,
     draggable,
     linkableBoards = [],
+    onBoardRequested,
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
@@ -37,6 +43,8 @@ function BoardEditor(props) {
     ...other
   } = props;
 
+  const speech = useSpeech();
+
   const {
     button,
     buttonPosition,
@@ -46,14 +54,36 @@ function BoardEditor(props) {
     setButtonPosition,
     setCalloutTarget,
   } = useButtonCallout();
-  const rootClassName = clsx(className, styles.root);
 
-  const boardDraggable = draggable && !selectionEnabled;
+  const rootClassName = clsx(className, styles.root);
 
   const boardsOptions = linkableBoards.map((board) => ({
     key: board.id,
     text: board.name,
   }));
+
+  const tileDraggable = draggable && !selectionEnabled;
+
+  const handleTileClick = OBF.createButtonClickHandler({
+    speak,
+    playAudio,
+    actionHandlers,
+    requestBoard: onBoardRequested,
+    fetchBoard: (url) => {
+      console.log(`Fetch board: ${url}`);
+    },
+    redirect: (url) => {
+      console.log(`Redirect: ${url}`);
+    },
+  });
+
+  function speak(text) {
+    speech.speak(text);
+  }
+
+  function playAudio(url) {
+    utils.playAudio(url);
+  }
 
   function handleButtonDiscard() {
     resetButton();
@@ -116,7 +146,7 @@ function BoardEditor(props) {
     const isSelected = selection?.isIndexSelected(index);
 
     const tileClassName = clsx(styles.tile, {
-      [styles.tileDraggable]: boardDraggable,
+      [styles.tileDraggable]: tileDraggable,
     });
 
     const tileControlsClassName = clsx(styles.tileControls, {
@@ -124,15 +154,26 @@ function BoardEditor(props) {
       [styles.isTileControlsSelected]: isSelected,
     });
 
-    function handleClick(event) {
+    function handleClick() {
       if (selectionEnabled) {
         selection.toggleIndexSelected(index);
         return;
       }
 
+      handleTileClick(button);
+    }
+
+    function handleEditClick(event) {
+      event.stopPropagation();
+
       setButton(button);
       setButtonPosition(position);
-      setCalloutTarget(event.target.parentElement);
+
+      setCalloutTarget(
+        // TODO: tightly coupled with DOM structure
+        event.target.parentElement.parentElement.parentElement.parentElement
+          .parentElement
+      );
     }
 
     function handleKeyDown(event) {
@@ -143,9 +184,12 @@ function BoardEditor(props) {
     }
 
     return (
-      <div className={styles.tileContainer} data-selection-index={index}>
+      <div
+        className={styles.tileContainer}
+        data-selection-index={index}
+        data-selection-invoke={true}
+      >
         <Tile
-          data-selection-invoke={true}
           className={tileClassName}
           backgroundColor={backgroundColor}
           borderColor={borderColor}
@@ -163,6 +207,16 @@ function BoardEditor(props) {
         </Tile>
 
         <div className={tileControlsClassName}>
+          {!selectionEnabled && (
+            <IconButton
+              className={`${styles.tileControlButton} ${styles.tileEditButton}`}
+              onClick={handleEditClick}
+              iconProps={{ iconName: 'Edit' }}
+              title={'Edit'}
+              data-is-focusable={false}
+            />
+          )}
+
           <button
             className={`${styles.tileControlButton} ${styles.tileSelectToggle}`}
             data-selection-toggle={true}
@@ -193,7 +247,7 @@ function BoardEditor(props) {
           <Board
             buttons={board.buttons}
             grid={board.grid}
-            draggable={boardDraggable}
+            draggable={tileDraggable}
             renderButton={renderTile}
             renderButtonPlaceholder={renderTilePlaceholder}
             onButtonPositionChange={onButtonPositionChange}

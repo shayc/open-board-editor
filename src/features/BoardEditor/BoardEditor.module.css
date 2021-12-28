@@ -59,7 +59,16 @@
 
 .tileSelectToggle {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   cursor: pointer;
+}
+
+.tileEditButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
 }
