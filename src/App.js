@@ -34,21 +34,6 @@ function App() {
   const isView = pathname.includes('view/boards');
   const isEdit = pathname.includes('edit/boards');
 
-  const appTitle = isEdit && (
-    <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-      {APP_NAME}
-    </Link>
-  );
-
-  const appActions = (
-    <>
-      {isEdit && <SettingsButton onClick={toggleSettings} />}
-      {(isEdit || isView) && (
-        <EditToggleButton checked={isEdit} onClick={toggleEdit} />
-      )}
-    </>
-  );
-
   useEffect(() => {
     speech.setLang(locale);
   }, [locale, speech]);
@@ -68,7 +53,16 @@ function App() {
         <html lang={locale} />
       </Helmet>
 
-      <AppBar title={appTitle} actions={appActions} />
+      {isEdit && (
+        <AppBar
+          title={
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+              {APP_NAME}
+            </Link>
+          }
+          actions={<SettingsButton onClick={toggleSettings} />}
+        />
+      )}
 
       <Suspense
         fallback={
