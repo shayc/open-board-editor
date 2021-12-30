@@ -14,7 +14,6 @@ import {
   DelayedRender,
   SpinnerProgress,
   AppBar,
-  EditToggleButton,
   SettingsButton,
 } from './components';
 import { AppSettingsPanel } from './features';
