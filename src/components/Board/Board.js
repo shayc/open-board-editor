@@ -7,17 +7,23 @@ import {
 } from '@fluentui/react';
 
 import * as OBF from '../../open-board-format';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import NavText from '../NavText';
+import Bar from '../Bar';
 import Grid from './Grid';
 import AbsolutePosition from './AbsolutePosition';
 import styles from './Board.module.css';
 
 function Board(props) {
   const {
+    barEnd,
+    barStart,
     buttons,
     className,
     draggable,
     gap,
     grid,
+    name,
     onDragEnd,
     onDragStart,
     onButtonPositionChange,
@@ -27,6 +33,8 @@ function Board(props) {
     scrollDirection,
     ...other
   } = props;
+
+  const { isSmallScreen } = useMediaQuery();
 
   const rootClassName = clsx(styles.root, className);
 
@@ -39,6 +47,14 @@ function Board(props) {
 
   return (
     <div className={rootClassName} {...other}>
+      <div className={styles.safeAreaInsetX}>
+        <Bar
+          startGroup={!isSmallScreen ? barStart : null}
+          middleGroup={<NavText>{name}</NavText>}
+          endGroup={!isSmallScreen ? barEnd : null}
+        />
+      </div>
+
       {shouldRenderGrid && (
         <FocusZone
           className={styles.focusZone}
@@ -65,6 +81,14 @@ function Board(props) {
 
       {shouldRenderAbsolutePosition && (
         <AbsolutePosition items={buttons} renderItem={renderButton} />
+      )}
+
+      {isSmallScreen && (
+        <Bar
+          startGroup={isSmallScreen ? barStart : null}
+          middleGroup={null}
+          endGroup={isSmallScreen ? barEnd : null}
+        />
       )}
     </div>
   );

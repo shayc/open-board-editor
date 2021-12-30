@@ -7,7 +7,6 @@ import GridSizeSelect from './GridSizeSelect';
 import BoardCommandBar from './BoardCommandBar';
 import ColorPicker from './ColorPicker';
 import ImagePicker from './ImagePicker';
-import NavBar from './NavBar';
 import BoardSetList from './BoardSetList';
 import Bar from './Bar';
 import DelayedRender from './DelayedRender';
@@ -33,7 +32,6 @@ export {
   BoardCommandBar,
   ColorPicker,
   ImagePicker,
-  NavBar,
   BoardSetList,
   Bar,
   DelayedRender,

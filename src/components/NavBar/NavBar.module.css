@@ -1,9 +1,0 @@
-.root {
-  height: 44px;
-  flex-shrink: 0;
-}
-
-@media print {
-  .root {
-  }
-}

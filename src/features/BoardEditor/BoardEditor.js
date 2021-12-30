@@ -245,6 +245,7 @@ function BoardEditor(props) {
           isSelectedOnFocus={false}
         >
           <Board
+            name={board.name}
             buttons={board.buttons}
             grid={board.grid}
             draggable={tileDraggable}

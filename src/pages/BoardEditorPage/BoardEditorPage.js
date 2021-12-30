@@ -91,16 +91,6 @@ function BoardEditorPage() {
   const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardSelected = Boolean(selectedBoards?.length);
 
-  const navButtons = (
-    <NavButtons
-      backDisabled={boardNavigation.backDisabled}
-      forwardDisabled={boardNavigation.forwardDisabled}
-      onBackClick={goBack}
-      onForwardClick={goForward}
-      onHomeClick={goHome}
-    />
-  );
-
   const navigateToNextBoard = useCallback(
     function navigateToNextBoard(boardId, boardsList) {
       const boardIndex = boardsList.findIndex((board) => board.id === boardId);
@@ -407,8 +397,6 @@ function BoardEditorPage() {
         <div className={styles.container}>
           {isBoardsPanelOpen && (
             <div className={styles.panel}>
-              {!isSmallScreen && navButtons}
-
               <BoardsList
                 activeId={boardId}
                 rootId={boardDB.rootId}
@@ -422,93 +410,17 @@ function BoardEditorPage() {
 
           <div className={styles.main}>
             {board?.id && selectedBoards.length < 2 && (
-              <>
-                {!isSmallScreen && (
-                  <Bar
-                    startGroup={
-                      !isButtonSelected ? (
-                        !isBoardsPanelOpen && navButtons
-                      ) : (
-                        <>
-                          <CommandBarButton
-                            iconProps={{ iconName: 'Delete' }}
-                            onClick={handleButtonDelete}
-                          >
-                            Delete
-                          </CommandBarButton>
-                          <CommandBarButton
-                            iconProps={{ iconName: 'Color' }}
-                            onClick={() => {}}
-                          >
-                            Color
-                          </CommandBarButton>
-                        </>
-                      )
-                    }
-                    middleGroup={
-                      !isButtonSelected && <NavText>{board?.name}</NavText>
-                    }
-                    endGroup={
-                      !isButtonSelected ? (
-                        <>
-                          <GridSizeSelect onChange={handleGridSizeChange} />
-                          <CommandBarButton
-                            title={intl.formatMessage(
-                              messages.viewBoardDetails
-                            )}
-                            iconProps={{ iconName: 'Info' }}
-                            onClick={handleBoardDetails}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <CommandBarButton
-                            text={intl.formatMessage(messages.selected, {
-                              number: buttonsSelection.getSelectedCount(),
-                            })}
-                            iconProps={{ iconName: 'Clear' }}
-                            onClick={() => {
-                              buttonsSelection.setAllSelected(false);
-                            }}
-                          />
-                        </>
-                      )
-                    }
-                  />
-                )}
-
-                {isSmallScreen && (
-                  <Bar middleGroup={<NavText>{board?.name}</NavText>} />
-                )}
-
-                <BoardEditor
-                  board={{ ...board, grid }}
-                  linkableBoards={linkableBoards}
-                  draggable={!isSmallScreen}
-                  scrollSnap={true}
-                  scrollDirection="vertical"
-                  selection={buttonsSelection}
-                  selectionEnabled={isButtonSelected}
-                  buttonLabelPosition={boardSettings.labelPosition}
-                  buttonLabelHidden={boardSettings.isLabelHidden}
-                  buttonColors={defaultColors}
-                  buttonImages={images}
-                  onImagesRequested={handleImagesRequested}
-                  onBoardRequested={handleBoardRequest}
-                  onButtonClick={boardCtrl.handleButtonClick}
-                  onButtonChange={handleButtonChange}
-                  onButtonChangeDiscard={handleButtonChangeDiscard}
-                  onButtonChangeSave={handleButtonChangeSave}
-                  onButtonPositionChange={handleButtonPositionChange}
-                />
-              </>
-            )}
-
-            {isSmallScreen && (
-              <Bar
-                className={styles.bottomNavBar}
-                startGroup={
-                  (!isButtonSelected && navButtons) || (
+              <BoardEditor
+                barStart={
+                  (!isButtonSelected && (
+                    <NavButtons
+                      backDisabled={boardNavigation.backDisabled}
+                      forwardDisabled={boardNavigation.forwardDisabled}
+                      onBackClick={goBack}
+                      onForwardClick={goForward}
+                      onHomeClick={goHome}
+                    />
+                  )) || (
                     <>
                       <CommandBarButton
                         iconProps={{ iconName: 'Delete' }}
@@ -523,7 +435,7 @@ function BoardEditorPage() {
                     </>
                   )
                 }
-                endGroup={
+                barEnd={
                   (!isButtonSelected && (
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
@@ -547,6 +459,24 @@ function BoardEditorPage() {
                     </>
                   )
                 }
+                board={{ ...board, grid }}
+                linkableBoards={linkableBoards}
+                draggable={!isSmallScreen}
+                scrollSnap={true}
+                scrollDirection="vertical"
+                selection={buttonsSelection}
+                selectionEnabled={isButtonSelected}
+                buttonLabelPosition={boardSettings.labelPosition}
+                buttonLabelHidden={boardSettings.isLabelHidden}
+                buttonColors={defaultColors}
+                buttonImages={images}
+                onImagesRequested={handleImagesRequested}
+                onBoardRequested={handleBoardRequest}
+                onButtonClick={boardCtrl.handleButtonClick}
+                onButtonChange={handleButtonChange}
+                onButtonChangeDiscard={handleButtonChangeDiscard}
+                onButtonChangeSave={handleButtonChangeSave}
+                onButtonPositionChange={handleButtonPositionChange}
               />
             )}
 

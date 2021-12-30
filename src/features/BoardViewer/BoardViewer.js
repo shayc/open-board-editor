@@ -3,13 +3,12 @@ import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useBoardOutput } from '../../hooks/board';
 import {
   Board,
-  NavBar,
   Tile,
   Pictogram,
+  NavButtons,
   Output,
   OutputActions,
 } from '../../components';
@@ -27,22 +26,8 @@ function BoardViewer(props) {
     style,
   } = props;
 
-  const { isSmallScreen } = useMediaQuery();
   const { board: boardSettings } = useSettings();
   const speech = useSpeech();
-
-  const navBarProps = {
-    backHidden: !navProps.onBackClick,
-    forwardHidden: !navProps.onForwardClick,
-    homeHidden: !navProps.onHomeClick,
-    ...navProps,
-  };
-
-  const navBarPropsHidden = {
-    backHidden: true,
-    forwardHidden: true,
-    homeHidden: true,
-  };
 
   const output = useBoardOutput({
     speak,
@@ -141,15 +126,10 @@ function BoardViewer(props) {
         />
       </div>
 
-      <div className={styles.safeAreaInsetX}>
-        <NavBar
-          {...(isSmallScreen ? navBarPropsHidden : navBarProps)}
-          text={board?.name}
-        />
-      </div>
-
       <div className={`${styles.boardWrapper} ${styles.safeAreaInsetX}`}>
         <Board
+          barStart={<NavButtons {...navProps} />}
+          name={board?.name}
           buttons={board?.buttons}
           grid={board?.grid}
           renderButton={renderTile}
@@ -157,12 +137,6 @@ function BoardViewer(props) {
           scrollDirection="vertical"
         />
       </div>
-
-      {isSmallScreen && (
-        <div className={styles.smallScreenBottomBar}>
-          <NavBar {...navBarProps} />
-        </div>
-      )}
     </div>
   );
 }
