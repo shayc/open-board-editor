@@ -19,7 +19,6 @@ import {
   DelayedRender,
   NavButtons,
   BoardCommandBar,
-  GridSizeSelect,
   SelectedBoardsPage,
 } from '../../components';
 
@@ -386,6 +385,7 @@ function BoardEditorPage() {
           const selectedIds = selectedBoards.map((item) => item.id);
           handleBoardDelete(selectedIds);
         }}
+        onGridSizeChange={handleGridSizeChange}
       />
 
       {isLoading ? (
@@ -435,22 +435,16 @@ function BoardEditorPage() {
                   )
                 }
                 barEnd={
-                  (!isButtonSelected && (
-                    <>
-                      <GridSizeSelect onChange={handleGridSizeChange} />
-                    </>
-                  )) || (
-                    <>
-                      <CommandBarButton
-                        text={intl.formatMessage(messages.selected, {
-                          number: buttonsSelection.getSelectedCount(),
-                        })}
-                        iconProps={{ iconName: 'Clear' }}
-                        onClick={() => {
-                          buttonsSelection.setAllSelected(false);
-                        }}
-                      />
-                    </>
+                  isButtonSelected && (
+                    <CommandBarButton
+                      text={intl.formatMessage(messages.selected, {
+                        number: buttonsSelection.getSelectedCount(),
+                      })}
+                      iconProps={{ iconName: 'Clear' }}
+                      onClick={() => {
+                        buttonsSelection.setAllSelected(false);
+                      }}
+                    />
                   )
                 }
                 board={{ ...board, grid }}

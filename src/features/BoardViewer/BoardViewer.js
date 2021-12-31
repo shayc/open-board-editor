@@ -8,7 +8,6 @@ import {
   Board,
   Tile,
   Pictogram,
-  NavButtons,
   Output,
   OutputActions,
 } from '../../components';
@@ -18,8 +17,9 @@ import styles from './BoardViewer.module.css';
 function BoardViewer(props) {
   const {
     actionHandlers,
+    barEnd,
+    barStart,
     board,
-    navProps,
     onBoardRequested,
     onFetchRequested,
     onRedirectRequested,
@@ -128,7 +128,8 @@ function BoardViewer(props) {
 
       <div className={`${styles.boardWrapper} ${styles.safeAreaInsetX}`}>
         <Board
-          barStart={<NavButtons {...navProps} />}
+          barStart={barStart}
+          barEnd={barEnd}
           name={board?.name}
           buttons={board?.buttons}
           grid={board?.grid}

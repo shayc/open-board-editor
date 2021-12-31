@@ -9,6 +9,30 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.BoardCommandBar';
 
 export default defineMessages({
+  grid: {
+    id: `${scope}.grid`,
+    defaultMessage: 'Grid',
+  },
+  changeGridSize: {
+    id: `${scope}.changeGridSize`,
+    defaultMessage: 'Change grid size',
+  },
+  small: {
+    id: `${scope}.small`,
+    defaultMessage: 'Small',
+  },
+  medium: {
+    id: `${scope}.medium`,
+    defaultMessage: 'Medium',
+  },
+  large: {
+    id: `${scope}.large`,
+    defaultMessage: 'Large',
+  },
+  extraLarge: {
+    id: `${scope}.extraLarge`,
+    defaultMessage: 'Extra large',
+  },
   details: {
     id: `${scope}.details`,
     defaultMessage: 'Details',

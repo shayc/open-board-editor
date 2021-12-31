@@ -1,11 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  Link,
-} from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useSettings } from './contexts/settings';
 import { useSpeech } from './contexts/speech';
@@ -15,6 +9,7 @@ import {
   SpinnerProgress,
   AppBar,
   SettingsButton,
+  EditToggleButton,
 } from './components';
 import { AppSettingsPanel } from './features';
 import { APP_NAME } from './constants';
@@ -28,22 +23,17 @@ function App() {
   const { isSettingsOpen, toggleSettings } = useSettings();
   const { locale } = useLocale();
   const speech = useSpeech();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isView = pathname.includes('view/boards');
+  const navigate = useNavigate();
+  // const isView = pathname.includes('view/boards');
   const isEdit = pathname.includes('edit/boards');
 
   useEffect(() => {
     speech.setLang(locale);
   }, [locale, speech]);
 
-  function toggleEdit() {
-    navigate(
-      pathname.replace(
-        (isEdit && 'edit/') || (isView && 'view/'),
-        (isEdit && 'view/') || (isView && 'edit/')
-      )
-    );
+  function toggleViewer() {
+    navigate(pathname.replace('edit', 'view'));
   }
 
   return (
@@ -54,12 +44,13 @@ function App() {
 
       {isEdit && (
         <AppBar
-          title={
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-              {APP_NAME}
-            </Link>
+          title={APP_NAME}
+          actions={
+            <>
+              <SettingsButton onClick={toggleSettings} />
+              <EditToggleButton checked={true} onClick={toggleViewer} />
+            </>
           }
-          actions={<SettingsButton onClick={toggleSettings} />}
         />
       )}
 

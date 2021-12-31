@@ -8,7 +8,7 @@ import BoardCommandBar from './BoardCommandBar';
 import ColorPicker from './ColorPicker';
 import ImagePicker from './ImagePicker';
 import BoardSetList from './BoardSetList';
-import Bar from './Bar';
+import Bar from './Board/Bar';
 import DelayedRender from './DelayedRender';
 import DetailsPanel from './DetailsPanel';
 import Seo from './Seo';

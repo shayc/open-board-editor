@@ -26,6 +26,7 @@ function BoardCommandBar(props) {
     onShareClick,
     onNewBoardClick,
     onDeleteBoardClick,
+    onGridSizeChange,
   } = props;
 
   const intl = useIntl();
@@ -59,13 +60,34 @@ function BoardCommandBar(props) {
 
   const newBoardItem = {
     buttonStyles,
-    key: 'new-board',
+    key: 'new',
     text: intl.formatMessage(messages.newBoard),
+    menuProps: {
+      items: [
+        {
+          key: 'board',
+          text: 'New board',
+          iconProps: { iconName: '' },
+        },
+        {
+          key: 'tile',
+          text: 'New tile',
+          iconProps: { iconName: '' },
+        },
+      ],
+    },
     onClick: onNewBoardClick,
     onRender: (item) => {
       return (
         <div className={styles.newBoardButtonContainer}>
-          <DefaultButton data-is-focusable primary onClick={item.onClick}>
+          <DefaultButton
+            data-is-focusable
+            primary
+            split
+            splitButtonAriaLabel="See 2 options"
+            aria-roledescription="split button"
+            {...item}
+          >
             {item.text}
           </DefaultButton>
         </div>
@@ -89,7 +111,50 @@ function BoardCommandBar(props) {
     onClick: onDeleteBoardClick,
   };
 
+  const gridMenuProps = {
+    items: [
+      {
+        key: 'small',
+        text: `${intl.formatMessage(messages.small)} 4`,
+        onClick: () => {
+          onGridSizeChange({ columns: 2, rows: 2 });
+        },
+      },
+      {
+        key: 'medium',
+        text: `${intl.formatMessage(messages.medium)} 12`,
+        onClick: () => {
+          onGridSizeChange({ columns: 3, rows: 4 });
+        },
+      },
+      {
+        key: 'large',
+        text: `${intl.formatMessage(messages.large)} 24`,
+        onClick: () => {
+          onGridSizeChange({ columns: 6, rows: 4 });
+        },
+      },
+      {
+        key: 'x-large',
+        text: `${intl.formatMessage(messages.extraLarge)} 60`,
+        onClick: () => {
+          onGridSizeChange({ columns: 10, rows: 6 });
+        },
+      },
+    ],
+  };
+
+  const gridItem = {
+    buttonStyles,
+    key: 'grid',
+    text: intl.formatMessage(messages.grid),
+    iconProps: { iconName: 'GridViewMedium' },
+    subMenuProps: gridMenuProps,
+    // onClick: onGridClick,
+  };
+
   const activeBoardItems = [
+    gridItem,
     {
       buttonStyles,
       key: 'print',

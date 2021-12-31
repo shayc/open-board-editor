@@ -9,7 +9,7 @@ import {
 import * as OBF from '../../open-board-format';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import NavText from '../NavText';
-import Bar from '../Bar';
+import Bar from './Bar';
 import Grid from './Grid';
 import AbsolutePosition from './AbsolutePosition';
 import styles from './Board.module.css';

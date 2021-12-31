@@ -27,6 +27,7 @@ function DraggableItem(props) {
 
   return (
     <div
+      disabled
       className={className}
       ref={setNodeRef}
       {...other}

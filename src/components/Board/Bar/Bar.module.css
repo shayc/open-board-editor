@@ -17,6 +17,13 @@
   flex: 1;
 }
 
+@media print {
+  .startGroup > *,
+  .endGroup > * {
+    display: none;
+  }
+}
+
 .middleGroup {
   padding: 0 12px;
   justify-content: center;

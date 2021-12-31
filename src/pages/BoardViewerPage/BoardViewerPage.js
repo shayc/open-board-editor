@@ -1,40 +1,33 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import {
+  useParams,
+  useSearchParams,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import BoardViewer from '../../features/BoardViewer';
 import { useBoardNavigation } from '../../hooks/board';
-import { Seo } from '../../components';
+import { EditToggleButton, NavButtons, Seo } from '../../components';
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const { boardId } = useParams();
   const [board, setBoard] = useState();
   const [rootId, setRootId] = useState();
 
   const boardNavigation = useBoardNavigation({
-    navigate: useNavigate(),
+    navigate,
     history: [{ id: board?.id }],
     index: 0,
   });
 
   const boardSetUrl = searchParams.get('boardSetUrl');
-
-  const navProps = {
-    backDisabled: boardNavigation.backDisabled,
-    forwardDisabled: boardNavigation.forwardDisabled,
-    onBackClick: () => {
-      boardNavigation.goBack();
-    },
-    onForwardClick: () => {
-      boardNavigation.goForward();
-    },
-    onHomeClick: () => {
-      boardNavigation.reset({ id: rootId });
-    },
-  };
 
   useEffect(() => {
     async function getBoard(id) {
@@ -89,7 +82,29 @@ function BoardViewerPage() {
 
       <BoardViewer
         board={board}
-        navProps={navProps}
+        barStart={
+          <NavButtons
+            backDisabled={boardNavigation.backDisabled}
+            forwardDisabled={boardNavigation.forwardDisabled}
+            onBackClick={() => {
+              boardNavigation.goBack();
+            }}
+            onForwardClick={() => {
+              boardNavigation.goForward();
+            }}
+            onHomeClick={() => {
+              boardNavigation.reset({ id: rootId });
+            }}
+          />
+        }
+        barEnd={
+          <EditToggleButton
+            checked={false}
+            onClick={() => {
+              navigate(pathname.replace('view', 'edit'));
+            }}
+          />
+        }
         onBoardRequested={handleBoardRequest}
         onFetchRequested={handleFetchRequest}
         onRedirectRequested={handleRedirectRequest}

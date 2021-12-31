@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Stack, Text } from '@fluentui/react';
 import clsx from 'clsx';
 
@@ -17,7 +18,9 @@ function AppBar(props) {
         styles={{ root: { minWidth: '0' } }}
       >
         <Text className={styles.title} variant="mediumPlus">
-          {title}
+          <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+            {title}
+          </Link>
         </Text>
       </Stack>
 

@@ -213,7 +213,6 @@ function BoardEditor(props) {
               onClick={handleEditClick}
               iconProps={{ iconName: 'Edit' }}
               title={'Edit'}
-              data-is-focusable={false}
             />
           )}
 
