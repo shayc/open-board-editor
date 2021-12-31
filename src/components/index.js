@@ -1,7 +1,6 @@
 /* PLOP_INJECT_IMPORT */
 import SettingsButton from './SettingsButton';
 import EditToggleButton from './EditToggleButton';
-import NavText from './NavText';
 import SelectedBoardsPage from './SelectedBoardsPage';
 import BoardCommandBar from './BoardCommandBar';
 import ImagePicker from './ImagePicker';
@@ -24,7 +23,6 @@ export {
   /* PLOP_INJECT_EXPORT */
   SettingsButton,
   EditToggleButton,
-  NavText,
   SelectedBoardsPage,
   BoardCommandBar,
   ImagePicker,

@@ -27,19 +27,6 @@
   height: 100%;
 }
 
-.smallScreenBar {
-  height: 48px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.smallScreenBottomBar {
-  padding-bottom: env(safe-area-inset-bottom);
-  background-color: var(--neutralLighterAlt);
-}
-
 .outputActionButton {
   align-self: center;
   margin-inline-end: 16px;

@@ -11,6 +11,7 @@
   color: color-contrast(var(--background-color vs white, black));
   background-color: var(--background-color, transparent);
   border-color: var(--border-color, transparent);
+  border: none !important;
   outline: 0;
   box-sizing: border-box;
 }

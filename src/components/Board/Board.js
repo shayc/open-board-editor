@@ -4,11 +4,11 @@ import {
   FocusZone,
   FocusZoneDirection,
   FocusZoneTabbableElements,
+  Text,
 } from '@fluentui/react';
 
 import * as OBF from '../../open-board-format';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
-import NavText from '../NavText';
 import Bar from './Bar';
 import Grid from './Grid';
 import AbsolutePosition from './AbsolutePosition';
@@ -48,8 +48,13 @@ function Board(props) {
   return (
     <div className={rootClassName} {...other}>
       <Bar
+        className={styles.nameBar}
         startGroup={!isSmallScreen ? barStart : null}
-        middleGroup={<NavText>{name}</NavText>}
+        middleGroup={
+          <Text className={styles.name} variant="large" nowrap={true}>
+            {name}
+          </Text>
+        }
         endGroup={!isSmallScreen ? barEnd : null}
       />
 
@@ -83,6 +88,7 @@ function Board(props) {
 
       {isSmallScreen && (
         <Bar
+          className={styles.bottomBar}
           startGroup={isSmallScreen ? barStart : null}
           endGroup={isSmallScreen ? barEnd : null}
         />
