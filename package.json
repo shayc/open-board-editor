@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@axe-core/react": "^4.3.2",
-    "@babel/core": "^7.16.5",
+    "@babel/core": "^7.16.7",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@storybook/addon-actions": "^6.4.9",
@@ -63,7 +63,7 @@
     "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/file-saver": "^2.0.4",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "@types/mime": "^2.0.3",
     "@types/node": "^16.11.17",
     "@types/react": "^17.0.38",
