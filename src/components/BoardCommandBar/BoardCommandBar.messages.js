@@ -9,6 +9,10 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.BoardCommandBar';
 
 export default defineMessages({
+  details: {
+    id: `${scope}.details`,
+    defaultMessage: 'Details',
+  },
   print: {
     id: `${scope}.print`,
     defaultMessage: 'Print',
@@ -29,13 +33,13 @@ export default defineMessages({
     id: `${scope}.delete`,
     defaultMessage: 'Delete',
   },
-  openFile: {
-    id: `${scope}.openFile`,
-    defaultMessage: 'Open file',
+  importFile: {
+    id: `${scope}.importFile`,
+    defaultMessage: 'Import file',
   },
-  downloadFile: {
-    id: `${scope}.downloadFile`,
-    defaultMessage: 'Download file',
+  exportFile: {
+    id: `${scope}.exportFile`,
+    defaultMessage: 'Export file',
   },
   showBoardsPanel: {
     id: `${scope}.showBoardsPanel`,

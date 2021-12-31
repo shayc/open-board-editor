@@ -19,8 +19,9 @@ function BoardCommandBar(props) {
     isPanelOpen,
     isSmallScreen,
     onPanelToggleClick,
-    onOpenFileClick,
-    onDownloadFileClick,
+    onImportFileClick,
+    onExportFileClick,
+    onDetailsClick,
     onPrintClick,
     onShareClick,
     onNewBoardClick,
@@ -72,12 +73,12 @@ function BoardCommandBar(props) {
     },
   };
 
-  const openFileItem = {
+  const importFileItem = {
     buttonStyles,
-    key: 'open-file',
-    text: intl.formatMessage(messages.openFile),
+    key: 'import-file',
+    text: intl.formatMessage(messages.importFile),
     iconProps: { iconName: 'OpenFile' },
-    onClick: onOpenFileClick,
+    onClick: onImportFileClick,
   };
 
   const deleteItem = {
@@ -117,13 +118,20 @@ function BoardCommandBar(props) {
   const overflowItems = [
     ...(isSmallScreen && isBoardActive ? activeBoardItems : []),
     { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
-    openFileItem,
     {
       buttonStyles,
-      key: 'downloadFile',
-      text: intl.formatMessage(messages.downloadFile),
+      key: 'info',
+      text: intl.formatMessage(messages.details),
+      iconProps: { iconName: 'Info' },
+      onClick: onDetailsClick,
+    },
+    importFileItem,
+    {
+      buttonStyles,
+      key: 'export-file',
+      text: intl.formatMessage(messages.exportFile),
       iconProps: { iconName: 'Download' },
-      onClick: onDownloadFileClick,
+      onClick: onExportFileClick,
     },
   ];
 

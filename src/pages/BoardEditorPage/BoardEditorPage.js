@@ -284,8 +284,8 @@ function BoardEditorPage() {
           },
         },
         {
-          key: 'setAsHome',
-          text: intl.formatMessage(messages.setAsHome),
+          key: 'setAsHomeBoard',
+          text: intl.formatMessage(messages.setAsHomeBoard),
           iconProps: { iconName: 'Home' },
           onClick: () => {
             handleRootIdChange(board.id);
@@ -373,8 +373,9 @@ function BoardEditorPage() {
         selectedCount={buttonsSelection.getSelectedCount()}
         onPanelToggleClick={toggleBoardsPanel}
         onNewBoardClick={handleNewBoard}
-        onOpenFileClick={handleImportFile}
-        onDownloadFileClick={handleExportFile}
+        onImportFileClick={handleImportFile}
+        onDetailsClick={handleBoardDetails}
+        onExportFileClick={handleExportFile}
         onPrintClick={print}
         onShareClick={share}
         onClearSelectionClick={() => {
@@ -422,13 +423,13 @@ function BoardEditorPage() {
                     <>
                       <CommandBarButton
                         iconProps={{ iconName: 'Delete' }}
-                        title="Delete"
+                        text={'Delete'}
                         onClick={handleButtonDelete}
                       />
 
                       <CommandBarButton
                         iconProps={{ iconName: 'Color' }}
-                        title="Color"
+                        text={'Color'}
                       />
                     </>
                   )
@@ -437,11 +438,6 @@ function BoardEditorPage() {
                   (!isButtonSelected && (
                     <>
                       <GridSizeSelect onChange={handleGridSizeChange} />
-                      <CommandBarButton
-                        title={intl.formatMessage(messages.viewBoardDetails)}
-                        iconProps={{ iconName: 'Info' }}
-                        onClick={handleBoardDetails}
-                      />
                     </>
                   )) || (
                     <>

@@ -13,10 +13,6 @@ export default defineMessages({
     id: `${scope}.newBoard`,
     defaultMessage: 'New board',
   },
-  viewBoardDetails: {
-    id: `${scope}.viewBoardDetails`,
-    defaultMessage: 'View board details',
-  },
   delete: {
     id: `${scope}.delete`,
     defaultMessage: 'Delete',
@@ -29,9 +25,9 @@ export default defineMessages({
     id: `${scope}.details`,
     defaultMessage: 'Details',
   },
-  setAsHome: {
-    id: `${scope}.setAsHome`,
-    defaultMessage: 'Set as home',
+  setAsHomeBoard: {
+    id: `${scope}.setAsHomeBoard`,
+    defaultMessage: 'Set as home board',
   },
   selected: {
     id: `${scope}.selected`,
