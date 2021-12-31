@@ -128,7 +128,12 @@ function BoardsList(props) {
     const styles = {
       root: [
         {
+          backgroundColor: 'var(--neutralLighter)',
+          borderBottom: '1px solid var(--white)',
           selectors: {
+            '&:hover': {
+              backgroundColor: 'var(--white)',
+            },
             '&:focus': {
               background: 'var(--themeLight)',
             },

@@ -25,7 +25,7 @@ function BoardsListHeader(props) {
       </button>
 
       <div className={styles.title}>
-        <Text as="span" variant="mediumPlus">
+        <Text as="span" variant="mediumPlus" style={{ fontWeight: 600 }}>
           {Boolean(selectedCount) && `(${selectedCount})`} {title}
         </Text>
       </div>

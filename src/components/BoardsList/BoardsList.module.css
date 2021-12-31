@@ -14,11 +14,11 @@
 .filterBox {
   flex: 1;
   background-color: var(--neutralLighter);
-  border: 1px solid var(--neutralLighter);
+  border: 1px solid var(--neutralTertiaryAlt);
 }
 
 .filterBox:hover {
-  border: 1px solid var(--neutralLighter);
+  border: 1px solid var(--neutralTertiaryAlt);
 }
 
 .container {
