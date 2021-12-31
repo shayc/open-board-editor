@@ -48,7 +48,7 @@ function App() {
             element={
               <>
                 <AppBar
-                  title={APP_NAME}
+                  name={APP_NAME}
                   actions={<SettingsButton onClick={toggleSettings} />}
                 />
                 <BoardEditorPage />

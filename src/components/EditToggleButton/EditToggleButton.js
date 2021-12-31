@@ -21,9 +21,14 @@ function EditToggleButton(props) {
     <DefaultButton
       styles={rootStyles}
       className={rootClassName}
-      iconProps={{ iconName: checked ? 'View' : 'Edit' }}
+      iconProps={{ iconName: checked ? 'Play' : 'Edit' }}
       onClick={onClick}
       title={intl.formatMessage(checked ? messages.view : messages.edit)}
+      text={
+        checked
+          ? intl.formatMessage(messages.view)
+          : intl.formatMessage(messages.edit)
+      }
     />
   );
 }
