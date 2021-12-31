@@ -47,13 +47,11 @@ function Board(props) {
 
   return (
     <div className={rootClassName} {...other}>
-      <div className={styles.safeAreaInsetX}>
-        <Bar
-          startGroup={!isSmallScreen ? barStart : null}
-          middleGroup={<NavText>{name}</NavText>}
-          endGroup={!isSmallScreen ? barEnd : null}
-        />
-      </div>
+      <Bar
+        startGroup={!isSmallScreen ? barStart : null}
+        middleGroup={<NavText>{name}</NavText>}
+        endGroup={!isSmallScreen ? barEnd : null}
+      />
 
       {shouldRenderGrid && (
         <FocusZone
@@ -86,7 +84,6 @@ function Board(props) {
       {isSmallScreen && (
         <Bar
           startGroup={isSmallScreen ? barStart : null}
-          middleGroup={null}
           endGroup={isSmallScreen ? barEnd : null}
         />
       )}
@@ -95,6 +92,14 @@ function Board(props) {
 }
 
 Board.propTypes = {
+  /**
+   * Slot for rendering.
+   */
+  barEnd: PropTypes.node,
+  /**
+   * Slot for rendering.
+   */
+  barStart: PropTypes.node,
   /**
    * Buttons to render.
    */
@@ -131,6 +136,10 @@ Board.propTypes = {
      */
     rows: PropTypes.number.isRequired,
   }),
+  /**
+   * Name to render.
+   */
+  name: PropTypes.string,
   /**
    * Calback, fired when button changes position.
    */
