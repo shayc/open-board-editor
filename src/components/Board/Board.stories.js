@@ -4,6 +4,7 @@ import Tile from '../Tile';
 import Board from './Board';
 
 const board = {
+  name: 'Home board',
   buttons: [
     {
       id: '1',
@@ -25,7 +26,7 @@ const board = {
       background_color: 'rgb(255, 255, 170)',
       image:
         'https://s3.amazonaws.com/opensymbols/libraries/arasaac/group of people.png',
-      load_board: {},
+      load_board: { id: '1' },
     },
   ],
   grid: {
@@ -47,6 +48,16 @@ export default story;
 
 const Template = (args) => <Board {...args} style={{ height: '300px' }} />;
 
+export const Default = Template.bind({});
+
+Default.args = {
+  renderButton,
+  name: board?.name,
+  buttons: board?.buttons,
+  grid: board?.grid,
+  draggable: true,
+};
+
 function renderButton(button) {
   const { background_color, border_color, label, load_board, image } = button;
 
@@ -62,11 +73,3 @@ function renderButton(button) {
     </Tile>
   );
 }
-export const Default = Template.bind({});
-
-Default.args = {
-  renderButton,
-  buttons: board?.buttons,
-  grid: board?.grid,
-  draggable: true,
-};

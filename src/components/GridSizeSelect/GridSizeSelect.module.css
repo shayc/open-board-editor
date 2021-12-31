@@ -1,9 +1,0 @@
-.root {
-  background: transparent;
-}
-
-@media print {
-  .root {
-    display: none;
-  }
-}

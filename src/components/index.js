@@ -3,9 +3,7 @@ import SettingsButton from './SettingsButton';
 import EditToggleButton from './EditToggleButton';
 import NavText from './NavText';
 import SelectedBoardsPage from './SelectedBoardsPage';
-import GridSizeSelect from './GridSizeSelect';
 import BoardCommandBar from './BoardCommandBar';
-import ColorPicker from './ColorPicker';
 import ImagePicker from './ImagePicker';
 import BoardSetList from './BoardSetList';
 import Bar from './Board/Bar';
@@ -28,9 +26,7 @@ export {
   EditToggleButton,
   NavText,
   SelectedBoardsPage,
-  GridSizeSelect,
   BoardCommandBar,
-  ColorPicker,
   ImagePicker,
   BoardSetList,
   Bar,
