@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
-import {
-  CommandBar,
-  ContextualMenuItemType,
-  DefaultButton,
-  getRTL,
-} from '@fluentui/react';
+import { CommandBar, ContextualMenuItemType, getRTL } from '@fluentui/react';
 
 import messages from './BoardCommandBar.messages';
 import styles from './BoardCommandBar.module.css';
@@ -37,12 +32,8 @@ function BoardCommandBar(props) {
 
   const rootClassName = clsx(className, styles.root);
   const buttonStyles = {
-    root: {
-      background: 'var(--neutralLighterAlt)',
-    },
-    rootHovered: {
-      background: 'var(--neutralLight)',
-    },
+    root: {},
+    rootHovered: {},
   };
 
   const panelToggleItem = {
@@ -58,40 +49,25 @@ function BoardCommandBar(props) {
     onClick: onPanelToggleClick,
   };
 
-  const newBoardItem = {
+  const newItem = {
     buttonStyles,
     key: 'new',
-    text: intl.formatMessage(messages.newBoard),
-    menuProps: {
+    text: intl.formatMessage(messages.new),
+    iconProps: { iconName: 'Add' },
+    subMenuProps: {
       items: [
         {
           key: 'board',
-          text: 'New board',
+          text: intl.formatMessage(messages.board),
           iconProps: { iconName: '' },
+          onClick: onNewBoardClick,
         },
         {
           key: 'tile',
-          text: 'New tile',
+          text: intl.formatMessage(messages.tile),
           iconProps: { iconName: '' },
         },
       ],
-    },
-    onClick: onNewBoardClick,
-    onRender: (item) => {
-      return (
-        <div className={styles.newBoardButtonContainer}>
-          <DefaultButton
-            data-is-focusable
-            primary
-            split
-            splitButtonAriaLabel="See 2 options"
-            aria-roledescription="split button"
-            {...item}
-          >
-            {item.text}
-          </DefaultButton>
-        </div>
-      );
     },
   };
 
@@ -154,7 +130,6 @@ function BoardCommandBar(props) {
   };
 
   const activeBoardItems = [
-    gridItem,
     {
       buttonStyles,
       key: 'print',
@@ -169,13 +144,14 @@ function BoardCommandBar(props) {
       iconProps: { iconName: 'Share' },
       onClick: onShareClick,
     },
+    gridItem,
   ];
 
   const selectedBoardItems = [deleteItem];
 
   const items = [
     panelToggleItem,
-    newBoardItem,
+    newItem,
     ...(isBoardSelected ? selectedBoardItems : []),
     ...(!isSmallScreen && isBoardActive ? activeBoardItems : []),
   ];
@@ -207,7 +183,6 @@ function BoardCommandBar(props) {
       className={rootClassName}
       styles={{
         root: {
-          background: 'var(--neutralLighterAlt)',
           padding: '0',
         },
       }}

@@ -1,7 +1,5 @@
 .root {
   height: 100%;
-  background: var(--neutralLighterAlt);
-  color: var(--black);
 
   --bar-height: 2.75rem;
 }
@@ -15,11 +13,11 @@
 
 .filterBox {
   flex: 1;
-  border: 1px solid var(--neutralQuaternaryAlt);
+  /* border: 1px solid var(--neutralQuaternaryAlt); */
 }
 
 .filterBox:hover {
-  border: 1px solid var(--neutralQuaternaryAlt);
+  /* border: 1px solid var(--neutralQuaternaryAlt); */
 }
 
 .container {

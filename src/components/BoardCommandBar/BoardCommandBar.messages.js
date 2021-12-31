@@ -45,9 +45,9 @@ export default defineMessages({
     id: `${scope}.share`,
     defaultMessage: 'Share',
   },
-  newBoard: {
-    id: `${scope}.newBoard`,
-    defaultMessage: 'New board',
+  new: {
+    id: `${scope}.new`,
+    defaultMessage: 'New',
   },
   newTile: {
     id: `${scope}.newTile`,
@@ -72,5 +72,13 @@ export default defineMessages({
   hideBoardsPanel: {
     id: `${scope}.hideBoardsPanel`,
     defaultMessage: 'Hide boards panel',
+  },
+  tile: {
+    id: `${scope}.tile`,
+    defaultMessage: 'Tile',
+  },
+  board: {
+    id: `${scope}.board`,
+    defaultMessage: 'Board',
   },
 });

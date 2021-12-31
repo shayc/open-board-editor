@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
@@ -20,6 +20,7 @@ import {
   NavButtons,
   BoardCommandBar,
   SelectedBoardsPage,
+  EditToggleButton,
 } from '../../components';
 
 import { defaultColors } from '../../open-board-format/color-codes';
@@ -31,6 +32,8 @@ import styles from './BoardEditorPage.module.css';
 
 function BoardEditorPage() {
   const intl = useIntl();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { boardId } = useParams();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
@@ -44,7 +47,7 @@ function BoardEditorPage() {
 
   const boardDB = useBoardDB();
   const boardNavigation = useBoardNavigation({
-    navigate: useNavigate(),
+    navigate,
     history: [{ id: boardId }],
     index: 0,
   });
@@ -360,33 +363,41 @@ function BoardEditorPage() {
     boardNavigation.reset({ id: boardDB.rootId });
   }
 
+  function toggleViewer() {
+    navigate(pathname.replace('edit', 'view'));
+  }
+
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      <BoardCommandBar
-        isBoardSelected={isBoardSelected}
-        isBoardActive={board?.id}
-        isPanelOpen={isBoardsPanelOpen}
-        isSmallScreen={isSmallScreen}
-        selectedCount={buttonsSelection.getSelectedCount()}
-        onPanelToggleClick={toggleBoardsPanel}
-        onNewBoardClick={handleNewBoard}
-        onImportFileClick={handleImportFile}
-        onDetailsClick={handleBoardDetails}
-        onExportFileClick={handleExportFile}
-        onPrintClick={print}
-        onShareClick={share}
-        onClearSelectionClick={() => {
-          buttonsSelection.setAllSelected(false);
-        }}
-        onDeleteButtonClick={handleButtonDelete}
-        onDeleteBoardClick={() => {
-          const selectedIds = selectedBoards.map((item) => item.id);
-          handleBoardDelete(selectedIds);
-        }}
-        onGridSizeChange={handleGridSizeChange}
-      />
+      <div className={styles.commandBar}>
+        <BoardCommandBar
+          isBoardSelected={isBoardSelected}
+          isBoardActive={board?.id}
+          isPanelOpen={isBoardsPanelOpen}
+          isSmallScreen={isSmallScreen}
+          selectedCount={buttonsSelection.getSelectedCount()}
+          onPanelToggleClick={toggleBoardsPanel}
+          onNewBoardClick={handleNewBoard}
+          onImportFileClick={handleImportFile}
+          onDetailsClick={handleBoardDetails}
+          onExportFileClick={handleExportFile}
+          onPrintClick={print}
+          onShareClick={share}
+          onClearSelectionClick={() => {
+            buttonsSelection.setAllSelected(false);
+          }}
+          onDeleteButtonClick={handleButtonDelete}
+          onDeleteBoardClick={() => {
+            const selectedIds = selectedBoards.map((item) => item.id);
+            handleBoardDelete(selectedIds);
+          }}
+          onGridSizeChange={handleGridSizeChange}
+        />
+
+        <EditToggleButton checked={true} onClick={toggleViewer} />
+      </div>
 
       {isLoading ? (
         <DelayedRender delay={300}>

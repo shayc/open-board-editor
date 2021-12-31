@@ -128,7 +128,6 @@ function BoardsList(props) {
     const styles = {
       root: [
         {
-          background: 'var(--neutralLighterAlt)',
           selectors: {
             '&:focus': {
               background: 'var(--themeLight)',

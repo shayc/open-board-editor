@@ -4,6 +4,11 @@
   flex-direction: column;
 }
 
+.commandBar {
+  display: flex;
+  border-block-end: 1px solid var(--themeLighterAlt);
+}
+
 .container {
   flex: 1;
   min-height: 0;
@@ -18,7 +23,7 @@
   flex-direction: column;
   position: absolute;
   z-index: 10;
-  background: var(--neutralLighterAlt);
+  /* background: var(--neutralLighterAlt); */
   border-inline-end: 1px solid var(--themeLighterAlt);
 }
 
