@@ -18,9 +18,13 @@
 }
 
 @media print {
-  .startGroup > *,
-  .endGroup > * {
-    display: none;
+  .startGroup,
+  .endGroup {
+    opacity: 0;
+  }
+
+  .middleGroup {
+    color: #000;
   }
 }
 

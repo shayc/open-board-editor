@@ -1,11 +1,14 @@
 .root {
+  --border-size: 4px;
+  --border-radius: 8px;
+
   width: 100%;
   height: 100%;
   padding: 6px;
   background: transparent;
-  border: 4px solid var(--border-color, transparent);
-  border-radius: 8px;
-  border: none !important;
+  border: var(--border-size) solid
+    var(--border-color, --background-color, transparent);
+  border-radius: var(--border-radius);
   display: flex;
   position: relative;
   font: inherit;
@@ -13,7 +16,6 @@
   background-color: var(--background-color, transparent);
   outline: 0;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .root[type='button'] {
@@ -32,10 +34,11 @@
 .root::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  border-radius: var(--border-radius);
+  top: calc(var(--border-size) * -1);
+  left: calc(var(--border-size) * -1);
+  right: calc(var(--border-size) * -1);
+  bottom: calc(var(--border-size) * -1);
   background: transparent;
   transition: background 0.1s ease-in;
 }

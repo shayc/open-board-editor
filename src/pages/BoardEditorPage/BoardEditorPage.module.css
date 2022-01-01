@@ -9,6 +9,12 @@
   border-block-end: 1px solid var(--themeLighterAlt);
 }
 
+@media print {
+  .commandBar {
+    display: none;
+  }
+}
+
 .container {
   flex: 1;
   min-height: 0;

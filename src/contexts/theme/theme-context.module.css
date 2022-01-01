@@ -4,6 +4,6 @@
 
 @media print {
   .fluentThemeProvider {
-    background: transparent;
+    background: none;
   }
 }
