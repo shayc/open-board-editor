@@ -1,7 +1,12 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, CommandBarButton, IconButton } from '@fluentui/react';
+import {
+  Selection,
+  CommandBarButton,
+  DefaultButton,
+  IconButton,
+} from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -396,7 +401,14 @@ function BoardEditorPage() {
           onGridSizeChange={handleGridSizeChange}
         />
 
-        <EditToggleButton checked={true} onClick={toggleViewer} />
+        <DefaultButton
+          primary={true}
+          style={{ margin: 'auto 8px' }}
+          iconProps={{ iconName: 'Play' }}
+          onClick={toggleViewer}
+          title={'View board'}
+          text={'View'}
+        />
       </div>
 
       {isLoading ? (

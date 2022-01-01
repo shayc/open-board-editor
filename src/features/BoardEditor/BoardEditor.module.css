@@ -46,8 +46,8 @@
 }
 
 .tileControlButton {
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   background: none;
   border: none;
@@ -68,7 +68,9 @@
   position: absolute;
   bottom: 0;
   right: 0;
+  margin: 6px;
   cursor: pointer;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
   color: inherit;
 }
