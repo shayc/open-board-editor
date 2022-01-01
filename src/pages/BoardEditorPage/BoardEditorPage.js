@@ -25,7 +25,6 @@ import {
   NavButtons,
   BoardCommandBar,
   SelectedBoardsPage,
-  EditToggleButton,
 } from '../../components';
 
 import { defaultColors } from '../../open-board-format/color-codes';
