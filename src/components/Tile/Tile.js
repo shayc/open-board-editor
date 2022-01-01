@@ -23,11 +23,9 @@ function Tile(props) {
   }
 
   const isFolder = variant === 'folder';
-  const isntClickable = !onClick;
 
   const tileClassName = clsx(styles.root, className, {
     [styles.isFolder]: isFolder,
-    [styles.isntClickable]: isntClickable,
   });
 
   const tileStyle = {
