@@ -125,7 +125,7 @@ function BoardEditor(props) {
       }
 
       setButtonPosition(position);
-      setCalloutTarget(event.target.parentElement);
+      setCalloutTarget(event.target);
     }
 
     return (
