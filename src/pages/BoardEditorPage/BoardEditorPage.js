@@ -114,7 +114,7 @@ function BoardEditorPage() {
     [buttonsSelection]
   );
 
-  const handleImagesRequested = useMemo(
+  const handleImagesRequest = useMemo(
     () =>
       debounce(async (value) => {
         const images = await globalSymbols.searchImages(value);
@@ -131,7 +131,7 @@ function BoardEditorPage() {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
 
-  function handleBoardRequest(id) {
+  function handleChangeBoardRequest(id) {
     boardNavigation.push({ id });
   }
 
@@ -480,8 +480,8 @@ function BoardEditorPage() {
                 buttonLabelHidden={boardSettings.isLabelHidden}
                 buttonColors={defaultColors}
                 buttonImages={images}
-                onImagesRequested={handleImagesRequested}
-                onBoardRequested={handleBoardRequest}
+                onImagesRequested={handleImagesRequest}
+                onChangeBoardRequested={handleChangeBoardRequest}
                 onButtonClick={boardCtrl.handleButtonClick}
                 onButtonChange={handleButtonChange}
                 onButtonChangeDiscard={handleButtonChangeDiscard}

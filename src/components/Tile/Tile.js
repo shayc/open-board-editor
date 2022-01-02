@@ -4,25 +4,28 @@ import { getContrastColor } from 'hex-a11y';
 
 import styles from './Tile.module.css';
 
+export const TileVariant = {
+  Button: 'button',
+  Folder: 'folder',
+};
+
 function Tile(props) {
   const {
-    backgroundColor,
-    borderColor,
+    backgroundColor = '#fff',
+    borderColor = 'transparent',
     children,
     className,
     component: ComponentProp = 'button',
-    onClick,
     style,
-    variant = 'button',
+    variant = TileVariant.Button,
     ...other
   } = props;
 
-  const tileProps = {};
-  if (ComponentProp === 'button') {
-    tileProps.type = 'button';
-  }
+  const buttonProps = {
+    ...(ComponentProp === 'button' ? { type: 'button' } : null),
+  };
 
-  const isFolder = variant === 'folder';
+  const isFolder = variant === TileVariant.Folder;
 
   const tileClassName = clsx(styles.root, className, {
     [styles.isFolder]: isFolder,
@@ -35,15 +38,14 @@ function Tile(props) {
   };
 
   if (CSS.supports('not (color: color-contrast(red vs black, white))')) {
-    tileStyle.color = backgroundColor ? getContrastColor(backgroundColor) : '';
+    tileStyle.color = getContrastColor(backgroundColor);
   }
 
   return (
     <ComponentProp
       className={tileClassName}
       style={tileStyle}
-      onClick={onClick}
-      {...tileProps}
+      {...buttonProps}
       {...other}
     >
       {children}

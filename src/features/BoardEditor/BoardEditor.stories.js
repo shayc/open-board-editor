@@ -1,20 +1,10 @@
-// import boardSet from '../../open-board-format/data/core-24.json';
 import BoardEditor from './BoardEditor';
 import { Selection } from '@fluentui/react';
 
-const board = {
-  id: 'board',
-  name: 'shay',
-  buttons: [
-    { id: '1', label: 'hi', backgroundColor: 'green' },
-    { id: '2', label: 'bye', backgroundColor: 'red' },
-  ],
-  grid: {
-    columns: 4,
-    rows: 3,
-    order: [[], [], []],
-  },
-};
+import { boardMap } from '../../open-board-format/board/board.map';
+import projectCore from '../../open-board-format/examples/project-core.json';
+
+const board = boardMap.toDTO(projectCore);
 
 const story = {
   title: 'Web App/Features/BoardEditor',

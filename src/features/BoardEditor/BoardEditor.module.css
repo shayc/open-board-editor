@@ -30,16 +30,17 @@
   left: 0;
   z-index: 1;
   pointer-events: none;
+  opacity: 0;
 }
 
 .tileContainer:hover .tileControls,
 .tileContainer:focus-within .tileControls {
-  display: block;
+  opacity: 1;
 }
 
-.isTileControlsHidden {
+/* .isTileControlsHidden {
   display: none;
-}
+} */
 
 .isTileControlsSelected {
   background: rgba(51, 51, 51, 0.2);
@@ -59,18 +60,23 @@
 
 .tileSelectToggle {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   cursor: pointer;
 }
 
 .tileEditButton {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   margin: 6px;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   color: inherit;
+}
+
+.tileEditButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--black);
 }

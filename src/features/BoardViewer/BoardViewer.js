@@ -4,14 +4,8 @@ import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useBoardOutput } from '../../hooks/board';
-import {
-  Board,
-  Tile,
-  Pictogram,
-  Output,
-  OutputActions,
-} from '../../components';
-
+import { Board, Pictogram, Output, OutputActions } from '../../components';
+import Tile, { TileVariant } from '../../components/Tile/Tile';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
@@ -20,8 +14,8 @@ function BoardViewer(props) {
     barEnd,
     barStart,
     board,
-    onBoardRequested,
-    onFetchRequested,
+    onChangeBoardRequested,
+    onFetchBoardRequested,
     onRedirectRequested,
     style,
   } = props;
@@ -39,7 +33,7 @@ function BoardViewer(props) {
       clearHidden={!output.values.length}
       onClearClick={output.clear}
       onBackspaceClick={output.pop}
-      size={'large'}
+      size="large"
     />
   );
 
@@ -47,8 +41,8 @@ function BoardViewer(props) {
     speak,
     playAudio,
     actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    requestBoard: onBoardRequested,
-    fetchBoard: onFetchRequested,
+    requestBoard: onChangeBoardRequested,
+    fetchBoard: onFetchBoardRequested,
     redirect: onRedirectRequested,
     pushOutput: output.push,
   });
@@ -64,17 +58,11 @@ function BoardViewer(props) {
   function renderTile(button) {
     const { backgroundColor, borderColor, image, label, loadBoard } = button;
 
-    const variant = loadBoard ? 'folder' : 'button';
+    const variant = loadBoard ? TileVariant.Folder : TileVariant.Button;
     const pictogramSrc = image?.data || image?.url;
 
-    function handleClick(event) {
+    function handleClick() {
       handleButtonClick(button);
-    }
-
-    function handleKeyDown(event) {
-      if (event.keyCode === 32) {
-        event.preventDefault();
-      }
     }
 
     return (
@@ -83,7 +71,6 @@ function BoardViewer(props) {
         borderColor={borderColor}
         variant={variant}
         onClick={handleClick}
-        onKeyDown={handleKeyDown}
       >
         <Pictogram
           key={image?.url}
@@ -154,11 +141,11 @@ BoardViewer.propTypes = {
   /**
    *
    */
-  onBoardRequested: PropTypes.func,
+  onChangeBoardRequested: PropTypes.func,
   /**
    *
    */
-  onFetchRequested: PropTypes.func,
+  onFetchBoardRequested: PropTypes.func,
   /**
    *
    */

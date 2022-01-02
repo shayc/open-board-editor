@@ -25,6 +25,7 @@
 
 .boardWrapper {
   height: 100%;
+  overflow: hidden;
 }
 
 .outputActionButton {

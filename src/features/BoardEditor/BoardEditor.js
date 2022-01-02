@@ -31,7 +31,7 @@ function BoardEditor(props) {
     className,
     draggable,
     linkableBoards = [],
-    onBoardRequested,
+    onChangeBoardRequested,
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
@@ -68,7 +68,7 @@ function BoardEditor(props) {
     speak,
     playAudio,
     actionHandlers,
-    requestBoard: onBoardRequested,
+    changeBoard: onChangeBoardRequested,
     fetchBoard: (url) => {
       console.log(`Fetch board: ${url}`);
     },
@@ -131,6 +131,8 @@ function BoardEditor(props) {
     return (
       <div className={styles.placeholderContainer}>
         <Tile
+          aria-label="Add tile"
+          backgroundColor={'var(--neutralLighter)'}
           component={selection.getSelectedCount() ? 'div' : 'button'}
           onClick={handleClick}
         />
@@ -171,8 +173,7 @@ function BoardEditor(props) {
 
       setCalloutTarget(
         // TODO: tightly coupled with DOM structure
-        event.target.parentElement.parentElement.parentElement.parentElement
-          .parentElement
+        event.target.closest('[data-selection-index]')
       );
     }
 

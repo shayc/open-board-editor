@@ -6,8 +6,9 @@
   height: 100%;
   padding: 6px;
   background: transparent;
-  border: var(--border-size) solid
-    var(--border-color, --background-color, transparent);
+  border-style: solid;
+  border-color: var(--border-color, --background-color);
+  border-width: var(--border-size);
   border-radius: var(--border-radius);
   display: flex;
   position: relative;
@@ -18,20 +19,20 @@
   box-sizing: border-box;
 }
 
-.root[type='button'] {
+.root[type='button']:disabled {
+  opacity: 0.3;
+}
+
+.root[type='button']:not(:disabled) {
   cursor: pointer;
 }
 
-.root:empty {
-  background: rgba(128, 128, 128, 0.1);
-}
-
-.root:focus-visible {
+.root[type='button']:focus-visible {
   outline: var(--black) solid 3px;
   outline-offset: 3px;
 }
 
-.root::after {
+.root[type='button']::after {
   content: '';
   position: absolute;
   border-radius: var(--border-radius);
@@ -43,8 +44,8 @@
   transition: background 0.1s ease-in;
 }
 
-.root:not(:disabled):hover::after {
-  background: rgba(0, 0, 0, 0.3);
+.root[type='button']:not(:disabled):hover::after {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .isFolder::before {

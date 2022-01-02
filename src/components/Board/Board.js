@@ -86,7 +86,7 @@ function Board(props) {
         <AbsolutePosition items={buttons} renderItem={renderButton} />
       )}
 
-      {isSmallScreen && (
+      {isSmallScreen && (barStart || barEnd) && (
         <Bar
           className={styles.bottomBar}
           startGroup={isSmallScreen ? barStart : null}

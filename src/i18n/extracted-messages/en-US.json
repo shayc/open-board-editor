@@ -4,6 +4,7 @@
   "app.components.About.license": "license",
   "app.components.About.sourceCode": "Source code",
   "app.components.About.technologies": "Technologies",
+  "app.components.AppBar.appLauncher": "App launcher",
   "app.components.AppSettingsPanel.close": "Close",
   "app.components.AppSettingsPanel.settings": "Settings",
   "app.components.BoardCommandBar.board": "Board",

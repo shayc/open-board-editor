@@ -4,6 +4,7 @@
   "app.components.About.license": "רשיון",
   "app.components.About.sourceCode": "קוד מקור",
   "app.components.About.technologies": "טכנולוגיות",
+  "app.components.AppBar.appLauncher": "",
   "app.components.AppSettingsPanel.close": "סגור",
   "app.components.AppSettingsPanel.settings": "הגדרות",
   "app.components.BoardCommandBar.board": "לוח",

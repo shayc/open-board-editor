@@ -8,6 +8,7 @@
 
 .focusZone {
   height: 100%;
+  overflow: hidden;
 }
 
 .nameBar {
