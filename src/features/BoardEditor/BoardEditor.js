@@ -152,7 +152,7 @@ function BoardEditor(props) {
     });
 
     const tileControlsClassName = clsx(styles.tileControls, {
-      [styles.isTileControlsHidden]: !selectionEnabled,
+      [styles.isTileControlsVisible]: selectionEnabled,
       [styles.isTileControlsSelected]: isSelected,
     });
 

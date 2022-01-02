@@ -41,7 +41,7 @@ function BoardViewer(props) {
     speak,
     playAudio,
     actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    requestBoard: onChangeBoardRequested,
+    changeBoard: onChangeBoardRequested,
     fetchBoard: onFetchBoardRequested,
     redirect: onRedirectRequested,
     pushOutput: output.push,

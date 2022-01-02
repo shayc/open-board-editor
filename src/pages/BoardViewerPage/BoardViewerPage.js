@@ -105,8 +105,8 @@ function BoardViewerPage() {
             }}
           />
         }
-        onBoardRequested={handleBoardRequest}
-        onFetchRequested={handleFetchRequest}
+        onChangeBoardRequested={handleBoardRequest}
+        onFetchBoardRequested={handleFetchRequest}
         onRedirectRequested={handleRedirectRequest}
       />
     </div>

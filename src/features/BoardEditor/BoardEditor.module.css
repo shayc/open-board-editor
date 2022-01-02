@@ -38,9 +38,9 @@
   opacity: 1;
 }
 
-/* .isTileControlsHidden {
-  display: none;
-} */
+.isTileControlsVisible {
+  opacity: 1;
+}
 
 .isTileControlsSelected {
   background: rgba(51, 51, 51, 0.2);
@@ -73,10 +73,10 @@
   cursor: pointer;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
-  color: inherit;
+  color: #fff;
 }
 
 .tileEditButton:hover {
   background: rgba(0, 0, 0, 0.8);
-  color: var(--black);
+  color: #fff;
 }

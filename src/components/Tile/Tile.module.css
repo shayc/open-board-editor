@@ -45,6 +45,7 @@
 }
 
 .root[type='button']:not(:disabled):hover::after {
+  transition: none;
   background: rgba(0, 0, 0, 0.2);
 }
 
