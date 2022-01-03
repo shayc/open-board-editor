@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import {
   useParams,
   useSearchParams,
   useLocation,
   useNavigate,
 } from 'react-router-dom';
+import { DefaultButton } from '@fluentui/react';
 import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import BoardViewer from '../../features/BoardViewer';
 import { useBoardNavigation } from '../../hooks/board';
-import { EditToggleButton, NavButtons, Seo } from '../../components';
+import { NavButtons, Seo } from '../../components';
+import messages from './BoardViewerPage.messages';
 import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage() {
+  const intl = useIntl();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
@@ -98,8 +102,11 @@ function BoardViewerPage() {
           />
         }
         barEnd={
-          <EditToggleButton
-            checked={false}
+          <DefaultButton
+            className={styles.editButton}
+            iconProps={{ iconName: 'Edit' }}
+            title={intl.formatMessage(messages.editBoard)}
+            text={intl.formatMessage(messages.edit)}
             onClick={() => {
               navigate(pathname.replace('view', 'edit'));
             }}

@@ -51,8 +51,6 @@
   "app.components.DetailsPanel.details": "פרטים",
   "app.components.DetailsPanel.email": "דואר אלקטרוני",
   "app.components.DetailsPanel.license": "רשיון",
-  "app.components.EditToggleButton.edit": "עריכה",
-  "app.components.EditToggleButton.view": "צפיה",
   "app.components.ImagePicker.header": "",
   "app.components.LanguageSettings.displayLanguage": "שפת תצוגה",
   "app.components.LanguageSettings.language": "שפה",
@@ -88,6 +86,7 @@
   "app.pages.BoardEditorPage.setAsHomeBoard": "הגדר כלוח בית",
   "app.pages.BoardEditorPage.showBoardsPanel": "הצג פאנל לוחות",
   "app.pages.BoardViewer.title": "",
+  "app.pages.BoardViewerPage.edit": "",
   "app.pages.HomePage.blank": "ריק",
   "app.pages.HomePage.recentlyViewedBoardSets": "לוחות שנצפו לאחרונה",
   "app.pages.HomePage.startNewBoardSet": "התחל סט לוחות חדש"

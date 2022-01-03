@@ -51,8 +51,6 @@
   "app.components.DetailsPanel.details": "",
   "app.components.DetailsPanel.email": "",
   "app.components.DetailsPanel.license": "",
-  "app.components.EditToggleButton.edit": "",
-  "app.components.EditToggleButton.view": "",
   "app.components.ImagePicker.header": "",
   "app.components.LanguageSettings.displayLanguage": "",
   "app.components.LanguageSettings.language": "",
@@ -88,6 +86,7 @@
   "app.pages.BoardEditorPage.setAsHomeBoard": "",
   "app.pages.BoardEditorPage.showBoardsPanel": "",
   "app.pages.BoardViewer.title": "",
+  "app.pages.BoardViewerPage.edit": "",
   "app.pages.HomePage.blank": "",
   "app.pages.HomePage.recentlyViewedBoardSets": "",
   "app.pages.HomePage.startNewBoardSet": ""

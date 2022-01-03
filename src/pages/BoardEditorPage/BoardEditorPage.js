@@ -279,30 +279,6 @@ function BoardEditorPage() {
     setSelectedBoards(boardSelection);
   }
 
-  const boardCommandBar = (
-    <BoardCommandBar
-      isBoardSelected={isBoardSelected}
-      isBoardActive={board?.id}
-      isSmallScreen={isSmallScreen}
-      selectedCount={buttonsSelection.getSelectedCount()}
-      onNewBoardClick={handleNewBoard}
-      onImportFileClick={handleImportFile}
-      onDetailsClick={handleBoardDetails}
-      onExportFileClick={handleExportFile}
-      onPrintClick={print}
-      onShareClick={share}
-      onClearSelectionClick={() => {
-        buttonsSelection.setAllSelected(false);
-      }}
-      onDeleteButtonClick={handleButtonDelete}
-      onDeleteBoardClick={() => {
-        const selectedIds = selectedBoards.map((item) => item.id);
-        handleBoardDelete(selectedIds);
-      }}
-      onGridSizeChange={handleGridSizeChange}
-    />
-  );
-
   const renderBoardActions = useCallback(
     function renderBoardActions(board) {
       const items = [
@@ -416,7 +392,28 @@ function BoardEditorPage() {
           }
           onClick={toggleBoardsPanel}
         />
-        {!isSmallScreen && boardCommandBar}
+
+        <BoardCommandBar
+          isBoardSelected={isBoardSelected}
+          isBoardActive={board?.id}
+          isSmallScreen={isSmallScreen}
+          selectedCount={buttonsSelection.getSelectedCount()}
+          onNewBoardClick={handleNewBoard}
+          onImportFileClick={handleImportFile}
+          onDetailsClick={handleBoardDetails}
+          onExportFileClick={handleExportFile}
+          onPrintClick={print}
+          onShareClick={share}
+          onClearSelectionClick={() => {
+            buttonsSelection.setAllSelected(false);
+          }}
+          onDeleteButtonClick={handleButtonDelete}
+          onDeleteBoardClick={() => {
+            const selectedIds = selectedBoards.map((item) => item.id);
+            handleBoardDelete(selectedIds);
+          }}
+          onGridSizeChange={handleGridSizeChange}
+        />
 
         <DefaultButton
           primary={true}
@@ -475,7 +472,7 @@ function BoardEditorPage() {
                   )
                 }
                 barEnd={
-                  (isButtonSelected && (
+                  isButtonSelected && (
                     <CommandBarButton
                       text={intl.formatMessage(messages.selected, {
                         number: buttonsSelection.getSelectedCount(),
@@ -485,8 +482,7 @@ function BoardEditorPage() {
                         buttonsSelection.setAllSelected(false);
                       }}
                     />
-                  )) ||
-                  (isSmallScreen && boardCommandBar)
+                  )
                 }
                 board={{ ...board, grid }}
                 linkableBoards={linkableBoards}

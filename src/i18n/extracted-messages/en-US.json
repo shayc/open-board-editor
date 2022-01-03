@@ -51,8 +51,6 @@
   "app.components.DetailsPanel.details": "Details",
   "app.components.DetailsPanel.email": "Email",
   "app.components.DetailsPanel.license": "License",
-  "app.components.EditToggleButton.edit": "Edit",
-  "app.components.EditToggleButton.view": "View",
   "app.components.ImagePicker.header": "This is the ImagePicker component!",
   "app.components.LanguageSettings.displayLanguage": "Display language",
   "app.components.LanguageSettings.language": "Language",
@@ -88,6 +86,7 @@
   "app.pages.BoardEditorPage.setAsHomeBoard": "Set as home board",
   "app.pages.BoardEditorPage.showBoardsPanel": "Show boards panel",
   "app.pages.BoardViewer.title": "BoardViewer title!",
+  "app.pages.BoardViewerPage.edit": "Edit",
   "app.pages.HomePage.blank": "Blank",
   "app.pages.HomePage.recentlyViewedBoardSets": "Recently Viewed Board Sets",
   "app.pages.HomePage.startNewBoardSet": "Start a New Board Set"
