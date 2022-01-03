@@ -25,5 +25,6 @@
 
 .bottomBar {
   padding-bottom: env(safe-area-inset-bottom);
+  margin-top: auto;
   background-color: var(--neutralLighterAlt);
 }

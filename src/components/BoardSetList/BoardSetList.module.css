@@ -24,6 +24,7 @@
   border: none;
   background: var(--neutralLight);
   color: inherit;
+  overflow: hidden;
 }
 
 .itemImage {
