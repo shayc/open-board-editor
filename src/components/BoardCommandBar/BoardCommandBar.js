@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
-import { CommandBar, ContextualMenuItemType, getRTL } from '@fluentui/react';
+import { CommandBar, ContextualMenuItemType } from '@fluentui/react';
 
 import messages from './BoardCommandBar.messages';
 import styles from './BoardCommandBar.module.css';
@@ -11,9 +11,7 @@ function BoardCommandBar(props) {
     className,
     isBoardActive,
     isBoardSelected,
-    isPanelOpen,
     isSmallScreen,
-    onPanelToggleClick,
     onImportFileClick,
     onExportFileClick,
     onDetailsClick,
@@ -26,27 +24,10 @@ function BoardCommandBar(props) {
 
   const intl = useIntl();
 
-  const isRTL = getRTL();
-  const closePaneIconName = isRTL ? 'OpenPaneMirrored' : 'ClosePaneMirrored';
-  const openPaneIconName = isRTL ? 'ClosePaneMirrored' : 'OpenPaneMirrored';
-
   const rootClassName = clsx(className, styles.root);
   const buttonStyles = {
     root: {},
     rootHovered: {},
-  };
-
-  const panelToggleItem = {
-    buttonStyles,
-    key: 'panel-toggle',
-    title: isPanelOpen
-      ? intl.formatMessage(messages.hideBoardsPanel)
-      : intl.formatMessage(messages.showBoardsPanel),
-    iconOnly: true,
-    iconProps: {
-      iconName: isPanelOpen ? closePaneIconName : openPaneIconName,
-    },
-    onClick: onPanelToggleClick,
   };
 
   const newItem = {
@@ -150,7 +131,7 @@ function BoardCommandBar(props) {
   const selectedBoardItems = [deleteItem];
 
   const items = [
-    panelToggleItem,
+    // panelToggleItem,
     newItem,
     ...(isBoardSelected ? selectedBoardItems : []),
     ...(!isSmallScreen && isBoardActive ? activeBoardItems : []),

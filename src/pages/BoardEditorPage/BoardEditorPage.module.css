@@ -5,6 +5,7 @@
 }
 
 .commandBar {
+  height: 44px;
   display: flex;
   border-block-end: 1px solid var(--themeLighterAlt);
 }

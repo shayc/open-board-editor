@@ -65,14 +65,6 @@ export default defineMessages({
     id: `${scope}.exportFile`,
     defaultMessage: 'Export file',
   },
-  showBoardsPanel: {
-    id: `${scope}.showBoardsPanel`,
-    defaultMessage: 'Show boards panel',
-  },
-  hideBoardsPanel: {
-    id: `${scope}.hideBoardsPanel`,
-    defaultMessage: 'Hide boards panel',
-  },
   tile: {
     id: `${scope}.tile`,
     defaultMessage: 'Tile',

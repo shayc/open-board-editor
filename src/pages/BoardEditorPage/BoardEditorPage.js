@@ -6,6 +6,7 @@ import {
   CommandBarButton,
   DefaultButton,
   IconButton,
+  getRTL,
 } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -278,6 +279,30 @@ function BoardEditorPage() {
     setSelectedBoards(boardSelection);
   }
 
+  const boardCommandBar = (
+    <BoardCommandBar
+      isBoardSelected={isBoardSelected}
+      isBoardActive={board?.id}
+      isSmallScreen={isSmallScreen}
+      selectedCount={buttonsSelection.getSelectedCount()}
+      onNewBoardClick={handleNewBoard}
+      onImportFileClick={handleImportFile}
+      onDetailsClick={handleBoardDetails}
+      onExportFileClick={handleExportFile}
+      onPrintClick={print}
+      onShareClick={share}
+      onClearSelectionClick={() => {
+        buttonsSelection.setAllSelected(false);
+      }}
+      onDeleteButtonClick={handleButtonDelete}
+      onDeleteBoardClick={() => {
+        const selectedIds = selectedBoards.map((item) => item.id);
+        handleBoardDelete(selectedIds);
+      }}
+      onGridSizeChange={handleGridSizeChange}
+    />
+  );
+
   const renderBoardActions = useCallback(
     function renderBoardActions(board) {
       const items = [
@@ -371,38 +396,31 @@ function BoardEditorPage() {
     navigate(pathname.replace('edit', 'view'));
   }
 
+  const isRTL = getRTL();
+  const closePaneIconName = isRTL ? 'OpenPaneMirrored' : 'ClosePaneMirrored';
+  const openPaneIconName = isRTL ? 'ClosePaneMirrored' : 'OpenPaneMirrored';
+
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
 
       <div className={styles.commandBar}>
-        <BoardCommandBar
-          isBoardSelected={isBoardSelected}
-          isBoardActive={board?.id}
-          isPanelOpen={isBoardsPanelOpen}
-          isSmallScreen={isSmallScreen}
-          selectedCount={buttonsSelection.getSelectedCount()}
-          onPanelToggleClick={toggleBoardsPanel}
-          onNewBoardClick={handleNewBoard}
-          onImportFileClick={handleImportFile}
-          onDetailsClick={handleBoardDetails}
-          onExportFileClick={handleExportFile}
-          onPrintClick={print}
-          onShareClick={share}
-          onClearSelectionClick={() => {
-            buttonsSelection.setAllSelected(false);
+        <CommandBarButton
+          iconProps={{
+            iconName: isBoardsPanelOpen ? closePaneIconName : openPaneIconName,
           }}
-          onDeleteButtonClick={handleButtonDelete}
-          onDeleteBoardClick={() => {
-            const selectedIds = selectedBoards.map((item) => item.id);
-            handleBoardDelete(selectedIds);
-          }}
-          onGridSizeChange={handleGridSizeChange}
+          title={
+            isBoardsPanelOpen
+              ? intl.formatMessage(messages.hideBoardsPanel)
+              : intl.formatMessage(messages.showBoardsPanel)
+          }
+          onClick={toggleBoardsPanel}
         />
+        {!isSmallScreen && boardCommandBar}
 
         <DefaultButton
           primary={true}
-          style={{ margin: 'auto 8px' }}
+          style={{ margin: 'auto 8px', marginInlineStart: 'auto' }}
           iconProps={{ iconName: 'Play' }}
           onClick={toggleViewer}
           title={'View board'}
@@ -457,7 +475,7 @@ function BoardEditorPage() {
                   )
                 }
                 barEnd={
-                  isButtonSelected && (
+                  (isButtonSelected && (
                     <CommandBarButton
                       text={intl.formatMessage(messages.selected, {
                         number: buttonsSelection.getSelectedCount(),
@@ -467,7 +485,8 @@ function BoardEditorPage() {
                         buttonsSelection.setAllSelected(false);
                       }}
                     />
-                  )
+                  )) ||
+                  (isSmallScreen && boardCommandBar)
                 }
                 board={{ ...board, grid }}
                 linkableBoards={linkableBoards}

@@ -9,6 +9,14 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.pages.BoardEditorPage';
 
 export default defineMessages({
+  showBoardsPanel: {
+    id: `${scope}.showBoardsPanel`,
+    defaultMessage: 'Show boards panel',
+  },
+  hideBoardsPanel: {
+    id: `${scope}.hideBoardsPanel`,
+    defaultMessage: 'Hide boards panel',
+  },
   newBoard: {
     id: `${scope}.newBoard`,
     defaultMessage: 'New board',
