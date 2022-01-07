@@ -228,6 +228,7 @@ function BoardEditor(props) {
   return (
     <>
       <Board
+        className={rootClassName}
         name={board.name}
         buttons={board.buttons}
         grid={board.grid}
