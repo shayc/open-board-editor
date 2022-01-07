@@ -42,12 +42,10 @@
   right: calc(var(--border-size) * -1);
   bottom: calc(var(--border-size) * -1);
   background: transparent;
-  transition: background 0.1s ease-in;
 }
 
 .root[type='button']:not(:disabled):hover::after {
-  transition: none;
-  background: rgba(128, 128, 128, 0.1);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .isFolder::before {
