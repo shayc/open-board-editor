@@ -213,7 +213,8 @@ function BoardEditor(props) {
               className={`${styles.tileControlButton} ${styles.tileEditButton}`}
               onClick={handleEditClick}
               iconProps={{ iconName: 'Edit' }}
-              title={'Edit'}
+              title={'Edit tile'}
+              data-is-focusable={false}
             />
           )}
 

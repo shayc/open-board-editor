@@ -19,7 +19,7 @@
   height: 56px;
   display: flex;
   align-items: center;
-  border-block-end: 1px solid var(--themeLighterAlt);
+  border-block-end: 1px solid var(--neutralLighter);
 }
 
 .title {
