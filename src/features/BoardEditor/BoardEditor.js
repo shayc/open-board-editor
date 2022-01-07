@@ -1,12 +1,6 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  IconButton,
-  Check,
-  MarqueeSelection,
-  Selection,
-  SelectionZone,
-} from '@fluentui/react';
+import { IconButton, Check, Selection } from '@fluentui/react';
 
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
@@ -233,31 +227,18 @@ function BoardEditor(props) {
 
   return (
     <>
-      <MarqueeSelection
-        className={rootClassName}
+      <Board
+        name={board.name}
+        buttons={board.buttons}
+        grid={board.grid}
+        draggable={tileDraggable}
+        renderButton={renderTile}
+        renderButtonPlaceholder={renderTilePlaceholder}
+        onButtonPositionChange={onButtonPositionChange}
         selection={selection}
-        isEnabled={true}
-        isDraggingConstrainedToRoot={true}
         onShouldStartSelection={handleShouldStartSelection}
-      >
-        <SelectionZone
-          className={styles.selectionZone}
-          selection={selection}
-          selectionPreservedOnEmptyClick={false}
-          isSelectedOnFocus={false}
-        >
-          <Board
-            name={board.name}
-            buttons={board.buttons}
-            grid={board.grid}
-            draggable={tileDraggable}
-            renderButton={renderTile}
-            renderButtonPlaceholder={renderTilePlaceholder}
-            onButtonPositionChange={onButtonPositionChange}
-            {...other}
-          />
-        </SelectionZone>
-      </MarqueeSelection>
+        {...other}
+      />
 
       {calloutTarget && (
         <ButtonCallout

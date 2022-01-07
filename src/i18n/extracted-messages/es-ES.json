@@ -87,6 +87,7 @@
   "app.pages.BoardEditorPage.showBoardsPanel": "",
   "app.pages.BoardViewer.title": "",
   "app.pages.BoardViewerPage.edit": "",
+  "app.pages.BoardViewerPage.editBoard": "",
   "app.pages.HomePage.blank": "",
   "app.pages.HomePage.recentlyViewedBoardSets": "",
   "app.pages.HomePage.startNewBoardSet": ""

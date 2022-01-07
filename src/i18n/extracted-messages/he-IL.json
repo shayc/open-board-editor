@@ -87,6 +87,7 @@
   "app.pages.BoardEditorPage.showBoardsPanel": "הצג פאנל לוחות",
   "app.pages.BoardViewer.title": "",
   "app.pages.BoardViewerPage.edit": "",
+  "app.pages.BoardViewerPage.editBoard": "",
   "app.pages.HomePage.blank": "ריק",
   "app.pages.HomePage.recentlyViewedBoardSets": "לוחות שנצפו לאחרונה",
   "app.pages.HomePage.startNewBoardSet": "התחל סט לוחות חדש"

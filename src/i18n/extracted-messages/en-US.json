@@ -87,6 +87,7 @@
   "app.pages.BoardEditorPage.showBoardsPanel": "Show boards panel",
   "app.pages.BoardViewer.title": "BoardViewer title!",
   "app.pages.BoardViewerPage.edit": "Edit",
+  "app.pages.BoardViewerPage.editBoard": "Edit board",
   "app.pages.HomePage.blank": "Blank",
   "app.pages.HomePage.recentlyViewedBoardSets": "Recently Viewed Board Sets",
   "app.pages.HomePage.startNewBoardSet": "Start a New Board Set"
