@@ -131,6 +131,7 @@ function BoardEditor(props) {
     return (
       <div className={styles.placeholderContainer}>
         <Tile
+          style={{ boxShadow: 'none' }}
           aria-label="Add tile"
           backgroundColor={'var(--neutralLighter)'}
           component={selection.getSelectedCount() ? 'div' : 'button'}

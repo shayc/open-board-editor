@@ -17,6 +17,7 @@
   background-color: var(--background-color, transparent);
   outline: 0;
   box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
 }
 
 .root[type='button']:disabled {
@@ -46,7 +47,7 @@
 
 .root[type='button']:not(:disabled):hover::after {
   transition: none;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(128, 128, 128, 0.1);
 }
 
 .isFolder::before {
