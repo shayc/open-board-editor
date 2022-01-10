@@ -9,9 +9,9 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.DetailsPanel';
 
 export default defineMessages({
-  details: {
-    id: `${scope}.details`,
-    defaultMessage: 'Details',
+  info: {
+    id: `${scope}.info`,
+    defaultMessage: 'Info',
   },
   close: {
     id: `${scope}.close`,

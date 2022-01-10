@@ -283,8 +283,8 @@ function BoardEditorPage() {
     function renderBoardActions(board) {
       const items = [
         {
-          key: 'details',
-          text: intl.formatMessage(messages.details),
+          key: 'info',
+          text: intl.formatMessage(messages.info),
           iconProps: { iconName: 'Info' },
           onClick: () => {
             handleBoardDetails(board.id);

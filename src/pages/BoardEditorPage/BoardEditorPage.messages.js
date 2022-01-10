@@ -29,9 +29,9 @@ export default defineMessages({
     id: `${scope}.moreActions`,
     defaultMessage: 'More actions',
   },
-  details: {
-    id: `${scope}.details`,
-    defaultMessage: 'Details',
+  info: {
+    id: `${scope}.info`,
+    defaultMessage: 'Info',
   },
   setAsHomeBoard: {
     id: `${scope}.setAsHomeBoard`,

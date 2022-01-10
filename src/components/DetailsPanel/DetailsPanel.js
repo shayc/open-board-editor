@@ -15,7 +15,7 @@ function DetailsPanel(props) {
       className={className}
       isOpen={open}
       type={PanelType.smallFixedFar}
-      headerText={<FormattedMessage {...messages.details} />}
+      headerText={<FormattedMessage {...messages.info} />}
       closeButtonAriaLabel={intl.formatMessage(messages.close)}
       onDismiss={onDismiss}
     >

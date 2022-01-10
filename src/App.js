@@ -48,6 +48,7 @@ function App() {
             element={
               <>
                 <AppBar
+                  className={styles.appBar}
                   name={APP_NAME}
                   actions={<SettingsButton onClick={toggleSettings} />}
                 />

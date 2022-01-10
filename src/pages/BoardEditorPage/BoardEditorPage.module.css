@@ -7,8 +7,10 @@
 
 .commandBar {
   height: 44px;
-  display: flex;
+  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left);
   border-block-end: 1px solid var(--themeLighterAlt);
+  display: flex;
 }
 
 @media print {
@@ -46,18 +48,11 @@
   }
 }
 
-.panelNavButtons {
-  height: 44px;
-}
-
 .main {
   flex: 1;
+  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.bottomNavBar {
-  padding-bottom: env(safe-area-inset-bottom);
-  margin-top: auto;
 }

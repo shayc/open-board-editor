@@ -143,7 +143,7 @@ function BoardCommandBar(props) {
     {
       buttonStyles,
       key: 'info',
-      text: intl.formatMessage(messages.details),
+      text: intl.formatMessage(messages.info),
       iconProps: { iconName: 'Info' },
       onClick: onDetailsClick,
     },

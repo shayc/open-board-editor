@@ -103,28 +103,25 @@ function BoardViewer(props) {
 
   return (
     <div className={styles.root} style={style}>
-      <div className={`${styles.outputWrapper} ${styles.safeAreaInsetX}`}>
-        <Output
-          actions={outputActions}
-          className={styles.output}
-          onClick={output.activate}
-          renderValue={renderOutputValue}
-          values={output.values}
-        />
-      </div>
+      <Output
+        className={styles.output}
+        actions={outputActions}
+        onClick={output.activate}
+        renderValue={renderOutputValue}
+        values={output.values}
+      />
 
-      <div className={`${styles.boardWrapper} ${styles.safeAreaInsetX}`}>
-        <Board
-          barStart={barStart}
-          barEnd={barEnd}
-          name={board?.name}
-          buttons={board?.buttons}
-          grid={board?.grid}
-          renderButton={renderTile}
-          scrollSnap={true}
-          scrollDirection="vertical"
-        />
-      </div>
+      <Board
+        className={styles.board}
+        barStart={barStart}
+        barEnd={barEnd}
+        name={board?.name}
+        buttons={board?.buttons}
+        grid={board?.grid}
+        renderButton={renderTile}
+        scrollSnap={true}
+        scrollDirection="vertical"
+      />
     </div>
   );
 }

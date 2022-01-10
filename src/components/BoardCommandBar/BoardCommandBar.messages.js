@@ -33,9 +33,9 @@ export default defineMessages({
     id: `${scope}.extraLarge`,
     defaultMessage: 'Extra large',
   },
-  details: {
-    id: `${scope}.details`,
-    defaultMessage: 'Details',
+  info: {
+    id: `${scope}.info`,
+    defaultMessage: 'Info',
   },
   print: {
     id: `${scope}.print`,
