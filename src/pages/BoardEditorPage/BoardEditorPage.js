@@ -368,7 +368,7 @@ function BoardEditorPage() {
     boardNavigation.reset({ id: boardDB.rootId });
   }
 
-  function toggleViewer() {
+  function viewBoard() {
     navigate(pathname.replace('edit', 'view'));
   }
 
@@ -419,9 +419,9 @@ function BoardEditorPage() {
           primary={true}
           style={{ margin: 'auto 8px', marginInlineStart: 'auto' }}
           iconProps={{ iconName: 'Play' }}
-          onClick={toggleViewer}
-          title={'View board'}
-          text={'View'}
+          onClick={viewBoard}
+          title={intl.formatMessage(messages.viewBoard)}
+          text={intl.formatMessage(messages.view)}
         />
       </div>
 

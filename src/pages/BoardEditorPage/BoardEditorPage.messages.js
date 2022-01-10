@@ -45,4 +45,12 @@ export default defineMessages({
     id: `${scope}.color`,
     defaultMessage: 'Color',
   },
+  view: {
+    id: `${scope}.view`,
+    defaultMessage: 'View',
+  },
+  viewBoard: {
+    id: `${scope}.viewBoard`,
+    defaultMessage: 'View board',
+  },
 });

@@ -25,13 +25,46 @@ function BoardViewerPage() {
   const [board, setBoard] = useState();
   const [rootId, setRootId] = useState();
 
-  const boardNavigation = useBoardNavigation({
+  const boardNav = useBoardNavigation({
     navigate,
     history: [{ id: board?.id }],
     index: 0,
   });
 
   const boardSetUrl = searchParams.get('boardSetUrl');
+
+  function goBack() {
+    boardNav.goBack();
+  }
+
+  function goForward() {
+    boardNav.goForward();
+  }
+
+  function goHome() {
+    boardNav.reset({ id: rootId });
+  }
+
+  function editBoard() {
+    navigate(pathname.replace('view', 'edit'));
+  }
+
+  function handleBoardRequest(id) {
+    boardNav.push({ id });
+  }
+
+  async function handleFetchRequest(url) {
+    const boardSet = await fetchBoardSet(url);
+
+    const rootBoard =
+      boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
+
+    setBoard(rootBoard);
+  }
+
+  function handleRedirectRequest(url) {
+    window.open(url);
+  }
 
   useEffect(() => {
     async function getBoard(id) {
@@ -55,30 +88,13 @@ function BoardViewerPage() {
       await boardRepo.importBoardSet(boardSet);
 
       const { id, name } = await boardRepo.getRoot();
-      boardNavigation.reset({ id, name });
+      boardNav.reset({ id, name });
     }
 
     if (boardSetUrl) {
       importBoardSet(`${boardSetUrl}`);
     }
-  }, [boardSetUrl, boardNavigation]);
-
-  function handleBoardRequest(id) {
-    boardNavigation.push({ id });
-  }
-
-  async function handleFetchRequest(url) {
-    const boardSet = await fetchBoardSet(url);
-
-    const rootBoard =
-      boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
-
-    setBoard(rootBoard);
-  }
-
-  function handleRedirectRequest(url) {
-    window.open(url);
-  }
+  }, [boardSetUrl, boardNav]);
 
   return (
     <div className={styles.root}>
@@ -88,17 +104,11 @@ function BoardViewerPage() {
         board={board}
         barStart={
           <NavButtons
-            backDisabled={boardNavigation.backDisabled}
-            forwardDisabled={boardNavigation.forwardDisabled}
-            onBackClick={() => {
-              boardNavigation.goBack();
-            }}
-            onForwardClick={() => {
-              boardNavigation.goForward();
-            }}
-            onHomeClick={() => {
-              boardNavigation.reset({ id: rootId });
-            }}
+            backDisabled={boardNav.backDisabled}
+            forwardDisabled={boardNav.forwardDisabled}
+            onBackClick={goBack}
+            onForwardClick={goForward}
+            onHomeClick={goHome}
           />
         }
         barEnd={
@@ -107,9 +117,7 @@ function BoardViewerPage() {
             iconProps={{ iconName: 'Edit' }}
             title={intl.formatMessage(messages.editBoard)}
             text={intl.formatMessage(messages.edit)}
-            onClick={() => {
-              navigate(pathname.replace('view', 'edit'));
-            }}
+            onClick={editBoard}
           />
         }
         onChangeBoardRequested={handleBoardRequest}
