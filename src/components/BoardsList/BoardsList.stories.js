@@ -21,4 +21,5 @@ Default.args = {
   onActiveIdChange: () => {},
   onRootIdChange: () => {},
   onDeleteClick: () => {},
+  onSelectionChange: () => {},
 };
