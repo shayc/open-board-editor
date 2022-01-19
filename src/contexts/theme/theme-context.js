@@ -15,12 +15,12 @@ const ThemeContext = React.createContext();
 function ThemeProvider(props) {
   const { children, ...other } = props;
 
-  const { prefersDarkColorScheme } = useMediaQuery();
-  const [isDarkMode, setIsDarkMode] = useState(prefersDarkColorScheme);
+  const { prefersColorSchemeDark } = useMediaQuery();
+  const [isDarkMode, setIsDarkMode] = useState(prefersColorSchemeDark);
 
   useEffect(() => {
-    setIsDarkMode(prefersDarkColorScheme);
-  }, [prefersDarkColorScheme]);
+    setIsDarkMode(prefersColorSchemeDark);
+  }, [prefersColorSchemeDark]);
 
   useEffect(() => {
     if (isDarkMode) {

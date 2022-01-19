@@ -3,15 +3,113 @@ import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { CommandBar, ContextualMenuItemType } from '@fluentui/react';
 
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import messages from './BoardCommandBar.messages';
 import styles from './BoardCommandBar.module.css';
+
+const PhoneGridSize = {
+  portrait: {
+    small: {
+      columns: 2,
+      rows: 2,
+    },
+    medium: {
+      columns: 3,
+      rows: 4,
+    },
+    large: {
+      columns: 4,
+      rows: 4,
+    },
+  },
+  landscape: {
+    small: {
+      columns: 2,
+      rows: 2,
+    },
+    medium: {
+      columns: 4,
+      rows: 2,
+    },
+    large: {
+      columns: 6,
+      rows: 3,
+    },
+  },
+};
+
+const TabletGridSize = {
+  portrait: {
+    small: {
+      columns: 2,
+      rows: 2,
+    },
+    medium: {
+      columns: 3,
+      rows: 4,
+    },
+    large: {
+      columns: 4,
+      rows: 6,
+    },
+  },
+  landscape: {
+    small: {
+      columns: 2,
+      rows: 2,
+    },
+    medium: {
+      columns: 4,
+      rows: 3,
+    },
+    large: {
+      columns: 6,
+      rows: 4,
+    },
+  },
+};
+
+function createGridMenuProps(device, orientation, onGridSizeChange, intl) {
+  const { small, medium, large } = device[orientation] || {};
+
+  return {
+    items: [
+      {
+        key: 'small',
+        text: `${intl.formatMessage(messages.small)} ${
+          small.columns * small.rows
+        }`,
+        onClick: () => {
+          onGridSizeChange({ columns: small.columns, rows: small.rows });
+        },
+      },
+      {
+        key: 'medium',
+        text: `${intl.formatMessage(messages.medium)} ${
+          medium.columns * medium.rows
+        }`,
+        onClick: () => {
+          onGridSizeChange({ columns: medium.columns, rows: medium.rows });
+        },
+      },
+      {
+        key: 'large',
+        text: `${intl.formatMessage(messages.large)} ${
+          large.columns * large.rows
+        }`,
+        onClick: () => {
+          onGridSizeChange({ columns: large.columns, rows: large.rows });
+        },
+      },
+    ],
+  };
+}
 
 function BoardCommandBar(props) {
   const {
     className,
     isBoardActive,
     isBoardSelected,
-    isSmallScreen,
     onImportFileClick,
     onExportFileClick,
     onDetailsClick,
@@ -23,6 +121,7 @@ function BoardCommandBar(props) {
   } = props;
 
   const intl = useIntl();
+  const { isPhone, isSmallScreen, portrait, landscape } = useMediaQuery();
 
   const rootClassName = clsx(className, styles.root);
   const buttonStyles = {
@@ -67,39 +166,13 @@ function BoardCommandBar(props) {
     iconProps: { iconName: 'Delete' },
     onClick: onDeleteBoardClick,
   };
-
-  const gridMenuProps = {
-    items: [
-      {
-        key: 'small',
-        text: `${intl.formatMessage(messages.small)} 4`,
-        onClick: () => {
-          onGridSizeChange({ columns: 2, rows: 2 });
-        },
-      },
-      {
-        key: 'medium',
-        text: `${intl.formatMessage(messages.medium)} 12`,
-        onClick: () => {
-          onGridSizeChange({ columns: 3, rows: 4 });
-        },
-      },
-      {
-        key: 'large',
-        text: `${intl.formatMessage(messages.large)} 24`,
-        onClick: () => {
-          onGridSizeChange({ columns: 6, rows: 4 });
-        },
-      },
-      {
-        key: 'x-large',
-        text: `${intl.formatMessage(messages.extraLarge)} 60`,
-        onClick: () => {
-          onGridSizeChange({ columns: 10, rows: 6 });
-        },
-      },
-    ],
-  };
+  console.log('isPhone :>> ', isPhone);
+  const gridMenuProps = createGridMenuProps(
+    isPhone ? PhoneGridSize : TabletGridSize,
+    (landscape && 'landscape') || (portrait && 'portrait') || 'portrait',
+    onGridSizeChange,
+    intl
+  );
 
   const gridItem = {
     buttonStyles,

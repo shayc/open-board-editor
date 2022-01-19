@@ -38,7 +38,7 @@ function Board(props) {
     ...other
   } = props;
 
-  const { isSmallScreen } = useMediaQuery();
+  const { isSmallScreen, landscape, portrait } = useMediaQuery();
 
   const rootClassName = clsx(styles.root, className);
 
@@ -54,6 +54,18 @@ function Board(props) {
       {name}
     </Text>
   );
+
+  // TODO: refactor this logic elsewhere
+  const gridOrientation =
+    grid?.columns / grid?.rows > 1 ? 'landscape' : 'portrait';
+
+  const adaptiveGrid = (((landscape && gridOrientation === 'landscape') ||
+    (portrait && gridOrientation === 'portrait')) &&
+    grid) || {
+    ...grid,
+    columns: grid?.rows,
+    rows: grid?.columns,
+  };
 
   function renderWithSelection(children) {
     return selection ? (
@@ -96,8 +108,8 @@ function Board(props) {
               handleTabKey={FocusZoneTabbableElements.none}
             >
               <Grid
-                columns={grid.columns}
-                rows={grid.rows}
+                columns={adaptiveGrid.columns}
+                rows={adaptiveGrid.rows}
                 order={grid.order}
                 items={buttons}
                 renderItem={renderButton}
