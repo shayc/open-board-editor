@@ -2,7 +2,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Panel, PanelType } from '@fluentui/react';
 
-import { useSettings } from '../../contexts/settings';
 import ColorSettings from './ColorSettings';
 import LanguageSettings from './LanguageSettings';
 import SpeechSettings from './SpeechSettings';
@@ -14,7 +13,6 @@ function AppSettingsPanel(props) {
   const { onDismiss, open, ...other } = props;
 
   const intl = useIntl();
-  const settings = useSettings();
 
   return (
     <Panel
@@ -29,7 +27,7 @@ function AppSettingsPanel(props) {
       <ColorSettings />
       <LanguageSettings />
       <SpeechSettings />
-      <BoardSettings settings={settings.board} />
+      <BoardSettings />
       <About />
     </Panel>
   );

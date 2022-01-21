@@ -32,15 +32,14 @@ function LocaleProvider(props) {
     async function getLocaleList(locale) {
       await polyfillDisplayNames(locale);
 
-      const localeList = APP_LOCALES.map((appLocale) => {
+      const languageDisplayNames = APP_LOCALES.map((appLocale) => {
         const displayNames = new Intl.DisplayNames(appLocale, {
           type: 'language',
         });
-        const name = displayNames.of(appLocale);
-        return { key: appLocale, text: name };
+        return { key: appLocale, text: displayNames.of(appLocale) };
       });
 
-      setLocaleList(localeList);
+      setLocaleList(languageDisplayNames);
     }
 
     const isRTL = getLocaleDirection(locale) === 'rtl';
@@ -78,6 +77,9 @@ function useLocale() {
 }
 
 LocaleProvider.propTypes = {
+  /**
+   * Initial locale
+   */
   locale: PropTypes.string.isRequired,
 };
 
