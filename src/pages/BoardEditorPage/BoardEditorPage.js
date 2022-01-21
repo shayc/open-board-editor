@@ -417,7 +417,7 @@ function BoardEditorPage() {
 
         <DefaultButton
           primary={true}
-          style={{ margin: 'auto 8px', marginInlineStart: 'auto' }}
+          style={{ margin: 'auto 8px' }}
           iconProps={{ iconName: 'Play' }}
           onClick={viewBoard}
           title={intl.formatMessage(messages.viewBoard)}
