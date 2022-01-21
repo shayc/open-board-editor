@@ -56,11 +56,11 @@ function App() {
               </>
             }
           >
-            <Route path=":boardId" />
+            <Route path=":boardId" element={null} />
           </Route>
 
           <Route path="view/boards" element={<BoardViewerPage />}>
-            <Route path=":boardId" />
+            <Route path=":boardId" element={null} />
           </Route>
         </Routes>
       </Suspense>
