@@ -124,13 +124,8 @@ function BoardCommandBar(props) {
   const { isPhone, isSmallScreen, portrait, landscape } = useMediaQuery();
 
   const rootClassName = clsx(className, styles.root);
-  const buttonStyles = {
-    root: {},
-    rootHovered: {},
-  };
 
   const newItem = {
-    buttonStyles,
     key: 'new',
     text: intl.formatMessage(messages.new),
     iconProps: { iconName: 'Add' },
@@ -152,7 +147,6 @@ function BoardCommandBar(props) {
   };
 
   const importFileItem = {
-    buttonStyles,
     key: 'import-file',
     text: intl.formatMessage(messages.importFile),
     iconProps: { iconName: 'OpenFile' },
@@ -160,7 +154,6 @@ function BoardCommandBar(props) {
   };
 
   const deleteItem = {
-    buttonStyles,
     key: 'delete',
     text: intl.formatMessage(messages.delete),
     iconProps: { iconName: 'Delete' },
@@ -175,7 +168,6 @@ function BoardCommandBar(props) {
   );
 
   const gridItem = {
-    buttonStyles,
     key: 'grid',
     text: intl.formatMessage(messages.grid),
     iconProps: { iconName: 'GridViewMedium' },
@@ -185,14 +177,12 @@ function BoardCommandBar(props) {
 
   const activeBoardItems = [
     {
-      buttonStyles,
       key: 'print',
       text: intl.formatMessage(messages.print),
       iconProps: { iconName: 'Print' },
       onClick: onPrintClick,
     },
     {
-      buttonStyles,
       key: 'share',
       text: intl.formatMessage(messages.share),
       iconProps: { iconName: 'Share' },
@@ -214,7 +204,6 @@ function BoardCommandBar(props) {
     ...(isSmallScreen && isBoardActive ? activeBoardItems : []),
     { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
     {
-      buttonStyles,
       key: 'info',
       text: intl.formatMessage(messages.info),
       iconProps: { iconName: 'Info' },
@@ -222,7 +211,6 @@ function BoardCommandBar(props) {
     },
     importFileItem,
     {
-      buttonStyles,
       key: 'export-file',
       text: intl.formatMessage(messages.exportFile),
       iconProps: { iconName: 'Download' },
@@ -232,15 +220,16 @@ function BoardCommandBar(props) {
 
   const farItems = [];
 
+  const commandBarStyles = {
+    root: {
+      padding: '0',
+    },
+  };
+
   return (
     <CommandBar
       className={rootClassName}
-      styles={{
-        root: {
-          padding: '0',
-        },
-      }}
-      overflowButtonProps={{ styles: buttonStyles }}
+      styles={commandBarStyles}
       items={items}
       farItems={farItems}
       overflowItems={overflowItems}

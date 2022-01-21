@@ -1,17 +1,16 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useSettings } from './contexts/settings';
-import { useSpeech } from './contexts/speech';
+import { APP_NAME } from './constants';
 import { useLocale } from './contexts/locale';
+import { useSettings } from './contexts/settings';
+import { AppSettingsPanel } from './features';
 import {
   DelayedRender,
   SpinnerProgress,
   AppBar,
   SettingsButton,
 } from './components';
-import { AppSettingsPanel } from './features';
-import { APP_NAME } from './constants';
 import styles from './App.module.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -19,13 +18,8 @@ const BoardViewerPage = lazy(() => import('./pages/BoardViewerPage'));
 const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 
 function App() {
-  const { isSettingsOpen, toggleSettings } = useSettings();
   const { locale } = useLocale();
-  const speech = useSpeech();
-
-  useEffect(() => {
-    speech.setLang(locale);
-  }, [locale, speech]);
+  const { isSettingsOpen, toggleSettings } = useSettings();
 
   return (
     <div className={styles.root}>
