@@ -166,7 +166,7 @@ function BoardCommandBar(props) {
     iconProps: { iconName: 'Delete' },
     onClick: onDeleteBoardClick,
   };
-  console.log('isPhone :>> ', isPhone);
+
   const gridMenuProps = createGridMenuProps(
     isPhone ? PhoneGridSize : TabletGridSize,
     (landscape && 'landscape') || (portrait && 'portrait') || 'portrait',
