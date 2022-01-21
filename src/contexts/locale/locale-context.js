@@ -4,58 +4,50 @@ import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { setRTL } from '@fluentui/react';
 
-import { APP_LOCALES, importTranslation } from '../../i18n/i18n';
+import { APP_LOCALES, importMessages } from '../../i18n/i18n';
 import { polyfillDisplayNames } from './polyfillDisplayNames';
 
 const LocaleContext = React.createContext();
-
-function getLocaleDirection(locale) {
-  const lang = locale.slice(0, 2);
-  const isRTL = lang === 'he' || lang === 'ar';
-
-  return isRTL ? 'rtl' : 'ltr';
-}
 
 function LocaleProvider(props) {
   const { locale: initialLocale } = props;
 
   const [locale, setLocale] = useState(initialLocale);
-  const [localeList, setLocaleList] = useState([]);
+  const [appLanguages, setAppLanguages] = useState([]);
   const [messages, setMessages] = useState(null);
 
   useEffect(() => {
     async function loadMessages(locale) {
-      const translation = await importTranslation(locale);
-      setMessages(translation.default);
+      const messages = await importMessages(locale);
+      setMessages(messages.default);
     }
 
-    async function getLocaleList(locale) {
+    async function getAppLanguages(locale) {
       await polyfillDisplayNames(locale);
 
-      const languageDisplayNames = APP_LOCALES.map((appLocale) => {
+      const languages = APP_LOCALES.map((appLocale) => {
         const displayNames = new Intl.DisplayNames(appLocale, {
           type: 'language',
         });
+
         return { key: appLocale, text: displayNames.of(appLocale) };
       });
 
-      setLocaleList(languageDisplayNames);
+      setAppLanguages(languages);
     }
 
-    const isRTL = getLocaleDirection(locale) === 'rtl';
-    setRTL(isRTL);
-
-    getLocaleList(locale);
+    setRTL(getIsRTL(locale));
+    getAppLanguages(locale);
     loadMessages(locale);
   }, [locale]);
 
   const context = useMemo(() => {
     return {
       locale,
-      localeList,
+      appLanguages,
       setLocale,
     };
-  }, [locale, localeList, setLocale]);
+  }, [locale, appLanguages, setLocale]);
 
   return (
     messages && (
@@ -65,6 +57,13 @@ function LocaleProvider(props) {
     )
   );
 }
+
+LocaleProvider.propTypes = {
+  /**
+   * Initial locale
+   */
+  locale: PropTypes.string.isRequired,
+};
 
 function useLocale() {
   const context = React.useContext(LocaleContext);
@@ -76,11 +75,11 @@ function useLocale() {
   return context;
 }
 
-LocaleProvider.propTypes = {
-  /**
-   * Initial locale
-   */
-  locale: PropTypes.string.isRequired,
-};
+function getIsRTL(locale) {
+  const lang = locale.slice(0, 2);
+  const isRTL = lang === 'he' || lang === 'ar';
+
+  return isRTL;
+}
 
 export { LocaleProvider, useLocale };

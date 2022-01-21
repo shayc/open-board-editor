@@ -6,6 +6,6 @@ export function getUserLocale(locales, userLocale) {
   return locales.find((locale) => locale.includes(userLocale));
 }
 
-export function importTranslation(locale) {
+export function importMessages(locale) {
   return import(`./extracted-messages/${locale}.json`);
 }

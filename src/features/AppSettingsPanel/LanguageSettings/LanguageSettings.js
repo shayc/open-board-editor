@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Dropdown, Text } from '@fluentui/react';
 
+import { useSpeech } from '../../../contexts/speech';
 import { useLocale } from '../../../contexts/locale';
 import messages from './LanguageSettings.messages';
 import styles from './LanguageSettings.module.css';
@@ -10,13 +12,20 @@ import styles from './LanguageSettings.module.css';
 function LanguageSettings(props) {
   const { className } = props;
 
-  const { locale, localeList, setLocale } = useLocale();
+  const { locale, appLanguages, setLocale } = useLocale();
+  const speech = useSpeech();
 
   const rootClassName = clsx(className, styles.root);
 
   function handleLocaleChange(event, locale) {
     setLocale(locale.key);
   }
+
+  useEffect(() => {
+    if (locale) {
+      speech.setLang(locale);
+    }
+  }, [locale, speech]);
 
   return (
     <div className={rootClassName}>
@@ -28,7 +37,7 @@ function LanguageSettings(props) {
         className={rootClassName}
         label={<FormattedMessage {...messages.displayLanguage} />}
         defaultSelectedKey={locale}
-        options={localeList}
+        options={appLanguages}
         onChange={handleLocaleChange}
       />
     </div>

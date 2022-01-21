@@ -6,13 +6,9 @@ export async function polyfillDisplayNames(locale) {
   }
 
   if (Intl.DisplayNames.polyfilled) {
-    switch (locale) {
-      default:
-        await import('@formatjs/intl-displaynames/locale-data/en');
-        break;
-      case 'he-IL':
-        await import('@formatjs/intl-displaynames/locale-data/he');
-        break;
-    }
+    await import('@formatjs/intl-displaynames/locale-data/en');
+    await import('@formatjs/intl-displaynames/locale-data/he');
+    await import('@formatjs/intl-displaynames/locale-data/fr');
+    await import('@formatjs/intl-displaynames/locale-data/es');
   }
 }
