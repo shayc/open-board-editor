@@ -120,6 +120,7 @@ function BoardCommandBar(props) {
     onDeleteButtonClick,
     onDeleteBoardClick,
     onGridSizeChange,
+    onColorClick,
   } = props;
 
   const rootClassName = clsx(className, styles.root);
@@ -138,6 +139,7 @@ function BoardCommandBar(props) {
       onDeleteButtonClick,
       onDeleteBoardClick,
       onGridSizeChange,
+      onColorClick,
     }
   );
 
