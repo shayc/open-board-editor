@@ -22,7 +22,6 @@ export default function plopfile(plop) {
         message: 'Do you want to wrap your component in React.memo?',
       },
     ],
-
     actions: (data) => {
       const actions = [
         {
