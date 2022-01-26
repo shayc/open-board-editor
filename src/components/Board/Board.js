@@ -94,9 +94,9 @@ function Board(props) {
     <div className={rootClassName} {...other}>
       <Bar
         className={styles.nameBar}
-        startGroup={!isSmallScreen ? barStart : null}
+        startGroup={!isSmallScreen && barStart}
         middleGroup={boardName}
-        endGroup={!isSmallScreen ? barEnd : null}
+        endGroup={!isSmallScreen && barEnd}
       />
 
       {renderWithSelection(
@@ -134,8 +134,8 @@ function Board(props) {
       {isSmallScreen && (
         <Bar
           className={styles.bottomBar}
-          startGroup={isSmallScreen ? barStart : null}
-          endGroup={isSmallScreen ? barEnd : null}
+          startGroup={barStart}
+          endGroup={barEnd}
         />
       )}
     </div>

@@ -1,13 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import {
-  Selection,
-  CommandBarButton,
-  DefaultButton,
-  IconButton,
-  getRTL,
-} from '@fluentui/react';
+import { Selection, DefaultButton, IconButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -31,6 +25,7 @@ import {
 import { defaultColors } from '../../open-board-format/color-codes';
 import globalSymbols from '../../api/pictograms/global-symbols';
 import { BoardEditor } from '../../features';
+import PanelToggle from './PanelToggle';
 import { openFileDialog, share, print } from './utils';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
@@ -42,7 +37,7 @@ function BoardEditorPage() {
   const { boardId } = useParams();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
-  const [isBoardsPanelOpen, setIsBoardsPanelOpen] = useState(!isSmallScreen);
+  const [isPanelOpen, setIsPanelOpen] = useState(!isSmallScreen);
   const [isDetailsPanelOpen, setIsDetailsPanelOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -124,8 +119,8 @@ function BoardEditorPage() {
     []
   );
 
-  function toggleBoardsPanel() {
-    setIsBoardsPanelOpen((isOpen) => !isOpen);
+  function togglePanel() {
+    setIsPanelOpen((isOpen) => !isOpen);
   }
 
   function toggleDetailsPanel() {
@@ -170,15 +165,10 @@ function BoardEditorPage() {
     goToBoard(id);
   }
 
-  const handleBoardDelete = useCallback(
-    function handleBoardDelete(id) {
-      const ids = Array.isArray(id) ? id : [id];
-      boardDB.remove(ids);
-
-      navigateToNextBoard(board.id, boardDB.boardsList);
-    },
-    [boardDB, board.id, navigateToNextBoard]
-  );
+  function deleteSelectedBoards() {
+    const ids = selectedBoards.map((item) => item.id);
+    boardDB.remove(ids);
+  }
 
   function handleButtonDelete() {
     const ids = buttonsSelection
@@ -303,7 +293,7 @@ function BoardEditorPage() {
           text: intl.formatMessage(messages.delete),
           iconProps: { iconName: 'Delete' },
           onClick: () => {
-            handleBoardDelete(board.id);
+            boardDB.remove(board.id);
           },
         },
       ];
@@ -352,9 +342,9 @@ function BoardEditorPage() {
 
   useEffect(() => {
     if (isSmallScreen) {
-      setIsBoardsPanelOpen(false);
+      setIsPanelOpen(false);
     }
-  }, [isSmallScreen, setIsBoardsPanelOpen]);
+  }, [isSmallScreen, setIsPanelOpen]);
 
   function goBack() {
     boardNavigation.goBack();
@@ -372,31 +362,20 @@ function BoardEditorPage() {
     navigate(pathname.replace('edit', 'view'));
   }
 
-  const isRTL = getRTL();
-  const closePaneIconName = isRTL ? 'OpenPaneMirrored' : 'ClosePaneMirrored';
-  const openPaneIconName = isRTL ? 'ClosePaneMirrored' : 'OpenPaneMirrored';
+  const boardCommandContext =
+    (isButtonSelected && 'button-selected') ||
+    (isBoardSelected && 'board-selected') ||
+    (board?.id && 'board-active');
 
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
 
       <div className={styles.commandBar}>
-        <CommandBarButton
-          iconProps={{
-            iconName: isBoardsPanelOpen ? closePaneIconName : openPaneIconName,
-          }}
-          title={
-            isBoardsPanelOpen
-              ? intl.formatMessage(messages.hideBoardsPanel)
-              : intl.formatMessage(messages.showBoardsPanel)
-          }
-          onClick={toggleBoardsPanel}
-        />
+        <PanelToggle checked={isPanelOpen} onClick={togglePanel} />
 
         <BoardCommandBar
-          isBoardSelected={isBoardSelected}
-          isBoardActive={board?.id}
-          isButtonSelected={Boolean(buttonsSelection.getSelectedCount())}
+          commandContext={boardCommandContext}
           isSmallScreen={isSmallScreen}
           onNewBoardClick={handleNewBoard}
           onImportFileClick={handleImportFile}
@@ -411,20 +390,8 @@ function BoardEditorPage() {
             buttonsSelection.setAllSelected(false);
           }}
           onDeleteButtonClick={handleButtonDelete}
-          onDeleteBoardClick={() => {
-            const selectedIds = selectedBoards.map((item) => item.id);
-            handleBoardDelete(selectedIds);
-          }}
+          onDeleteBoardClick={deleteSelectedBoards}
           onGridSizeChange={handleGridSizeChange}
-        />
-
-        <DefaultButton
-          primary={true}
-          style={{ margin: 'auto 8px' }}
-          iconProps={{ iconName: 'Play' }}
-          onClick={viewBoard}
-          title={intl.formatMessage(messages.viewBoard)}
-          text={intl.formatMessage(messages.view)}
         />
       </div>
 
@@ -434,7 +401,7 @@ function BoardEditorPage() {
         </DelayedRender>
       ) : (
         <div className={styles.container}>
-          {isBoardsPanelOpen && (
+          {isPanelOpen && (
             <div className={styles.panel}>
               <BoardsList
                 activeId={boardId}
@@ -458,6 +425,17 @@ function BoardEditorPage() {
                       onBackClick={goBack}
                       onForwardClick={goForward}
                       onHomeClick={goHome}
+                    />
+                  )
+                }
+                barEnd={
+                  !isButtonSelected && (
+                    <DefaultButton
+                      style={{ margin: 'auto 8px' }}
+                      iconProps={{ iconName: 'View' }}
+                      onClick={viewBoard}
+                      title={intl.formatMessage(messages.viewBoard)}
+                      text={intl.formatMessage(messages.view)}
                     />
                   )
                 }
@@ -485,10 +463,7 @@ function BoardEditorPage() {
             {selectedBoards.length > 1 && (
               <SelectedBoardsPage
                 selectedCount={selectedBoards.length}
-                onDeleteClick={() => {
-                  const selectedIds = selectedBoards.map(({ id }) => id);
-                  handleBoardDelete(selectedIds);
-                }}
+                onDeleteClick={deleteSelectedBoards}
                 onCancelClick={() => {
                   boardSelectionRef.current.setAllSelected(false);
                 }}

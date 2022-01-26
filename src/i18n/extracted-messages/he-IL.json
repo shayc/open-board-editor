@@ -91,5 +91,7 @@
   "app.pages.BoardViewerPage.editBoard": "ערוך לוח",
   "app.pages.HomePage.blank": "ריק",
   "app.pages.HomePage.recentlyViewedBoardSets": "לוחות שנצפו לאחרונה",
-  "app.pages.HomePage.startNewBoardSet": "התחל סט לוחות חדש"
+  "app.pages.HomePage.startNewBoardSet": "התחל סט לוחות חדש",
+  "app.pages.PanelToggle.hideBoardsPanel": "",
+  "app.pages.PanelToggle.showBoardsPanel": ""
 }

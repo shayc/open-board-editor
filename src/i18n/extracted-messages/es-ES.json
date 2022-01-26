@@ -91,5 +91,7 @@
   "app.pages.BoardViewerPage.editBoard": "",
   "app.pages.HomePage.blank": "",
   "app.pages.HomePage.recentlyViewedBoardSets": "",
-  "app.pages.HomePage.startNewBoardSet": ""
+  "app.pages.HomePage.startNewBoardSet": "",
+  "app.pages.PanelToggle.hideBoardsPanel": "",
+  "app.pages.PanelToggle.showBoardsPanel": ""
 }

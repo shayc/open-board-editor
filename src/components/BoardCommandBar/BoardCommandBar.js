@@ -108,9 +108,7 @@ function createGridMenuProps(device, orientation, onGridSizeChange, intl) {
 function BoardCommandBar(props) {
   const {
     className,
-    isBoardActive,
-    isBoardSelected,
-    isButtonSelected,
+    commandContext,
     onImportFileClick,
     onExportFileClick,
     onDetailsClick,
@@ -125,23 +123,18 @@ function BoardCommandBar(props) {
 
   const rootClassName = clsx(className, styles.root);
 
-  const commands = useCommands(
-    isButtonSelected,
-    isBoardActive,
-    isBoardSelected,
-    {
-      onImportFileClick,
-      onExportFileClick,
-      onDetailsClick,
-      onPrintClick,
-      onShareClick,
-      onNewBoardClick,
-      onDeleteButtonClick,
-      onDeleteBoardClick,
-      onGridSizeChange,
-      onColorClick,
-    }
-  );
+  const commands = useCommands(commandContext, {
+    onImportFileClick,
+    onExportFileClick,
+    onDetailsClick,
+    onPrintClick,
+    onShareClick,
+    onNewBoardClick,
+    onDeleteButtonClick,
+    onDeleteBoardClick,
+    onGridSizeChange,
+    onColorClick,
+  });
 
   const commandBarStyles = {
     root: {
@@ -168,23 +161,18 @@ BoardCommandBar.propTypes = {
    * @ignore
    */
   children: PropTypes.node,
+  commandContext: PropTypes.oneOf([
+    'board-active',
+    'board-selected',
+    'button-selected',
+  ]),
 };
 
 export default BoardCommandBar;
 
-function useCommands(
-  isButtonSelected,
-  isBoardActive,
-  isBoardSelected,
-  handlers
-) {
+function useCommands(commandContext, handlers) {
   const intl = useIntl();
   const { isPhone, portrait, landscape } = useMediaQuery();
-
-  const commandContext =
-    (isButtonSelected && 'button-selected') ||
-    (isBoardSelected && 'board-selected') ||
-    (isBoardActive && 'board-active');
 
   const items = {
     print: {
