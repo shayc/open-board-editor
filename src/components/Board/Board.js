@@ -131,7 +131,7 @@ function Board(props) {
         </>
       )}
 
-      {isSmallScreen && (barStart || barEnd) && (
+      {isSmallScreen && (
         <Bar
           className={styles.bottomBar}
           startGroup={isSmallScreen ? barStart : null}
