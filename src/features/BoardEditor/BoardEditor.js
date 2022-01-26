@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { IconButton, Check, Selection } from '@fluentui/react';
+import { nanoid } from 'nanoid';
+import { useIntl } from 'react-intl';
 
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
@@ -10,9 +12,8 @@ import {
   ButtonCallout,
   useButtonCallout,
 } from '../../components/ButtonCallout';
-
+import messages from './BoardEditor.messages';
 import styles from './BoardEditor.module.css';
-import { nanoid } from 'nanoid';
 
 function BoardEditor(props) {
   const {
@@ -37,6 +38,7 @@ function BoardEditor(props) {
     ...other
   } = props;
 
+  const intl = useIntl();
   const speech = useSpeech();
 
   const {
@@ -229,7 +231,13 @@ function BoardEditor(props) {
     <>
       <Board
         className={rootClassName}
-        name={board.name}
+        name={
+          selection.getSelectedCount()
+            ? intl.formatMessage(messages.itemsSelected, {
+                number: selection.getSelectedCount(),
+              })
+            : board.name
+        }
         buttons={board.buttons}
         grid={board.grid}
         draggable={tileDraggable}

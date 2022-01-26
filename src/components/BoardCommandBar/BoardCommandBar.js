@@ -110,115 +110,36 @@ function BoardCommandBar(props) {
     className,
     isBoardActive,
     isBoardSelected,
+    isButtonSelected,
     onImportFileClick,
     onExportFileClick,
     onDetailsClick,
     onPrintClick,
     onShareClick,
     onNewBoardClick,
+    onDeleteButtonClick,
     onDeleteBoardClick,
     onGridSizeChange,
   } = props;
 
-  const intl = useIntl();
-  const { isPhone, isSmallScreen, portrait, landscape } = useMediaQuery();
-
   const rootClassName = clsx(className, styles.root);
 
-  const newItem = {
-    key: 'new',
-    text: intl.formatMessage(messages.new),
-    iconProps: { iconName: 'Add' },
-    subMenuProps: {
-      items: [
-        {
-          key: 'board',
-          text: intl.formatMessage(messages.board),
-          iconProps: { iconName: '' },
-          onClick: onNewBoardClick,
-        },
-        {
-          key: 'tile',
-          text: intl.formatMessage(messages.tile),
-          iconProps: { iconName: '' },
-        },
-      ],
-    },
-  };
-
-  const importFileItem = {
-    key: 'import-file',
-    text: intl.formatMessage(messages.importFile),
-    iconProps: { iconName: 'OpenFile' },
-    onClick: onImportFileClick,
-  };
-
-  const deleteItem = {
-    key: 'delete',
-    text: intl.formatMessage(messages.delete),
-    iconProps: { iconName: 'Delete' },
-    onClick: onDeleteBoardClick,
-  };
-
-  const gridMenuProps = createGridMenuProps(
-    isPhone ? PhoneGridSize : TabletGridSize,
-    (landscape && 'landscape') || (portrait && 'portrait') || 'portrait',
-    onGridSizeChange,
-    intl
+  const commands = useCommands(
+    isButtonSelected,
+    isBoardActive,
+    isBoardSelected,
+    {
+      onImportFileClick,
+      onExportFileClick,
+      onDetailsClick,
+      onPrintClick,
+      onShareClick,
+      onNewBoardClick,
+      onDeleteButtonClick,
+      onDeleteBoardClick,
+      onGridSizeChange,
+    }
   );
-
-  const gridItem = {
-    key: 'grid',
-    text: intl.formatMessage(messages.grid),
-    iconProps: { iconName: 'GridViewMedium' },
-    subMenuProps: gridMenuProps,
-    // onClick: onGridClick,
-  };
-
-  const activeBoardItems = [
-    {
-      key: 'print',
-      text: intl.formatMessage(messages.print),
-      iconProps: { iconName: 'Print' },
-      onClick: onPrintClick,
-    },
-    {
-      key: 'share',
-      text: intl.formatMessage(messages.share),
-      iconProps: { iconName: 'Share' },
-      onClick: onShareClick,
-    },
-    gridItem,
-  ];
-
-  const selectedBoardItems = [deleteItem];
-
-  const items = [
-    // panelToggleItem,
-    newItem,
-    ...(isBoardSelected ? selectedBoardItems : []),
-    ...(!isSmallScreen && isBoardActive ? activeBoardItems : []),
-  ];
-
-  const overflowItems = [
-    ...(isSmallScreen && isBoardActive ? activeBoardItems : []),
-    { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
-    {
-      key: 'info',
-      text: intl.formatMessage(messages.info),
-      iconProps: { iconName: 'Info' },
-      onClick: onDetailsClick,
-    },
-    importFileItem,
-    {
-      key: 'export-file',
-      text: intl.formatMessage(messages.exportFile),
-      iconProps: { iconName: 'Download' },
-      onClick: onExportFileClick,
-    },
-  ];
-
-  const farItems = [];
 
   const commandBarStyles = {
     root: {
@@ -230,9 +151,9 @@ function BoardCommandBar(props) {
     <CommandBar
       className={rootClassName}
       styles={commandBarStyles}
-      items={items}
-      farItems={farItems}
-      overflowItems={overflowItems}
+      items={commands.items}
+      farItems={commands.farItems}
+      overflowItems={commands.overflowItems}
       ariaLabel="Use left and right arrow keys to navigate between commands"
     />
   );
@@ -248,3 +169,156 @@ BoardCommandBar.propTypes = {
 };
 
 export default BoardCommandBar;
+
+function useCommands(
+  isButtonSelected,
+  isBoardActive,
+  isBoardSelected,
+  handlers
+) {
+  const intl = useIntl();
+  const { isPhone, portrait, landscape } = useMediaQuery();
+
+  const commandContext =
+    (isButtonSelected && 'button-selected') ||
+    (isBoardSelected && 'board-selected') ||
+    (isBoardActive && 'board-active');
+
+  const items = {
+    print: {
+      key: 'print',
+      text: intl.formatMessage(messages.print),
+      iconProps: { iconName: 'Print' },
+      onClick: handlers.onPrintClick,
+    },
+
+    share: {
+      key: 'share',
+      text: intl.formatMessage(messages.share),
+      iconProps: { iconName: 'Share' },
+      onClick: handlers.onShareClick,
+    },
+
+    importFile: {
+      key: 'import-file',
+      text: intl.formatMessage(messages.importFile),
+      iconProps: { iconName: 'OpenFile' },
+      onClick: handlers.onImportFileClick,
+    },
+
+    exportFile: {
+      key: 'export-file',
+      text: intl.formatMessage(messages.exportFile),
+      iconProps: { iconName: 'Download' },
+      onClick: handlers.onExportFileClick,
+    },
+
+    new: {
+      key: 'new',
+      text: intl.formatMessage(messages.new),
+      iconProps: { iconName: 'Add' },
+      subMenuProps: {
+        items: [
+          {
+            key: 'board',
+            text: intl.formatMessage(messages.board),
+            iconProps: { iconName: '' },
+            onClick: handlers.onNewBoardClick,
+          },
+          {
+            key: 'tile',
+            text: intl.formatMessage(messages.tile),
+            iconProps: { iconName: '' },
+            onClick: handlers.onNewTileClick,
+          },
+        ],
+      },
+    },
+
+    deleteButton: {
+      key: 'deleteButton',
+      text: intl.formatMessage(messages.delete),
+      iconProps: { iconName: 'Delete' },
+      onClick: handlers.onDeleteButtonClick,
+    },
+
+    color: {
+      key: 'color',
+      text: 'Color',
+      iconProps: { iconName: 'Color' },
+      onClick: handlers.onColorClick,
+    },
+
+    deleteBoard: {
+      key: 'deleteBoard',
+      text: intl.formatMessage(messages.delete),
+      iconProps: { iconName: 'Delete' },
+      onClick: handlers.onDeleteBoardClick,
+    },
+
+    grid: {
+      key: 'grid',
+      text: intl.formatMessage(messages.grid),
+      iconProps: { iconName: 'GridViewMedium' },
+      subMenuProps: createGridMenuProps(
+        isPhone ? PhoneGridSize : TabletGridSize,
+        (landscape && 'landscape') || (portrait && 'portrait') || 'portrait',
+        handlers.onGridSizeChange,
+        intl
+      ),
+    },
+
+    info: {
+      key: 'info',
+      text: intl.formatMessage(messages.info),
+      iconProps: { iconName: 'Info' },
+      onClick: handlers.onDetailsClick,
+    },
+
+    divider: { key: 'divider_1', itemType: ContextualMenuItemType.Divider },
+  };
+
+  const defaultCommands = {
+    items: [items.new],
+    overflowItems: [items.importFile, items.exportFile],
+    farItems: [],
+  };
+
+  const boardActiveCommands = {
+    items: [items.new, items.grid, items.print, items.share],
+    overflowItems: [
+      items.info,
+      items.divider,
+      items.importFile,
+      items.exportFile,
+    ],
+    farItems: [],
+  };
+
+  const boardSelectedCommands = {
+    items: [items.deleteBoard, items.grid],
+    overflowItems: [],
+    farItems: [],
+  };
+
+  const buttonSelectedCommands = {
+    items: [items.deleteButton, items.color],
+    overflowItems: [],
+    farItems: [],
+  };
+
+  switch (commandContext) {
+    case 'button-selected': {
+      return buttonSelectedCommands;
+    }
+    case 'board-selected': {
+      return boardSelectedCommands;
+    }
+    case 'board-active': {
+      return boardActiveCommands;
+    }
+    default: {
+      return defaultCommands;
+    }
+  }
+}

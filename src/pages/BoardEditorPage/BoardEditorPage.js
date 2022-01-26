@@ -396,14 +396,17 @@ function BoardEditorPage() {
         <BoardCommandBar
           isBoardSelected={isBoardSelected}
           isBoardActive={board?.id}
+          isButtonSelected={Boolean(buttonsSelection.getSelectedCount())}
           isSmallScreen={isSmallScreen}
-          selectedCount={buttonsSelection.getSelectedCount()}
           onNewBoardClick={handleNewBoard}
           onImportFileClick={handleImportFile}
           onDetailsClick={handleBoardDetails}
           onExportFileClick={handleExportFile}
           onPrintClick={print}
           onShareClick={share}
+          onColorClick={() => {
+            alert('color');
+          }}
           onClearSelectionClick={() => {
             buttonsSelection.setAllSelected(false);
           }}
@@ -448,39 +451,13 @@ function BoardEditorPage() {
             {board?.id && selectedBoards.length < 2 && (
               <BoardEditor
                 barStart={
-                  (!isButtonSelected && (
+                  !isButtonSelected && (
                     <NavButtons
                       backDisabled={boardNavigation.backDisabled}
                       forwardDisabled={boardNavigation.forwardDisabled}
                       onBackClick={goBack}
                       onForwardClick={goForward}
                       onHomeClick={goHome}
-                    />
-                  )) || (
-                    <>
-                      <CommandBarButton
-                        iconProps={{ iconName: 'Delete' }}
-                        text={'Delete'}
-                        onClick={handleButtonDelete}
-                      />
-
-                      <CommandBarButton
-                        iconProps={{ iconName: 'Color' }}
-                        text={'Color'}
-                      />
-                    </>
-                  )
-                }
-                barEnd={
-                  isButtonSelected && (
-                    <CommandBarButton
-                      text={intl.formatMessage(messages.selected, {
-                        number: buttonsSelection.getSelectedCount(),
-                      })}
-                      iconProps={{ iconName: 'Clear' }}
-                      onClick={() => {
-                        buttonsSelection.setAllSelected(false);
-                      }}
                     />
                   )
                 }
