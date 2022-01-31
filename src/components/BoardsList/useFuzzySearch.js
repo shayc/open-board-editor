@@ -2,19 +2,19 @@ import { useState, useMemo } from 'react';
 import Fuse from 'fuse.js';
 
 function useFuzzySearch(items, options) {
-  const [searchText, setSearchText] = useState('');
+  const [value, setValue] = useState('');
 
   const fuse = useMemo(() => {
     return new Fuse(items, options);
   }, [items, options]);
 
-  const { matchedItems, searchWords } = useMemo(() => {
+  const { matchedItems, matchedWords } = useMemo(() => {
     function matchItems(text) {
       const results = fuse.search(text);
       const matches = results.map((res) => res.matches).flat();
       const matchedItems = results.map((res) => res.item);
 
-      const searchWords = matches
+      const matchedWords = matches
         .map((match) => {
           return match.indices.map(([start, end]) => {
             return match.value.slice(start, end + 1);
@@ -22,17 +22,17 @@ function useFuzzySearch(items, options) {
         })
         .flat();
 
-      return { matchedItems, searchWords };
+      return { matchedItems, matchedWords };
     }
 
-    return matchItems(searchText);
-  }, [fuse, searchText]);
+    return matchItems(value);
+  }, [fuse, value]);
 
-  function onSearchChange(text) {
-    setSearchText(text || '');
+  function onChange(text) {
+    setValue(text || '');
   }
 
-  return { matchedItems, onSearchChange, searchText, searchWords };
+  return { matchedItems, matchedWords, onChange, value };
 }
 
 export default useFuzzySearch;

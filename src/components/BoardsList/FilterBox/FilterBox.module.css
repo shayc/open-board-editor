@@ -1,0 +1,8 @@
+.root {
+  flex: 1;
+  border: 1px solid var(--neutralTertiaryAlt);
+}
+
+.root:hover {
+  border: 1px solid var(--neutralTertiaryAlt);
+}

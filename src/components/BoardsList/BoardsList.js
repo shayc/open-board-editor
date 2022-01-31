@@ -7,28 +7,29 @@ import {
   DetailsRowFields,
   DetailsList,
   SelectionMode,
-  SearchBox,
   Icon,
   Text,
   CheckboxVisibility,
   Stack,
   Selection,
+  IconButton,
 } from '@fluentui/react';
 import Highlighter from 'react-highlight-words';
 
 import useFuzzySearch from './useFuzzySearch';
 import BoardsListHeader from './BoardsListHeader/BoardsListHeader';
+import FilterBox from './FilterBox/FilterBox';
 import messages from './BoardsList.messages';
 import styles from './BoardsList.module.css';
 
-const itemNameKey = 'name';
+const nameKey = 'name';
 
 const fuseOptions = {
   threshold: 0.6,
   includeMatches: true,
   minMatchCharLength: 1,
   shouldSort: true,
-  keys: [itemNameKey],
+  keys: [nameKey],
 };
 
 const selectionZoneProps = {
@@ -37,58 +38,63 @@ const selectionZoneProps = {
 
 function BoardsList(props) {
   const {
+    // activeId,
     className,
-    items,
+    boards,
     onActiveIdChange,
+    onDeleteClick,
+    onInfoClick,
+    onRootIdChange,
     onSelectionChange,
-    renderItemActions,
     rootId,
   } = props;
 
   const intl = useIntl();
 
-  const columns = useMemo(
-    () => [
-      {
-        key: '1',
-        fieldName: itemNameKey,
-        minWidth: 154,
-        maxWidth: 154,
-      },
-      {
-        key: '2',
-        minWidth: 34,
-        onRender: renderItemActions,
-      },
-    ],
-    [renderItemActions]
-  );
+  const columns = [
+    {
+      key: '1',
+      fieldName: nameKey,
+      minWidth: 154,
+      maxWidth: 154,
+    },
+    {
+      key: '2',
+      minWidth: 34,
+      onRender: renderActions,
+    },
+  ];
 
-  const { matchedItems, searchWords, searchText, onSearchChange } =
-    useFuzzySearch(items, fuseOptions);
+  const {
+    matchedItems: filteredBoards,
+    matchedWords: filteredWords,
+    value: filterValue,
+    onChange: onFilterChange,
+  } = useFuzzySearch(boards, fuseOptions);
 
-  const sortedItems = useMemo(() => {
-    let sorted = [];
+  const title = filterValue
+    ? intl.formatMessage(messages.results)
+    : intl.formatMessage(messages.boards);
 
-    if (searchText) {
-      sorted = matchedItems;
+  const items = useMemo(() => {
+    if (filterValue) {
+      return filteredBoards;
     } else if (rootId) {
-      sorted = sortItems(items, rootId);
+      return sortItems(boards, rootId);
     }
+  }, [boards, rootId, filterValue, filteredBoards]);
 
-    return sorted;
-  }, [items, rootId, searchText, matchedItems]);
-
-  const { current: selection } = useRef(
+  const selectionRef = useRef(
     new Selection({
+      items,
       onSelectionChanged: () => {
-        onSelectionChange(selection);
+        onSelectionChange(selectionRef.current);
       },
-      items: sortedItems,
     })
   );
 
-  const selectedCount = selection.getSelectedCount();
+  const selectedCount = selectionRef.current.getSelectedCount();
+  const isAllSelected = selectionRef.current.isAllSelected();
 
   const checkboxVisibility = selectedCount
     ? CheckboxVisibility.always
@@ -97,7 +103,7 @@ function BoardsList(props) {
   const rootClassName = clsx(className, styles.root);
 
   function handleToggleSelectAll() {
-    selection.toggleAllSelected();
+    selectionRef.current.toggleAllSelected();
   }
 
   function handleActiveItemChange(item, index, event) {
@@ -108,10 +114,6 @@ function BoardsList(props) {
     if (item?.id) {
       onActiveIdChange?.(item.id);
     }
-  }
-
-  function handleFilterChange(event, text) {
-    onSearchChange(text);
   }
 
   function renderRowFields(props) {
@@ -139,10 +141,10 @@ function BoardsList(props) {
 
     return (
       <DetailsRow
-        key={item.id}
         {...other}
-        rowFieldsAs={renderRowFields}
+        key={item.id}
         styles={styles}
+        rowFieldsAs={renderRowFields}
         item={{
           ...item,
           name: (
@@ -150,7 +152,7 @@ function BoardsList(props) {
               {item.id === rootId && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
-                searchWords={searchWords}
+                searchWords={filteredWords}
                 textToHighlight={item.name}
               />
             </Text>
@@ -160,34 +162,72 @@ function BoardsList(props) {
     );
   }
 
+  function renderActions(board) {
+    const items = [
+      {
+        key: 'info',
+        text: intl.formatMessage(messages.info),
+        iconProps: { iconName: 'Info' },
+        onClick: () => {
+          onInfoClick(board.id);
+        },
+      },
+      {
+        key: 'setAsHomeBoard',
+        text: intl.formatMessage(messages.setAsHomeBoard),
+        iconProps: { iconName: 'Home' },
+        disabled: board.id === rootId,
+        onClick: () => {
+          onRootIdChange(board.id);
+        },
+      },
+      {
+        key: 'delete',
+        text: intl.formatMessage(messages.delete),
+        iconProps: { iconName: 'Delete' },
+        disabled: board.id === rootId,
+        onClick: () => {
+          onDeleteClick(board.id);
+        },
+      },
+    ];
+
+    function handleFocus(event) {
+      event.stopPropagation();
+    }
+
+    return (
+      <div className={styles.rowActions}>
+        <IconButton
+          iconProps={{ iconName: 'MoreVertical' }}
+          menuIconProps={{ style: { display: 'none' } }}
+          menuProps={{ items }}
+          ariaLabel={intl.formatMessage(messages.moreActions)}
+          title={intl.formatMessage(messages.moreActions)}
+          onFocus={handleFocus}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={rootClassName}>
       <div className={styles.filterBar}>
-        <SearchBox
-          className={styles.filterBox}
-          placeholder={intl.formatMessage(messages.filter)}
-          iconProps={{ iconName: 'Filter' }}
-          onChange={handleFilterChange}
-          value={searchText}
-        />
+        <FilterBox onChange={onFilterChange} />
       </div>
 
       <BoardsListHeader
         onToggleSelectAll={handleToggleSelectAll}
-        isAllSelected={selection.isAllSelected()}
+        isAllSelected={isAllSelected}
         selectedCount={selectedCount}
-        title={
-          searchText
-            ? intl.formatMessage(messages.results)
-            : intl.formatMessage(messages.boards)
-        }
+        title={title}
       />
 
       <div className={styles.container}>
         <DetailsList
           columns={columns}
-          items={sortedItems}
-          selection={selection}
+          items={items}
+          selection={selectionRef.current}
           selectionZoneProps={selectionZoneProps}
           selectionMode={SelectionMode.multiple}
           checkboxCellClassName={styles.checkboxCell}
@@ -199,7 +239,7 @@ function BoardsList(props) {
         />
       </div>
 
-      {Boolean(searchText.length) && !matchedItems.length && (
+      {filterValue && !filteredBoards.length && (
         <Stack>
           <Stack.Item align="center">
             <Text as="p" variant="large" block>
@@ -214,13 +254,13 @@ function BoardsList(props) {
 
 BoardsList.propTypes = {
   /**
-   * Active item Id
+   * Active board Id
    */
   activeId: PropTypes.string,
   /**
-   * Items to render
+   * Boards to render
    */
-  items: PropTypes.arrayOf(
+  boards: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
@@ -231,7 +271,23 @@ BoardsList.propTypes = {
    */
   onActiveIdChange: PropTypes.func,
   /**
-   * Root item Id
+   * Callback, fired when delete button is clicked
+   */
+  onDeleteClick: PropTypes.func,
+  /**
+   * Callback, fired when info button is clicked
+   */
+  onInfoClick: PropTypes.func,
+  /**
+   * Callback, fired when rootId changes
+   */
+  onRootIdChange: PropTypes.func,
+  /**
+   *
+   */
+  onSelectionChange: PropTypes.func,
+  /**
+   * Root board Id
    */
   rootId: PropTypes.string,
 };

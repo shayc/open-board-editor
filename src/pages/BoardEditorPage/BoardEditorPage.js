@@ -170,6 +170,14 @@ function BoardEditorPage() {
     boardDB.remove(ids);
   }
 
+  function deleteBoard(id) {
+    boardDB.remove(id);
+  }
+
+  function setRootId(id) {
+    boardDB.setRootId(id);
+  }
+
   function handleButtonDelete() {
     const ids = buttonsSelection
       .getSelection()
@@ -250,13 +258,6 @@ function BoardEditorPage() {
     boardDB.update(board);
   }
 
-  const handleRootIdChange = useCallback(
-    function handleRootIdChange(id) {
-      boardDB.setRootId(id);
-    },
-    [boardDB]
-  );
-
   function handleGridSizeChange({ columns, rows }) {
     boardCtrl.setColumns(columns);
     const board = boardCtrl.setRows(rows);
@@ -268,61 +269,6 @@ function BoardEditorPage() {
     const boardSelection = selection.getSelection();
     setSelectedBoards(boardSelection);
   }
-
-  const renderBoardActions = useCallback(
-    function renderBoardActions(board) {
-      const items = [
-        {
-          key: 'info',
-          text: intl.formatMessage(messages.info),
-          iconProps: { iconName: 'Info' },
-          onClick: () => {
-            handleBoardDetails(board.id);
-          },
-        },
-        {
-          key: 'setAsHomeBoard',
-          text: intl.formatMessage(messages.setAsHomeBoard),
-          iconProps: { iconName: 'Home' },
-          onClick: () => {
-            handleRootIdChange(board.id);
-          },
-        },
-        {
-          key: 'delete',
-          text: intl.formatMessage(messages.delete),
-          iconProps: { iconName: 'Delete' },
-          onClick: () => {
-            boardDB.remove(board.id);
-          },
-        },
-      ];
-
-      if (board.id === boardDB.rootId) {
-        items[1].disabled = true;
-        items[2].disabled = true;
-      }
-
-      function handleFocus(event) {
-        event.stopPropagation();
-      }
-
-      return (
-        <div className={styles.rowActions}>
-          <IconButton
-            iconProps={{ iconName: 'MoreVertical' }}
-            menuIconProps={{ style: { display: 'none' } }}
-            menuProps={{ items }}
-            ariaLabel={intl.formatMessage(messages.moreActions)}
-            title={intl.formatMessage(messages.moreActions)}
-            onFocus={handleFocus}
-          />
-        </div>
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [boardDB.rootId]
-  );
 
   useEffect(() => {
     const getBoard = async (id) => {
@@ -409,7 +355,7 @@ function BoardEditorPage() {
                 items={boardDB.boardsList}
                 onActiveIdChange={goToBoard}
                 onSelectionChange={handleBoardSelectionChange}
-                renderItemActions={renderBoardActions}
+                // renderItemActions={renderBoardActions}
               />
             </div>
           )}
