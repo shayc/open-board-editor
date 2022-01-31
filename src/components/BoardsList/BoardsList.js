@@ -51,6 +51,13 @@ function BoardsList(props) {
 
   const intl = useIntl();
 
+  const {
+    matchedItems: filteredBoards,
+    matchedWords: filteredWords,
+    value: filterValue,
+    onChange: onFilterChange,
+  } = useFuzzySearch(boards, fuseOptions);
+
   const columns = [
     {
       key: 'name-column',
@@ -65,20 +72,11 @@ function BoardsList(props) {
     },
   ];
 
-  const {
-    matchedItems: filteredBoards,
-    matchedWords: filteredWords,
-    value: filterValue,
-    onChange: onFilterChange,
-  } = useFuzzySearch(boards, fuseOptions);
-
   const items = useMemo(() => {
     if (filterValue) {
       return filteredBoards;
-    } else if (rootId) {
-      return sortItems(boards, rootId);
     } else {
-      return [];
+      return sortItems(boards, rootId);
     }
   }, [boards, rootId, filterValue, filteredBoards]);
 
@@ -294,15 +292,14 @@ BoardsList.propTypes = {
 };
 
 function sortItems(items, rootId) {
-  const sortedItems = [...items];
-  const rootItemIndex = items.findIndex((item) => item.id === rootId);
-
-  if (rootItemIndex > 0) {
-    const rootItem = sortedItems.splice(rootItemIndex, 1)[0];
-    sortedItems.unshift(rootItem);
+  if (!rootId) {
+    return items;
   }
 
-  return sortedItems;
+  const root = items.find((item) => item.id === rootId);
+  const others = items.filter((item) => item.id !== rootId);
+
+  return [root, ...others];
 }
 
 export default React.memo(BoardsList);
