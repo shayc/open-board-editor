@@ -4,9 +4,9 @@
 
 A progressive web app for viewing and editing [Open Board Format](https://www.openboardformat.org/) files. OBF files are used in [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) applications to enable non-verbal people with speech impairment (Autism, ALS, etc.) to communicate by activating pictures that generate speech and sound.
 
-## ⚠ Warning: Work-in-Progress.
+## ⚠ Work-in-Progress.
 
-If you're looking for a production ready, battle-tested AAC web app, checkout [Cboard](https://github.com/cboard-org/cboard) instead.
+If you're looking for a production ready, battle-tested AAC web app, check out [Cboard](https://github.com/cboard-org/cboard) instead.
 
 ## Features
 
