@@ -53,13 +53,13 @@ function BoardsList(props) {
 
   const columns = [
     {
-      key: '1',
+      key: 'name-column',
       fieldName: nameKey,
       minWidth: 154,
       maxWidth: 154,
     },
     {
-      key: '2',
+      key: 'actions-column',
       minWidth: 34,
       onRender: renderActions,
     },
@@ -81,6 +81,8 @@ function BoardsList(props) {
       return filteredBoards;
     } else if (rootId) {
       return sortItems(boards, rootId);
+    } else {
+      return [];
     }
   }, [boards, rootId, filterValue, filteredBoards]);
 
@@ -217,25 +219,25 @@ function BoardsList(props) {
       </div>
 
       <BoardsListHeader
-        onToggleSelectAll={handleToggleSelectAll}
-        isAllSelected={isAllSelected}
-        selectedCount={selectedCount}
         title={title}
+        selectedCount={selectedCount}
+        isAllSelected={isAllSelected}
+        onToggleSelectAll={handleToggleSelectAll}
       />
 
       <div className={styles.container}>
         <DetailsList
+          isHeaderVisible={false}
           columns={columns}
           items={items}
           selection={selectionRef.current}
-          selectionZoneProps={selectionZoneProps}
           selectionMode={SelectionMode.multiple}
+          selectionZoneProps={selectionZoneProps}
           checkboxCellClassName={styles.checkboxCell}
           checkboxVisibility={checkboxVisibility}
           checkButtonAriaLabel="Row checkbox"
           onActiveItemChanged={handleActiveItemChange}
           onRenderRow={renderRow}
-          isHeaderVisible={false}
         />
       </div>
 

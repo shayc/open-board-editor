@@ -9,8 +9,8 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.BoardsListHeader';
 
 export default defineMessages({
-  selectAllBoards: {
-    id: `${scope}.selectAllBoards`,
-    defaultMessage: 'Select all boards',
+  filter: {
+    id: `${scope}.filter`,
+    defaultMessage: 'Filter',
   },
 });

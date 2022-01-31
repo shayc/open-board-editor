@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, DefaultButton, IconButton } from '@fluentui/react';
+import { Selection, DefaultButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -352,10 +352,12 @@ function BoardEditorPage() {
               <BoardsList
                 activeId={boardId}
                 rootId={boardDB.rootId}
-                items={boardDB.boardsList}
+                boards={boardDB.boardsList}
                 onActiveIdChange={goToBoard}
+                onDeleteClick={deleteBoard}
+                onInfoClick={handleBoardDetails}
+                onRootIdChange={setRootId}
                 onSelectionChange={handleBoardSelectionChange}
-                // renderItemActions={renderBoardActions}
               />
             </div>
           )}
