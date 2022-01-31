@@ -1,12 +1,12 @@
 /*
- * FilterBox Messages
+ * BoardsListFilterBox Messages
  *
- * This contains all the text for the FilterBox component.
+ * This contains all the text for the BoardsListFilterBox component.
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.FilterBox';
+export const scope = 'app.components.BoardsListFilterBox';
 
 export default defineMessages({
   filter: {

@@ -4,7 +4,7 @@ import messages from './BoardsListHeader.messages';
 import styles from './BoardsListHeader.module.css';
 
 function BoardsListHeader(props) {
-  const { isAllSelected, onToggleSelectAll, selectedCount, title } = props;
+  const { isAllSelected, onToggleSelectAll, title } = props;
 
   const intl = useIntl();
 
@@ -26,7 +26,7 @@ function BoardsListHeader(props) {
 
       <div className={styles.title}>
         <Text as="span" variant="mediumPlus" style={{ fontWeight: 600 }}>
-          {Boolean(selectedCount) && `(${selectedCount})`} {title}
+          {title}
         </Text>
       </div>
     </div>

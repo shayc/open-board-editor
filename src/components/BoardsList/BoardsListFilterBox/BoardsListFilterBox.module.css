@@ -1,8 +1,15 @@
 .root {
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.searchBox {
   flex: 1;
   border: 1px solid var(--neutralTertiaryAlt);
 }
 
-.root:hover {
+.searchBox:hover {
   border: 1px solid var(--neutralTertiaryAlt);
 }

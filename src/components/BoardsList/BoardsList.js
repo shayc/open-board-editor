@@ -18,7 +18,7 @@ import Highlighter from 'react-highlight-words';
 
 import useFuzzySearch from './useFuzzySearch';
 import BoardsListHeader from './BoardsListHeader/BoardsListHeader';
-import FilterBox from './FilterBox/FilterBox';
+import BoardsListFilterBox from './BoardsListFilterBox/BoardsListFilterBox';
 import messages from './BoardsList.messages';
 import styles from './BoardsList.module.css';
 
@@ -72,10 +72,6 @@ function BoardsList(props) {
     onChange: onFilterChange,
   } = useFuzzySearch(boards, fuseOptions);
 
-  const title = filterValue
-    ? intl.formatMessage(messages.results)
-    : intl.formatMessage(messages.boards);
-
   const items = useMemo(() => {
     if (filterValue) {
       return filteredBoards;
@@ -97,6 +93,12 @@ function BoardsList(props) {
 
   const selectedCount = selectionRef.current.getSelectedCount();
   const isAllSelected = selectionRef.current.isAllSelected();
+
+  const title = filterValue
+    ? intl.formatMessage(messages.results)
+    : intl.formatMessage(messages.boards);
+
+  const titleWithCount = selectedCount ? `(${selectedCount}) ${title}` : title;
 
   const checkboxVisibility = selectedCount
     ? CheckboxVisibility.always
@@ -214,13 +216,10 @@ function BoardsList(props) {
 
   return (
     <div className={rootClassName}>
-      <div className={styles.filterBar}>
-        <FilterBox onChange={onFilterChange} />
-      </div>
+      <BoardsListFilterBox onChange={onFilterChange} value={filterValue} />
 
       <BoardsListHeader
-        title={title}
-        selectedCount={selectedCount}
+        title={titleWithCount}
         isAllSelected={isAllSelected}
         onToggleSelectAll={handleToggleSelectAll}
       />
