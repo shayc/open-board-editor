@@ -91,16 +91,16 @@ function BoardEditorPage() {
   const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardSelected = Boolean(selectedBoards?.length);
 
-  const navigateToNextBoard = useCallback(
-    function navigateToNextBoard(boardId, boardsList) {
-      const boardIndex = boardsList.findIndex((board) => board.id === boardId);
-      const nextBoard =
-        boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
+  // const navigateToNextBoard = useCallback(
+  //   function navigateToNextBoard(boardId, boardsList) {
+  //     const boardIndex = boardsList.findIndex((board) => board.id === boardId);
+  //     const nextBoard =
+  //       boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
 
-      goToBoard(nextBoard?.id);
-    },
-    [goToBoard]
-  );
+  //     goToBoard(nextBoard?.id);
+  //   },
+  //   [goToBoard]
+  // );
 
   useHotkeys(
     'del',
