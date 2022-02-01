@@ -18,10 +18,10 @@ const BoardViewerPage = lazy(() => import('./pages/BoardViewerPage'));
 const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 
 function App() {
-  const { locale } = useLocale();
-  const { isSettingsOpen, toggleSettings } = useSettings();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { locale } = useLocale();
+  const { isSettingsOpen, toggleSettings } = useSettings();
 
   function editBoard() {
     navigate(pathname.replace('view', 'edit'));

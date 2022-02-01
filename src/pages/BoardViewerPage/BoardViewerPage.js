@@ -42,7 +42,6 @@ function BoardViewerPage(props) {
 
   async function handleFetchRequest(url) {
     const board = await OBF.fetchBoard(url);
-
     setBoard(board);
   }
 
