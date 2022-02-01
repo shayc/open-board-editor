@@ -4,6 +4,7 @@ import { IconButton, Check, Selection } from '@fluentui/react';
 import { nanoid } from 'nanoid';
 import { useIntl } from 'react-intl';
 
+import { useSettings } from '../../contexts/settings';
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
@@ -21,8 +22,6 @@ function BoardEditor(props) {
     board,
     buttonColors,
     buttonImages,
-    buttonLabelHidden,
-    buttonLabelPosition,
     className,
     draggable,
     linkableBoards = [],
@@ -40,6 +39,7 @@ function BoardEditor(props) {
 
   const intl = useIntl();
   const speech = useSpeech();
+  const { board: boardSettings } = useSettings();
 
   const {
     button,
@@ -205,8 +205,8 @@ function BoardEditor(props) {
           <Pictogram
             key={image?.url}
             label={label}
-            labelHidden={buttonLabelHidden}
-            labelPosition={buttonLabelPosition}
+            labelHidden={boardSettings.isLabelHidden}
+            labelPosition={boardSettings.labelPosition}
             src={imageUrl}
           />
         </Tile>
@@ -280,14 +280,6 @@ BoardEditor.propTypes = {
    * Images for the button callout
    */
   buttonImages: PropTypes.array,
-  /**
-   * If `true` button label is hidden
-   */
-  buttonLabelHidden: PropTypes.bool,
-  /**
-   * Button label position
-   */
-  buttonLabelPosition: PropTypes.oneOf(['top', 'bottom']),
   /**
    * If `true` board is draggable
    */

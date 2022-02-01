@@ -10,7 +10,6 @@ import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { debounce, playAudio } from '../../utils';
 import { useSpeech } from '../../contexts/speech';
-import { useSettings } from '../../contexts/settings';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 
@@ -50,8 +49,6 @@ function BoardEditorPage(props) {
   const [searchParams] = useSearchParams();
   const boardSetUrl = searchParams.get('boardSetUrl');
 
-  const { board: boardSettings } = useSettings();
-
   const boardDB = useBoardDB();
   const boardNav = useBoardNavigation({
     navigate,
@@ -73,8 +70,6 @@ function BoardEditorPage(props) {
   });
 
   const boardSelectionRef = useRef();
-
-  let grid = { ...board?.grid };
 
   const [selectedBoards, setSelectedBoards] = useState([]);
 
@@ -322,15 +317,12 @@ function BoardEditorPage(props) {
           isSmallScreen={isSmallScreen}
           colors={defaultColors}
           onNewBoardClick={handleNewBoard}
-          onImportFileClick={handleImportFile}
           onDetailsClick={handleBoardDetails}
+          onImportFileClick={handleImportFile}
           onExportFileClick={handleExportFile}
           onPrintClick={print}
           onShareClick={share}
           onColorClick={handleButtonColorChange}
-          onClearSelectionClick={() => {
-            buttonsSelection.setAllSelected(false);
-          }}
           onDeleteButtonClick={handleButtonDelete}
           onDeleteBoardClick={deleteSelectedBoards}
           onGridSizeChange={handleGridSizeChange}
@@ -346,13 +338,13 @@ function BoardEditorPage(props) {
           {isPanelOpen && (
             <div className={styles.panel}>
               <BoardsList
-                activeId={boardId}
-                rootId={boardDB.rootId}
                 boards={boardDB.boardsList}
+                rootId={boardDB.rootId}
+                activeId={boardId}
                 onActiveIdChange={goToBoard}
+                onRootIdChange={setRootId}
                 onDeleteClick={deleteBoard}
                 onInfoClick={handleBoardDetails}
-                onRootIdChange={setRootId}
                 onSelectionChange={handleBoardSelectionChange}
               />
             </div>
@@ -383,15 +375,13 @@ function BoardEditorPage(props) {
                     />
                   )
                 }
-                board={{ ...board, grid }}
+                board={board}
                 linkableBoards={linkableBoards}
                 draggable={!isSmallScreen}
                 scrollSnap={true}
                 scrollDirection="vertical"
                 selection={buttonsSelection}
                 selectionEnabled={isButtonSelected}
-                buttonLabelPosition={boardSettings.labelPosition}
-                buttonLabelHidden={boardSettings.isLabelHidden}
                 buttonColors={defaultColors}
                 buttonImages={images}
                 onImagesRequested={handleImagesRequest}
