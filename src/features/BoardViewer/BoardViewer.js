@@ -14,8 +14,8 @@ function BoardViewer(props) {
     barEnd,
     barStart,
     board,
-    onChangeBoardRequested,
-    onFetchBoardRequested,
+    onChangeRequested,
+    onFetchRequested,
     onRedirectRequested,
     style,
   } = props;
@@ -41,8 +41,8 @@ function BoardViewer(props) {
     speak,
     playAudio,
     actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    changeBoard: onChangeBoardRequested,
-    fetchBoard: onFetchBoardRequested,
+    changeBoard: onChangeRequested,
+    fetchBoard: onFetchRequested,
     redirect: onRedirectRequested,
     pushOutput: output.push,
   });
@@ -113,11 +113,11 @@ function BoardViewer(props) {
 
       <Board
         className={styles.board}
+        title={board?.name}
         barStart={barStart}
         barEnd={barEnd}
-        name={board?.name}
-        buttons={board?.buttons}
         grid={board?.grid}
+        buttons={board?.buttons}
         renderButton={renderTile}
         scrollSnap={true}
         scrollDirection="vertical"
@@ -138,11 +138,11 @@ BoardViewer.propTypes = {
   /**
    *
    */
-  onChangeBoardRequested: PropTypes.func,
+  onChangeRequested: PropTypes.func,
   /**
    *
    */
-  onFetchBoardRequested: PropTypes.func,
+  onFetchRequested: PropTypes.func,
   /**
    *
    */

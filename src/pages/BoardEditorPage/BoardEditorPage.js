@@ -109,8 +109,8 @@ function BoardEditorPage() {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
 
-  function handleChangeBoardRequest(id) {
-    boardNavigation.push({ id });
+  function handleChangeRequested(board) {
+    boardNavigation.push(board);
   }
 
   function handleButtonColorChange(color) {
@@ -381,7 +381,7 @@ function BoardEditorPage() {
                 buttonColors={defaultColors}
                 buttonImages={images}
                 onImagesRequested={handleImagesRequest}
-                onChangeBoardRequested={handleChangeBoardRequest}
+                onChangeRequested={handleChangeRequested}
                 onButtonClick={boardCtrl.handleButtonClick}
                 onButtonChange={handleButtonChange}
                 onButtonChangeDiscard={handleButtonChangeDiscard}

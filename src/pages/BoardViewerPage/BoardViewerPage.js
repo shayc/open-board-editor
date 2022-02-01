@@ -18,46 +18,43 @@ import styles from './BoardViewerPage.module.css';
 
 function BoardViewerPage() {
   const intl = useIntl();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const { boardId } = useParams();
-  const [board, setBoard] = useState();
-  const [rootId, setRootId] = useState();
+  const navigate = useNavigate();
 
   const boardNav = useBoardNavigation({
     navigate,
-    history: [{ id: board?.id }],
-    index: 0,
   });
+
+  const [board, setBoard] = useState();
+  const [rootBoard, setRootBoard] = useState();
 
   const boardSetUrl = searchParams.get('boardSetUrl');
 
-  function goBack() {
+  function handleBackClick() {
     boardNav.goBack();
   }
 
-  function goForward() {
+  function handleForwardClick() {
     boardNav.goForward();
   }
 
-  function goHome() {
-    boardNav.reset({ id: rootId });
+  function handleHomeClick() {
+    boardNav.reset({ id: rootBoard?.id, name: rootBoard?.name });
   }
 
   function editBoard() {
     navigate(pathname.replace('view', 'edit'));
   }
 
-  function handleBoardRequest(id) {
-    boardNav.push({ id });
+  function handleChangeRequest(board) {
+    boardNav.push(board);
   }
 
   async function handleFetchRequest(url) {
     const boardSet = await fetchBoardSet(url);
-
-    const rootBoard =
-      boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
+    const rootBoard = getRootBoard(boardSet);
 
     setBoard(rootBoard);
   }
@@ -69,11 +66,11 @@ function BoardViewerPage() {
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
-      const { id: rootId } = await boardRepo.getRoot();
+      const rootBoard = await boardRepo.getRoot();
 
       if (board) {
         setBoard(boardMap.toDTO(board));
-        setRootId(rootId);
+        setRootBoard(rootBoard);
       }
     }
 
@@ -87,8 +84,8 @@ function BoardViewerPage() {
       const boardSet = await fetchBoardSet(url);
       await boardRepo.importBoardSet(boardSet);
 
-      const { id, name } = await boardRepo.getRoot();
-      boardNav.reset({ id, name });
+      const rootBoard = await boardRepo.getRoot();
+      boardNav.reset({ id: rootBoard.id, name: rootBoard.name });
     }
 
     if (boardSetUrl) {
@@ -106,9 +103,9 @@ function BoardViewerPage() {
           <NavButtons
             backDisabled={boardNav.backDisabled}
             forwardDisabled={boardNav.forwardDisabled}
-            onBackClick={goBack}
-            onForwardClick={goForward}
-            onHomeClick={goHome}
+            onBackClick={handleBackClick}
+            onForwardClick={handleForwardClick}
+            onHomeClick={handleHomeClick}
           />
         }
         barEnd={
@@ -120,8 +117,8 @@ function BoardViewerPage() {
             onClick={editBoard}
           />
         }
-        onChangeBoardRequested={handleBoardRequest}
-        onFetchBoardRequested={handleFetchRequest}
+        onChangeRequested={handleChangeRequest}
+        onFetchRequested={handleFetchRequest}
         onRedirectRequested={handleRedirectRequest}
       />
     </div>
@@ -142,6 +139,13 @@ async function fetchBoardSet(url) {
   const [boardSet] = await OBF.readFiles([file]);
 
   return boardSet;
+}
+
+function getRootBoard(boardSet) {
+  const rootBoard =
+    boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
+
+  return rootBoard;
 }
 
 export default BoardViewerPage;

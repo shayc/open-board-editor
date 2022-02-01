@@ -25,7 +25,7 @@ function Board(props) {
     draggable,
     gap,
     grid,
-    name,
+    title,
     onButtonPositionChange,
     onDragEnd,
     onDragStart,
@@ -49,9 +49,9 @@ function Board(props) {
     !shouldRenderAbsolutePosition && grid?.columns && grid?.rows
   );
 
-  const boardName = (
-    <Text className={styles.name} variant="large" nowrap={true}>
-      {name}
+  const boardTitle = (
+    <Text className={styles.title} variant="large" nowrap={true}>
+      {title}
     </Text>
   );
 
@@ -95,7 +95,7 @@ function Board(props) {
       <Bar
         className={styles.nameBar}
         startGroup={!isSmallScreen && barStart}
-        middleGroup={boardName}
+        middleGroup={boardTitle}
         endGroup={!isSmallScreen && barEnd}
       />
 
@@ -188,9 +188,9 @@ Board.propTypes = {
     rows: PropTypes.number.isRequired,
   }),
   /**
-   * Name to render.
+   * Title to render.
    */
-  name: PropTypes.string,
+  title: PropTypes.string,
   /**
    * Calback, fired when button changes position.
    */

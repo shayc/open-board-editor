@@ -26,7 +26,7 @@ function BoardEditor(props) {
     className,
     draggable,
     linkableBoards = [],
-    onChangeBoardRequested,
+    onChangeRequested,
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
@@ -60,11 +60,18 @@ function BoardEditor(props) {
 
   const tileDraggable = draggable && !selectionEnabled;
 
+  const selectedCount = selection.getSelectedCount();
+  const itemsSelectedMessage = intl.formatMessage(messages.itemsSelected, {
+    number: selectedCount,
+  });
+
+  const boardTitle = selectedCount ? itemsSelectedMessage : board.name;
+
   const handleTileClick = OBF.createButtonClickHandler({
     speak,
     playAudio,
     actionHandlers,
-    changeBoard: onChangeBoardRequested,
+    changeBoard: onChangeRequested,
     fetchBoard: (url) => {
       console.log(`Fetch board: ${url}`);
     },
@@ -231,13 +238,7 @@ function BoardEditor(props) {
     <>
       <Board
         className={rootClassName}
-        name={
-          selection.getSelectedCount()
-            ? intl.formatMessage(messages.itemsSelected, {
-                number: selection.getSelectedCount(),
-              })
-            : board.name
-        }
+        title={boardTitle}
         buttons={board.buttons}
         grid={board.grid}
         draggable={tileDraggable}

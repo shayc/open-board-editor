@@ -177,7 +177,7 @@ export const boardRepo = {
     return file;
   },
 
-  async getRoot(): Promise<string | undefined> {
+  async getRoot(): Promise<OBF.Board | undefined> {
     const db = await dbPromise;
 
     const rootPath = await db.get('manifest', 'root');

@@ -1,20 +1,12 @@
 import { useState, useMemo } from 'react';
 
-const defaultHistory = [];
-const defaultIndex = -1;
-
 export function useBoardNavigation(params = {}) {
-  const {
-    navigate,
-    history: initialHistory = defaultHistory,
-    index: initialIndex = defaultIndex,
-  } = params;
+  const { navigate } = params;
 
-  const [history, setHistory] = useState(initialHistory);
-  const [index, setIndex] = useState(initialIndex);
+  const [history, setHistory] = useState([]);
+  const [index, setIndex] = useState(-1);
 
   const navigation = useMemo(() => {
-    const activeState = history[index];
     const backDisabled = index <= 0;
     const forwardDisabled = index >= history.length - 1;
 
@@ -22,6 +14,7 @@ export function useBoardNavigation(params = {}) {
       if (backDisabled) {
         return;
       }
+
       setIndex((i) => i - 1);
       navigate?.(-1);
     }
@@ -35,35 +28,36 @@ export function useBoardNavigation(params = {}) {
       navigate?.(1);
     }
 
-    function reset(state) {
-      setHistory(state ? [state] : defaultHistory);
-      setIndex(state ? 0 : defaultIndex);
-
-      if (state?.id) {
-        navigate?.(state.id);
-      }
-    }
-
     function push(state) {
+      if (!state?.id) {
+        return;
+      }
+
       setHistory((history) => {
         return [...history.slice(0, index + 1), state];
       });
 
       setIndex((i) => i + 1);
+      navigate?.(state.id);
+    }
 
-      if (state?.id) {
-        navigate?.(state.id);
+    function reset(state) {
+      if (!state?.id) {
+        return;
       }
+
+      setHistory([state]);
+      setIndex(0);
+      navigate?.(state.id);
     }
 
     return {
-      activeState,
       backDisabled,
       forwardDisabled,
       goBack,
       goForward,
-      push,
       reset,
+      push,
     };
   }, [index, history, navigate]);
 

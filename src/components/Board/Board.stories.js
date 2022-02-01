@@ -52,7 +52,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   renderButton,
-  name: board?.name,
+  title: board?.name,
   buttons: board?.buttons,
   grid: board?.grid,
   draggable: true,

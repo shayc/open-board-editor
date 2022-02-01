@@ -2,7 +2,7 @@ import * as OBF from '../';
 
 interface ButtonClickHandlerParams {
   actionHandlers: any;
-  changeBoard: (id: string) => void;
+  changeBoard: (board: { id: string; name?: string }) => void;
   fetchBoard: (url: string) => Promise<OBF.Board>;
   redirect: (url: string) => void;
   playAudio: (url: string) => void;
@@ -22,10 +22,10 @@ export function createButtonClickHandler(params: ButtonClickHandlerParams) {
   } = params;
 
   function handleLoadBoard(loadBoard: OBF.LoadBoardDTO) {
-    const { id, dataUrl, url } = loadBoard;
+    const { id, dataUrl, url, name } = loadBoard;
 
     if (id) {
-      changeBoard(id);
+      changeBoard({ id, name });
     } else if (dataUrl) {
       fetchBoard?.(dataUrl);
     } else if (url) {
