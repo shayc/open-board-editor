@@ -38,8 +38,8 @@ function BoardEditor(props) {
   } = props;
 
   const intl = useIntl();
-  const speech = useSpeech();
   const { board: boardSettings } = useSettings();
+  const speech = useSpeech();
 
   const {
     button,
