@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
-import { CommandBar, ContextualMenuItemType } from '@fluentui/react';
+import {
+  CommandBar,
+  ContextualMenuItemType,
+  SwatchColorPicker,
+} from '@fluentui/react';
 
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import messages from './BoardCommandBar.messages';
@@ -17,10 +21,6 @@ const PhoneGridSize = {
       columns: 3,
       rows: 4,
     },
-    large: {
-      columns: 4,
-      rows: 4,
-    },
   },
   landscape: {
     small: {
@@ -29,10 +29,6 @@ const PhoneGridSize = {
     },
     medium: {
       columns: 4,
-      rows: 2,
-    },
-    large: {
-      columns: 6,
       rows: 3,
     },
   },
@@ -92,15 +88,19 @@ function createGridMenuProps(device, orientation, onGridSizeChange, intl) {
           onGridSizeChange({ columns: medium.columns, rows: medium.rows });
         },
       },
-      {
-        key: 'large',
-        text: `${intl.formatMessage(messages.large)} ${
-          large.columns * large.rows
-        }`,
-        onClick: () => {
-          onGridSizeChange({ columns: large.columns, rows: large.rows });
-        },
-      },
+      ...(large
+        ? [
+            {
+              key: 'large',
+              text: `${intl.formatMessage(messages.large)} ${
+                large.columns * large.rows
+              }`,
+              onClick: () => {
+                onGridSizeChange({ columns: large.columns, rows: large.rows });
+              },
+            },
+          ]
+        : []),
     ],
   };
 }
@@ -109,6 +109,7 @@ function BoardCommandBar(props) {
   const {
     className,
     commandContext,
+    colors,
     onImportFileClick,
     onExportFileClick,
     onDetailsClick,
@@ -123,18 +124,22 @@ function BoardCommandBar(props) {
 
   const rootClassName = clsx(className, styles.root);
 
-  const commands = useCommands(commandContext, {
-    onImportFileClick,
-    onExportFileClick,
-    onDetailsClick,
-    onPrintClick,
-    onShareClick,
-    onNewBoardClick,
-    onDeleteButtonClick,
-    onDeleteBoardClick,
-    onGridSizeChange,
-    onColorClick,
-  });
+  const commands = useCommands(
+    commandContext,
+    {
+      onImportFileClick,
+      onExportFileClick,
+      onDetailsClick,
+      onPrintClick,
+      onShareClick,
+      onNewBoardClick,
+      onDeleteButtonClick,
+      onDeleteBoardClick,
+      onGridSizeChange,
+      onColorClick,
+    },
+    colors
+  );
 
   const commandBarStyles = {
     root: {
@@ -170,7 +175,7 @@ BoardCommandBar.propTypes = {
 
 export default BoardCommandBar;
 
-function useCommands(commandContext, handlers) {
+function useCommands(commandContext, handlers, colors) {
   const intl = useIntl();
   const { isPhone, portrait, landscape } = useMediaQuery();
 
@@ -236,6 +241,31 @@ function useCommands(commandContext, handlers) {
       key: 'color',
       text: 'Color',
       iconProps: { iconName: 'Color' },
+      subMenuProps: {
+        items: [
+          {
+            key: 'colors',
+            text: intl.formatMessage(messages.board),
+            iconProps: { iconName: '' },
+            onClick: handlers.onNewBoardClick,
+            colors,
+            onRender: (item) => {
+              return (
+                <SwatchColorPicker
+                  columnCount={5}
+                  cellShape={'circle'}
+                  colorCells={item.colors}
+                  cellWidth={32}
+                  cellHeight={32}
+                  onChange={(event, id, color) => {
+                    handlers.onColorClick(color);
+                  }}
+                />
+              );
+            },
+          },
+        ],
+      },
       onClick: handlers.onColorClick,
     },
 

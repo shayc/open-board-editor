@@ -71,13 +71,6 @@ function BoardEditorPage() {
 
   let grid = { ...board?.grid };
 
-  if (isSmallScreen) {
-    const MAX_GRID_COLUMNS = 4;
-    const MAX_GRID_ROWS = 4;
-
-    grid.rows = Math.min(grid.rows, MAX_GRID_ROWS);
-    grid.columns = Math.min(grid.columns, MAX_GRID_COLUMNS);
-  }
   const [selectedBoards, setSelectedBoards] = useState([]);
 
   const buttonsSelection = useMemo(() => {
@@ -90,17 +83,6 @@ function BoardEditorPage() {
   const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
   const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardSelected = Boolean(selectedBoards?.length);
-
-  // const navigateToNextBoard = useCallback(
-  //   function navigateToNextBoard(boardId, boardsList) {
-  //     const boardIndex = boardsList.findIndex((board) => board.id === boardId);
-  //     const nextBoard =
-  //       boardsList[boardIndex + 1] || boardsList[boardsList.length - 2];
-
-  //     goToBoard(nextBoard?.id);
-  //   },
-  //   [goToBoard]
-  // );
 
   useHotkeys(
     'del',
@@ -131,10 +113,11 @@ function BoardEditorPage() {
     boardNavigation.push({ id });
   }
 
-  // function handleButtonColorChange(ids, color) {
-  //   const board = boardCtrl.setButtonColor(ids, color);
-  //   boardDB.update(board);
-  // }
+  function handleButtonColorChange(color) {
+    const ids = buttonsSelection.getSelection().map((b) => b.id);
+    const board = boardCtrl.setButtonColor(ids, { backgroundColor: color });
+    boardDB.update(board);
+  }
 
   async function handleImportFile() {
     const files = await openFileDialog({ accept: '.obz, .obf' });
@@ -323,15 +306,14 @@ function BoardEditorPage() {
         <BoardCommandBar
           commandContext={boardCommandContext}
           isSmallScreen={isSmallScreen}
+          colors={defaultColors}
           onNewBoardClick={handleNewBoard}
           onImportFileClick={handleImportFile}
           onDetailsClick={handleBoardDetails}
           onExportFileClick={handleExportFile}
           onPrintClick={print}
           onShareClick={share}
-          onColorClick={() => {
-            alert('color');
-          }}
+          onColorClick={handleButtonColorChange}
           onClearSelectionClick={() => {
             buttonsSelection.setAllSelected(false);
           }}
