@@ -10,7 +10,6 @@ const board = {
       id: '1',
       label: 'speak',
       image: 'https://s3.amazonaws.com/opensymbols/libraries/arasaac/talk.png',
-      border_color: 'rgb(102, 221, 0)',
       background_color: 'rgb(204, 255, 170)',
     },
     {
@@ -30,11 +29,11 @@ const board = {
     },
   ],
   grid: {
-    rows: 2,
     columns: 2,
+    rows: 2,
     order: [
-      [null, null],
-      [null, null],
+      ['1', '2'],
+      [null, '3'],
     ],
   },
 };

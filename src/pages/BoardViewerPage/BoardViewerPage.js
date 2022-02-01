@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import {
-  useParams,
-  useSearchParams,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DefaultButton } from '@fluentui/react';
 import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
@@ -16,21 +11,17 @@ import { NavButtons, Seo } from '../../components';
 import messages from './BoardViewerPage.messages';
 import styles from './BoardViewerPage.module.css';
 
-function BoardViewerPage() {
+function BoardViewerPage(props) {
+  const { onEditClick } = props;
+
   const intl = useIntl();
-  const { pathname } = useLocation();
-  const [searchParams] = useSearchParams();
   const { boardId } = useParams();
-  const navigate = useNavigate();
-
-  const boardNav = useBoardNavigation({
-    navigate,
-  });
-
   const [board, setBoard] = useState();
   const [rootBoard, setRootBoard] = useState();
 
-  const boardSetUrl = searchParams.get('boardSetUrl');
+  const boardNav = useBoardNavigation({
+    navigate: useNavigate(),
+  });
 
   function handleBackClick() {
     boardNav.goBack();
@@ -41,11 +32,8 @@ function BoardViewerPage() {
   }
 
   function handleHomeClick() {
-    boardNav.reset({ id: rootBoard?.id, name: rootBoard?.name });
-  }
-
-  function editBoard() {
-    navigate(pathname.replace('view', 'edit'));
+    const { id, name } = rootBoard;
+    boardNav.reset({ id, name });
   }
 
   function handleChangeRequest(board) {
@@ -53,24 +41,22 @@ function BoardViewerPage() {
   }
 
   async function handleFetchRequest(url) {
-    const boardSet = await fetchBoardSet(url);
-    const rootBoard = getRootBoard(boardSet);
+    const board = await OBF.fetchBoard(url);
 
-    setBoard(rootBoard);
+    setBoard(board);
   }
 
   function handleRedirectRequest(url) {
-    window.open(url);
+    window.open(url, '_blank');
   }
 
   useEffect(() => {
     async function getBoard(id) {
       const board = await boardRepo.getById(id);
-      const rootBoard = await boardRepo.getRoot();
 
       if (board) {
-        setBoard(boardMap.toDTO(board));
-        setRootBoard(rootBoard);
+        const boardDTO = boardMap.toDTO(board);
+        setBoard(boardDTO);
       }
     }
 
@@ -80,18 +66,16 @@ function BoardViewerPage() {
   }, [boardId]);
 
   useEffect(() => {
-    async function importBoardSet(url) {
-      const boardSet = await fetchBoardSet(url);
-      await boardRepo.importBoardSet(boardSet);
-
+    async function getRootBoard() {
       const rootBoard = await boardRepo.getRoot();
-      boardNav.reset({ id: rootBoard.id, name: rootBoard.name });
+
+      if (rootBoard) {
+        setRootBoard(rootBoard);
+      }
     }
 
-    if (boardSetUrl) {
-      importBoardSet(`${boardSetUrl}`);
-    }
-  }, [boardSetUrl, boardNav]);
+    getRootBoard();
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -114,7 +98,7 @@ function BoardViewerPage() {
             iconProps={{ iconName: 'Edit' }}
             title={intl.formatMessage(messages.editBoard)}
             text={intl.formatMessage(messages.edit)}
-            onClick={editBoard}
+            onClick={onEditClick}
           />
         }
         onChangeRequested={handleChangeRequest}
@@ -123,29 +107,6 @@ function BoardViewerPage() {
       />
     </div>
   );
-}
-
-async function fetchFile(url) {
-  const response = await fetch(`${url}`);
-  const blob = await response.blob();
-  const fileName = url.slice(1);
-  const file = new File([blob], fileName);
-
-  return file;
-}
-
-async function fetchBoardSet(url) {
-  const file = await fetchFile(url);
-  const [boardSet] = await OBF.readFiles([file]);
-
-  return boardSet;
-}
-
-function getRootBoard(boardSet) {
-  const rootBoard =
-    boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
-
-  return rootBoard;
 }
 
 export default BoardViewerPage;

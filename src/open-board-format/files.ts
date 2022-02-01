@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 import * as OBF from './interfaces';
 import { createBoardSet } from './board-set/boardSet';
 
-export async function readFiles(files: FileList): Promise<OBF.BoardSet[]> {
+export async function readFiles(files: File[]): Promise<OBF.BoardSet[]> {
   const promises: Promise<OBF.BoardSet>[] = [];
 
   for (let i = 0; i < files.length; i++) {
@@ -38,6 +38,32 @@ export async function saveAsOBZFile(
 ) {
   const blob = await zipBoardSet(boardSet, { type: 'blob' }, onUpdate);
   saveAs(blob, `${filename}.obz`);
+}
+
+export async function fetchBoardSet(url: string) {
+  const file = await fetchFile(url);
+  const [boardSet] = await readFiles([file]);
+
+  return boardSet;
+}
+
+export async function fetchBoard(url: string) {
+  const file = await fetchFile(url);
+  const [boardSet] = await readFiles([file]);
+
+  const rootBoard =
+    boardSet.boards[boardSet.manifest.paths.boards[boardSet.manifest.root]];
+
+  return rootBoard;
+}
+
+async function fetchFile(url: string) {
+  const response = await fetch(`${url}`);
+  const blob = await response.blob();
+  const fileName = url.slice(1);
+  const file = new File([blob], fileName);
+
+  return file;
 }
 
 function readOBFFile(file: File): Promise<string> {

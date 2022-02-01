@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { APP_NAME } from './constants';
 import { useLocale } from './contexts/locale';
@@ -20,6 +20,16 @@ const BoardEditorPage = lazy(() => import('./pages/BoardEditorPage'));
 function App() {
   const { locale } = useLocale();
   const { isSettingsOpen, toggleSettings } = useSettings();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  function editBoard() {
+    navigate(pathname.replace('view', 'edit'));
+  }
+
+  function viewBoard() {
+    navigate(pathname.replace('edit', 'view'));
+  }
 
   return (
     <div className={styles.root}>
@@ -46,14 +56,17 @@ function App() {
                   name={APP_NAME}
                   actions={<SettingsButton onClick={toggleSettings} />}
                 />
-                <BoardEditorPage />
+                <BoardEditorPage onViewClick={viewBoard} />
               </>
             }
           >
             <Route path=":boardId" element={null} />
           </Route>
 
-          <Route path="view/boards" element={<BoardViewerPage />}>
+          <Route
+            path="view/boards"
+            element={<BoardViewerPage onEditClick={editBoard} />}
+          >
             <Route path=":boardId" element={null} />
           </Route>
         </Routes>

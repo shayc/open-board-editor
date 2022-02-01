@@ -26,7 +26,7 @@ function HomePage(props) {
       image: fourGridStartingCommunicationImage,
       onClick: () => {
         navigate(
-          `/view/boards/?boardSetUrl=/four-grid-starting-communication.obz`
+          `/edit/boards/?boardSetUrl=/four-grid-starting-communication.obz`
         );
       },
     },

@@ -1,10 +1,13 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, DefaultButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useSearchParams } from 'react-router-dom';
 
+import * as OBF from '../../open-board-format';
+import { boardRepo } from '../../open-board-format/board/board.repo';
 import { debounce, playAudio } from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
@@ -30,9 +33,10 @@ import { openFileDialog, share, print } from './utils';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
 
-function BoardEditorPage() {
+function BoardEditorPage(props) {
+  const { onViewClick } = props;
+
   const intl = useIntl();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { boardId } = useParams();
   const { speak } = useSpeech();
@@ -43,22 +47,23 @@ function BoardEditorPage() {
   const [images, setImages] = useState([]);
   const [detailsBoard, setDetailsBoard] = useState({});
 
+  const [searchParams] = useSearchParams();
+  const boardSetUrl = searchParams.get('boardSetUrl');
+
   const { board: boardSettings } = useSettings();
 
   const boardDB = useBoardDB();
-  const boardNavigation = useBoardNavigation({
+  const boardNav = useBoardNavigation({
     navigate,
-    history: [{ id: boardId }],
-    index: 0,
   });
 
   const forceUpdate = useForceUpdate();
 
   const goToBoard = useCallback(
     function goToBoard(id) {
-      boardNavigation.push({ id });
+      boardNav.push({ id });
     },
-    [boardNavigation]
+    [boardNav]
   );
 
   const { board, boardCtrl } = useBoard({
@@ -110,7 +115,7 @@ function BoardEditorPage() {
   }
 
   function handleChangeRequested(board) {
-    boardNavigation.push(board);
+    boardNav.push(board);
   }
 
   function handleButtonColorChange(color) {
@@ -276,19 +281,15 @@ function BoardEditorPage() {
   }, [isSmallScreen, setIsPanelOpen]);
 
   function goBack() {
-    boardNavigation.goBack();
+    boardNav.goBack();
   }
 
   function goForward() {
-    boardNavigation.goForward();
+    boardNav.goForward();
   }
 
   function goHome() {
-    boardNavigation.reset({ id: boardDB.rootId });
-  }
-
-  function viewBoard() {
-    navigate(pathname.replace('edit', 'view'));
+    boardNav.reset({ id: boardDB.rootId });
   }
 
   const boardCommandContext =
@@ -296,6 +297,19 @@ function BoardEditorPage() {
     (isBoardSelected && 'board-selected') ||
     (board?.id && 'board-active');
 
+  useEffect(() => {
+    async function importBoardSet(url) {
+      const boardSet = await OBF.fetchBoardSet(url);
+      await boardRepo.importBoardSet(boardSet);
+
+      const rootBoard = await boardRepo.getRoot();
+      boardNav.reset({ id: rootBoard.id, name: rootBoard.name });
+    }
+
+    if (boardSetUrl) {
+      importBoardSet(`${boardSetUrl}`);
+    }
+  }, [boardSetUrl, boardNav]);
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
@@ -350,8 +364,8 @@ function BoardEditorPage() {
                 barStart={
                   !isButtonSelected && (
                     <NavButtons
-                      backDisabled={boardNavigation.backDisabled}
-                      forwardDisabled={boardNavigation.forwardDisabled}
+                      backDisabled={boardNav.backDisabled}
+                      forwardDisabled={boardNav.forwardDisabled}
                       onBackClick={goBack}
                       onForwardClick={goForward}
                       onHomeClick={goHome}
@@ -363,7 +377,7 @@ function BoardEditorPage() {
                     <DefaultButton
                       style={{ margin: 'auto 8px' }}
                       iconProps={{ iconName: 'View' }}
-                      onClick={viewBoard}
+                      onClick={onViewClick}
                       title={intl.formatMessage(messages.viewBoard)}
                       text={intl.formatMessage(messages.view)}
                     />
