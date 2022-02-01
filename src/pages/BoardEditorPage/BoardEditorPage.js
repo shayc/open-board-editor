@@ -314,7 +314,6 @@ function BoardEditorPage(props) {
 
         <BoardCommandBar
           commandContext={boardCommandContext}
-          isSmallScreen={isSmallScreen}
           colors={defaultColors}
           onNewBoardClick={handleNewBoard}
           onDetailsClick={handleBoardDetails}
@@ -338,9 +337,9 @@ function BoardEditorPage(props) {
           {isPanelOpen && (
             <div className={styles.panel}>
               <BoardsList
-                boards={boardDB.boardsList}
-                rootId={boardDB.rootId}
                 activeId={boardId}
+                rootId={boardDB.rootId}
+                boards={boardDB.boardsList}
                 onActiveIdChange={goToBoard}
                 onRootIdChange={setRootId}
                 onDeleteClick={deleteBoard}
