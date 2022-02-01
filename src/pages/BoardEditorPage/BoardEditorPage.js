@@ -36,8 +36,8 @@ function BoardEditorPage(props) {
   const { onViewClick } = props;
 
   const intl = useIntl();
-  const navigate = useNavigate();
   const { boardId } = useParams();
+  const [searchParams] = useSearchParams();
   const { speak } = useSpeech();
   const { isSmallScreen } = useMediaQuery();
   const [isPanelOpen, setIsPanelOpen] = useState(!isSmallScreen);
@@ -46,12 +46,11 @@ function BoardEditorPage(props) {
   const [images, setImages] = useState([]);
   const [detailsBoard, setDetailsBoard] = useState({});
 
-  const [searchParams] = useSearchParams();
   const boardSetUrl = searchParams.get('boardSetUrl');
 
   const boardDB = useBoardDB();
   const boardNav = useBoardNavigation({
-    navigate,
+    navigate: useNavigate(),
   });
 
   const forceUpdate = useForceUpdate();
@@ -83,6 +82,11 @@ function BoardEditorPage(props) {
   const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
   const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
   const isBoardSelected = Boolean(selectedBoards?.length);
+
+  const boardCommandContext =
+    (isButtonSelected && 'button-selected') ||
+    (isBoardSelected && 'board-selected') ||
+    (board?.id && 'board-active');
 
   useHotkeys(
     'del',
@@ -253,6 +257,18 @@ function BoardEditorPage(props) {
     setSelectedBoards(boardSelection);
   }
 
+  function goBack() {
+    boardNav.goBack();
+  }
+
+  function goForward() {
+    boardNav.goForward();
+  }
+
+  function goHome() {
+    boardNav.reset({ id: boardDB.rootId });
+  }
+
   useEffect(() => {
     const getBoard = async (id) => {
       const board = await boardDB.getById(id);
@@ -275,23 +291,6 @@ function BoardEditorPage(props) {
     }
   }, [isSmallScreen, setIsPanelOpen]);
 
-  function goBack() {
-    boardNav.goBack();
-  }
-
-  function goForward() {
-    boardNav.goForward();
-  }
-
-  function goHome() {
-    boardNav.reset({ id: boardDB.rootId });
-  }
-
-  const boardCommandContext =
-    (isButtonSelected && 'button-selected') ||
-    (isBoardSelected && 'board-selected') ||
-    (board?.id && 'board-active');
-
   useEffect(() => {
     async function importBoardSet(url) {
       const boardSet = await OBF.fetchBoardSet(url);
@@ -302,9 +301,10 @@ function BoardEditorPage(props) {
     }
 
     if (boardSetUrl) {
-      importBoardSet(`${boardSetUrl}`);
+      importBoardSet(boardSetUrl);
     }
   }, [boardSetUrl, boardNav]);
+
   return (
     <div className={styles.root}>
       <Seo title={board?.name} />
