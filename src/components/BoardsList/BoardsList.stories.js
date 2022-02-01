@@ -12,7 +12,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   style: { width: '340px' },
-  items: [
+  boards: [
     { id: 'a', name: 'Board 1' },
     { id: 'b', name: 'Board 2' },
     { id: 'c', name: 'Board 3' },

@@ -17,8 +17,8 @@ Default.args = {
     label: 'Chat',
   },
   colors: [
-    { id: '1', backgroundColor: '#ff0000', borderColor: 'green' },
-    { id: '2', backgroundColor: 'rgba(0, 0, 255, .7)' },
+    { id: '1', color: '#ff0000' },
+    { id: '2', color: 'rgba(0, 0, 255, .7)' },
   ],
   images: [
     {
