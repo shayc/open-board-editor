@@ -1,27 +1,39 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
 import { useBoardOutput } from '../../hooks/board';
-import { Board, Pictogram, Output, OutputActions } from '../../components';
+import {
+  Board,
+  Pictogram,
+  Output,
+  OutputActions,
+  NavButtons,
+} from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
+import { useBoardNavigation } from '../../hooks/board';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
   const {
     actionHandlers,
     barEnd,
-    barStart,
     board,
-    onChangeRequested,
     onFetchRequested,
     onRedirectRequested,
-    style,
+    rootBoard,
+    ...other
   } = props;
 
   const { board: boardSettings } = useSettings();
   const speech = useSpeech();
+
+  const boardNav = useBoardNavigation({
+    navigate: useNavigate(),
+  });
 
   const output = useBoardOutput({
     speak,
@@ -41,7 +53,7 @@ function BoardViewer(props) {
     speak,
     playAudio,
     actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    changeBoard: onChangeRequested,
+    changeBoard: handleChangeRequest,
     fetchBoard: onFetchRequested,
     redirect: onRedirectRequested,
     pushOutput: output.push,
@@ -53,6 +65,23 @@ function BoardViewer(props) {
 
   function playAudio(url) {
     utils.playAudio(url);
+  }
+
+  function handleChangeRequest(board) {
+    boardNav.push(board);
+  }
+
+  function handleBackClick() {
+    boardNav.goBack();
+  }
+
+  function handleForwardClick() {
+    boardNav.goForward();
+  }
+
+  function handleHomeClick() {
+    const { id, name } = rootBoard;
+    boardNav.reset({ id, name });
   }
 
   function renderTile(button) {
@@ -102,19 +131,27 @@ function BoardViewer(props) {
   }
 
   return (
-    <div className={styles.root} style={style}>
+    <div className={styles.root} {...other}>
       <Output
         className={styles.output}
+        values={output.values}
+        renderValue={renderOutputValue}
         actions={outputActions}
         onClick={output.activate}
-        renderValue={renderOutputValue}
-        values={output.values}
       />
 
       <Board
         className={styles.board}
         title={board?.name}
-        barStart={barStart}
+        barStart={
+          <NavButtons
+            backDisabled={boardNav.backDisabled}
+            forwardDisabled={boardNav.forwardDisabled}
+            onBackClick={handleBackClick}
+            onForwardClick={handleForwardClick}
+            onHomeClick={handleHomeClick}
+          />
+        }
         barEnd={barEnd}
         grid={board?.grid}
         buttons={board?.buttons}
@@ -128,25 +165,29 @@ function BoardViewer(props) {
 
 BoardViewer.propTypes = {
   /**
-   *
+   * Used for handling custom button actions
    */
   actionHandlers: PropTypes.object,
   /**
-   *
+   * Bar end content
+   */
+  barEnd: PropTypes.node,
+  /**
+   * Board to display
    */
   board: PropTypes.object,
   /**
-   *
-   */
-  onChangeRequested: PropTypes.func,
-  /**
-   *
+   * Callback for fetching a board
    */
   onFetchRequested: PropTypes.func,
   /**
-   *
+   * Callback for redirecting to a board on another website
    */
   onRedirectRequested: PropTypes.func,
+  /**
+   * Root board
+   */
+  rootBoard: PropTypes.object,
 };
 
 export default BoardViewer;
