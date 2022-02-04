@@ -5,7 +5,7 @@ import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useSettings } from '../../contexts/settings';
-import { useBoardOutput } from '../../hooks/board';
+import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 import {
   Board,
   Pictogram,
@@ -14,7 +14,6 @@ import {
   NavButtons,
 } from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
-import { useBoardNavigation } from '../../hooks/board';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
