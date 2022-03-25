@@ -15,19 +15,17 @@ function OutputButtons(props) {
     clearHidden,
     onClearClick,
     onBackspaceClick,
-    size = 'medium',
   } = props;
 
-  const isLarge = size === 'large';
   const isRTL = getRTL();
   const intl = useIntl();
 
   const buttonClassName = clsx(styles.button, {
-    [styles.buttonLarge]: isLarge,
+    [styles.buttonLarge]: true,
   });
 
   const iconClassName = clsx(styles.icon, {
-    [styles.iconLarge]: isLarge,
+    [styles.iconLarge]: true,
   });
 
   return (

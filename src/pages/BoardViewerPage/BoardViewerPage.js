@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { DefaultButton } from '@fluentui/react';
 import { useIntl } from 'react-intl';

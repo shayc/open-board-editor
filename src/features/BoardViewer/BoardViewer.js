@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -17,17 +16,15 @@ import styles from './BoardViewer.module.css';
 function BoardViewer(props) {
   const { barEnd, barStart, ...other } = props;
 
+  const settings = useSettings();
   const { boardId } = useParams();
-
   const { board, navigation, output, onButtonClick } = useBoardViewer({
     boardId,
   });
 
-  const { board: boardSettings } = useSettings();
-
   function renderTile(button) {
+    const { board: boardSettings } = settings;
     const { backgroundColor, borderColor, image, label, loadBoard } = button;
-
     const variant = loadBoard ? TileVariant.Folder : TileVariant.Button;
     const pictogramSrc = image?.data || image?.url;
 
@@ -54,6 +51,7 @@ function BoardViewer(props) {
   }
 
   function renderOutputValue(value) {
+    const { board: boardSettings } = settings;
     const { image, label } = value;
     const imageSrc = image?.data || image?.url;
     const preserveContainerRatio = true;
@@ -83,7 +81,6 @@ function BoardViewer(props) {
             clearHidden={!output.values.length}
             onClearClick={output.onClearClick}
             onBackspaceClick={output.onBackspaceClick}
-            size="large"
           />
         }
       />
