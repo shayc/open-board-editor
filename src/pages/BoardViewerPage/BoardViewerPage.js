@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+
 import { useParams } from 'react-router-dom';
-import { DefaultButton } from '@fluentui/react';
 
 import { Seo } from '../../components';
 import * as OBF from '../../open-board-format';
@@ -9,33 +8,18 @@ import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import BoardViewer from '../../features/BoardViewer';
 
-import messages from './BoardViewerPage.messages';
 import styles from './BoardViewerPage.module.css';
 
-function BoardViewerPage(props) {
-  const { onEditClick } = props;
-
-  const intl = useIntl();
-  const { boardId } = useParams();
+function useBoardViewer(boardId) {
   const [board, setBoard] = useState();
   const [rootBoard, setRootBoard] = useState();
 
-  const boardBarEnd = (
-    <DefaultButton
-      className={styles.editButton}
-      iconProps={{ iconName: 'Edit' }}
-      title={intl.formatMessage(messages.editBoard)}
-      text={intl.formatMessage(messages.edit)}
-      onClick={onEditClick}
-    />
-  );
-
-  async function handleFetchRequest(url) {
+  async function onFetch(url) {
     const board = await OBF.fetchBoard(url);
     setBoard(board);
   }
 
-  function handleRedirectRequest(url) {
+  function onRedirect(url) {
     window.open(url, '_blank');
   }
 
@@ -65,6 +49,12 @@ function BoardViewerPage(props) {
 
     getRootBoard();
   }, []);
+  return { board, setBoard, onRedirect, onFetch };
+}
+
+function BoardViewerPage(props) {
+  const { boardId } = useParams();
+  const { board, onChange, onFetch, onRedirect } = useBoardViewer(boardId);
 
   return (
     <div className={styles.root}>
@@ -72,10 +62,9 @@ function BoardViewerPage(props) {
 
       <BoardViewer
         board={board}
-        rootBoard={rootBoard}
-        barEnd={boardBarEnd}
-        onFetchRequested={handleFetchRequest}
-        onRedirectRequested={handleRedirectRequest}
+        onFetch={onFetch}
+        onRedirect={onRedirect}
+        onChange={onChange}
       />
     </div>
   );

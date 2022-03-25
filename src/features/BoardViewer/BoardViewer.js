@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { DefaultButton } from '@fluentui/react';
 
 import * as OBF from '../../open-board-format';
 import * as utils from '../../utils';
@@ -15,6 +17,7 @@ import {
 } from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
 import styles from './BoardViewer.module.css';
+import messages from './BoardViewer.messages';
 
 function BoardViewer(props) {
   const {
@@ -29,6 +32,8 @@ function BoardViewer(props) {
 
   const { board: boardSettings } = useSettings();
   const speech = useSpeech();
+
+  const intl = useIntl();
 
   const boardNav = useBoardNavigation({
     navigate: useNavigate(),
@@ -151,7 +156,15 @@ function BoardViewer(props) {
             onHomeClick={handleHomeClick}
           />
         }
-        barEnd={barEnd}
+        barEnd={
+          <DefaultButton
+            className={styles.editButton}
+            iconProps={{ iconName: 'Edit' }}
+            title={intl.formatMessage(messages.editBoard)}
+            text={intl.formatMessage(messages.edit)}
+            onClick={() => {}}
+          />
+        }
         grid={board?.grid}
         buttons={board?.buttons}
         renderButton={renderTile}

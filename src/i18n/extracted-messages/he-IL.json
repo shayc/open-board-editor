@@ -91,6 +91,8 @@
   "app.pages.BoardEditorPage.showBoardsPanel": "הצג פאנל לוחות",
   "app.pages.BoardEditorPage.view": "צפיה",
   "app.pages.BoardEditorPage.viewBoard": "צפה בלוח",
+  "app.pages.BoardViewer.edit": "",
+  "app.pages.BoardViewer.editBoard": "",
   "app.pages.BoardViewerPage.edit": "עריכה",
   "app.pages.BoardViewerPage.editBoard": "ערוך לוח",
   "app.pages.HomePage.blank": "ריק",
