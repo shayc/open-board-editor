@@ -68,9 +68,9 @@ export function useBoardOutput(params) {
 
   return {
     actionHandlers,
-    activate,
-    pop,
-    clear,
+    onClick: activate,
+    onBackspaceClick: pop,
+    onClearClick: clear,
     push,
     setValues,
     space,

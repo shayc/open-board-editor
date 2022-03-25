@@ -1,17 +1,24 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { boardRepo } from '../../open-board-format/board/board.repo';
 
 export function useBoardNavigation(params = {}) {
   const { navigate } = params;
 
+  const [rootBoard, setRootBoard] = useState({});
   const [history, setHistory] = useState([]);
   const [index, setIndex] = useState(-1);
 
   const navigation = useMemo(() => {
-    const backDisabled = index <= 0;
-    const forwardDisabled = index >= history.length - 1;
+    const isBackDisabled = index <= 0;
+    const isForwardDisabled = index >= history.length - 1;
+
+    function goHome() {
+      const { id, name } = rootBoard;
+      reset({ id, name });
+    }
 
     function goBack() {
-      if (backDisabled) {
+      if (isBackDisabled) {
         return;
       }
 
@@ -20,7 +27,7 @@ export function useBoardNavigation(params = {}) {
     }
 
     function goForward() {
-      if (forwardDisabled) {
+      if (isForwardDisabled) {
         return;
       }
 
@@ -52,14 +59,27 @@ export function useBoardNavigation(params = {}) {
     }
 
     return {
-      backDisabled,
-      forwardDisabled,
-      goBack,
-      goForward,
+      isBackDisabled,
+      isForwardDisabled,
       reset,
       push,
+      onBackClick: goBack,
+      onForwardClick: goForward,
+      onHomeClick: goHome,
     };
-  }, [index, history, navigate]);
+  }, [index, history, navigate, rootBoard]);
+
+  useEffect(() => {
+    async function getRootBoard() {
+      const rootBoard = await boardRepo.getRoot();
+
+      if (rootBoard) {
+        setRootBoard(rootBoard);
+      }
+    }
+
+    getRootBoard();
+  }, []);
 
   return navigation;
 }

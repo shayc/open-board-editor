@@ -1,92 +1,29 @@
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { useIntl } from 'react-intl';
-import { DefaultButton } from '@fluentui/react';
+import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
-import * as OBF from '../../open-board-format';
-import * as utils from '../../utils';
-import { useSpeech } from '../../contexts/speech';
-import { useSettings } from '../../contexts/settings';
-import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 import {
   Board,
   Pictogram,
   Output,
-  OutputActions,
+  OutputButtons,
   NavButtons,
 } from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
+import { useSettings } from '../../contexts/settings';
+import useBoardViewer from '../../pages/BoardViewerPage/useBoardViewer';
 import styles from './BoardViewer.module.css';
-import messages from './BoardViewer.messages';
 
 function BoardViewer(props) {
-  const {
-    actionHandlers,
-    barEnd,
-    board,
-    onFetchRequested,
-    onRedirectRequested,
-    rootBoard,
-    ...other
-  } = props;
+  const { barEnd, barStart, ...other } = props;
+
+  const { boardId } = useParams();
+
+  const { board, navigation, output, onButtonClick } = useBoardViewer({
+    boardId,
+  });
 
   const { board: boardSettings } = useSettings();
-  const speech = useSpeech();
-
-  const intl = useIntl();
-
-  const boardNav = useBoardNavigation({
-    navigate: useNavigate(),
-  });
-
-  const output = useBoardOutput({
-    speak,
-    playAudio,
-  });
-
-  const outputActions = (
-    <OutputActions
-      clearHidden={!output.values.length}
-      onClearClick={output.clear}
-      onBackspaceClick={output.pop}
-      size="large"
-    />
-  );
-
-  const handleButtonClick = OBF.createButtonClickHandler({
-    speak,
-    playAudio,
-    actionHandlers: { ...actionHandlers, ...output.actionHandlers },
-    changeBoard: handleChangeRequest,
-    fetchBoard: onFetchRequested,
-    redirect: onRedirectRequested,
-    pushOutput: output.push,
-  });
-
-  function speak(text) {
-    speech.speak(text);
-  }
-
-  function playAudio(url) {
-    utils.playAudio(url);
-  }
-
-  function handleChangeRequest(board) {
-    boardNav.push(board);
-  }
-
-  function handleBackClick() {
-    boardNav.goBack();
-  }
-
-  function handleForwardClick() {
-    boardNav.goForward();
-  }
-
-  function handleHomeClick() {
-    const { id, name } = rootBoard;
-    boardNav.reset({ id, name });
-  }
 
   function renderTile(button) {
     const { backgroundColor, borderColor, image, label, loadBoard } = button;
@@ -95,7 +32,7 @@ function BoardViewer(props) {
     const pictogramSrc = image?.data || image?.url;
 
     function handleClick() {
-      handleButtonClick(button);
+      onButtonClick(button);
     }
 
     return (
@@ -140,31 +77,34 @@ function BoardViewer(props) {
         className={styles.output}
         values={output.values}
         renderValue={renderOutputValue}
-        actions={outputActions}
-        onClick={output.activate}
+        onClick={output.onClick}
+        actions={
+          <OutputButtons
+            clearHidden={!output.values.length}
+            onClearClick={output.onClearClick}
+            onBackspaceClick={output.onBackspaceClick}
+            size="large"
+          />
+        }
       />
 
       <Board
         className={styles.board}
         title={board?.name}
         barStart={
-          <NavButtons
-            backDisabled={boardNav.backDisabled}
-            forwardDisabled={boardNav.forwardDisabled}
-            onBackClick={handleBackClick}
-            onForwardClick={handleForwardClick}
-            onHomeClick={handleHomeClick}
-          />
+          <>
+            <NavButtons
+              backDisabled={navigation.isBackDisabled}
+              forwardDisabled={navigation.isForwardDisabled}
+              onBackClick={navigation.onBackClick}
+              onForwardClick={navigation.onForwardClick}
+              onHomeClick={navigation.onHomeClick}
+            />
+
+            {barStart}
+          </>
         }
-        barEnd={
-          <DefaultButton
-            className={styles.editButton}
-            iconProps={{ iconName: 'Edit' }}
-            title={intl.formatMessage(messages.editBoard)}
-            text={intl.formatMessage(messages.edit)}
-            onClick={() => {}}
-          />
-        }
+        barEnd={barEnd}
         grid={board?.grid}
         buttons={board?.buttons}
         renderButton={renderTile}
@@ -177,29 +117,13 @@ function BoardViewer(props) {
 
 BoardViewer.propTypes = {
   /**
-   * Used for handling custom button actions
-   */
-  actionHandlers: PropTypes.object,
-  /**
-   * Bar end content
+   * Elements to render at the end of the bar.
    */
   barEnd: PropTypes.node,
   /**
-   * Board to display
+   * Elements to render at the start of the bar.
    */
-  board: PropTypes.object,
-  /**
-   * Callback for fetching a board
-   */
-  onFetchRequested: PropTypes.func,
-  /**
-   * Callback for redirecting to a board on another website
-   */
-  onRedirectRequested: PropTypes.func,
-  /**
-   * Root board
-   */
-  rootBoard: PropTypes.object,
+  barStart: PropTypes.node,
 };
 
 export default BoardViewer;

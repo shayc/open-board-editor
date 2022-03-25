@@ -3,12 +3,12 @@ import { useIntl } from 'react-intl';
 import { IconButton, getRTL } from '@fluentui/react';
 import clsx from 'clsx';
 
-import messages from './OutputActions.messages';
+import messages from './OutputButtons.messages';
 import BackspaceSvg from './images/BackspaceSvg';
 import ClearSvg from './images/ClearSvg';
-import styles from './OutputActions.module.css';
+import styles from './OutputButtons.module.css';
 
-function OutputActions(props) {
+function OutputButtons(props) {
   const {
     backspaceDisabled,
     clearDisabled,
@@ -60,7 +60,7 @@ function OutputActions(props) {
   );
 }
 
-OutputActions.propTypes = {
+OutputButtons.propTypes = {
   /**
    *
    */
@@ -79,4 +79,4 @@ OutputActions.propTypes = {
   onClearClick: PropTypes.func,
 };
 
-export default OutputActions;
+export default OutputButtons;
