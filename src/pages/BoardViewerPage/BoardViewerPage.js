@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { Seo } from '../../components';
 import BoardViewer from '../../features/BoardViewer';
-import useBoardViewer from './useBoardViewer';
+import useBoardViewer from '../../features/BoardViewer/useBoardViewer';
 import styles from './BoardViewerPage.module.css';
 import messages from './BoardViewerPage.messages';
 

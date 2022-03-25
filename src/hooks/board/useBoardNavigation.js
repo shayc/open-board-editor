@@ -2,11 +2,11 @@ import { useState, useMemo, useEffect } from 'react';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 
 export function useBoardNavigation(params = {}) {
-  const { navigate } = params;
+  const { navigate, history: initialHistory, index: initialIndex } = params;
 
   const [rootBoard, setRootBoard] = useState({});
-  const [history, setHistory] = useState([]);
-  const [index, setIndex] = useState(-1);
+  const [history, setHistory] = useState(initialHistory);
+  const [index, setIndex] = useState(initialIndex);
 
   const navigation = useMemo(() => {
     const isBackDisabled = index <= 0;

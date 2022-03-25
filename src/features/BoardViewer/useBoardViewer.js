@@ -11,6 +11,8 @@ function useBoardViewer({ boardId, actionHandlers } = {}) {
   const [board, setBoard] = useState({});
 
   const navigation = useBoardNavigation({
+    history: boardId ? [{ id: boardId }] : [],
+    index: boardId ? 0 : -1,
     navigate: useNavigate(),
   });
 

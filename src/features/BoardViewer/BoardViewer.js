@@ -10,7 +10,7 @@ import {
 } from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
 import { useSettings } from '../../contexts/settings';
-import useBoardViewer from '../../pages/BoardViewerPage/useBoardViewer';
+import useBoardViewer from './useBoardViewer';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
