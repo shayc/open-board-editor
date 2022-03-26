@@ -35,8 +35,9 @@ function useBoardViewer({ actionHandlers } = {}) {
     utils.playAudio(url);
   }
 
-  function onChangeBoard(board) {
-    navigation.push(board);
+  function onChangeBoard(id) {
+    const state = { id };
+    navigation.push(state);
   }
 
   async function onFetchBoard(url) {
