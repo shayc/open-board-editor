@@ -58,8 +58,10 @@ function useBoardViewer({ actionHandlers } = {}) {
       }
     }
 
-    getBoard(navigation.activeState.id);
-  }, [navigation.activeState.id]);
+    if (navigation.activeState?.id) {
+      getBoard(navigation.activeState.id);
+    }
+  }, [navigation.activeState?.id]);
 
   return {
     board,

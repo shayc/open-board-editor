@@ -30,7 +30,9 @@ export function useBoardNavigation() {
       }
     }
 
-    getBoard(boardId);
+    if (boardId) {
+      getBoard(boardId);
+    }
   }, [boardId, navigate]);
 
   const navigation = useMemo(() => {
