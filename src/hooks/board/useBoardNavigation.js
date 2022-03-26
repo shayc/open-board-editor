@@ -7,8 +7,8 @@ export function useBoardNavigation() {
   const { boardId } = useParams();
   const [rootBoardId, setRootBoardId] = useState(null);
 
-  const [history, setHistory] = useState([{ id: boardId }]);
-  const [index, setIndex] = useState(0);
+  const [history, setHistory] = useState(boardId ? [{ id: boardId }] : []);
+  const [index, setIndex] = useState(boardId ? 0 : -1);
 
   useEffect(() => {
     async function getRootBoardId() {
