@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
@@ -7,14 +6,9 @@ import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 
-function useBoardViewer({ boardId, actionHandlers } = {}) {
+function useBoardViewer({ actionHandlers } = {}) {
   const [board, setBoard] = useState({});
-
-  const navigation = useBoardNavigation({
-    history: boardId ? [{ id: boardId }] : [],
-    index: boardId ? 0 : -1,
-    navigate: useNavigate(),
-  });
+  const navigation = useBoardNavigation();
 
   const output = useBoardOutput({
     speak,
@@ -64,10 +58,8 @@ function useBoardViewer({ boardId, actionHandlers } = {}) {
       }
     }
 
-    if (boardId) {
-      getBoard(boardId);
-    }
-  }, [boardId]);
+    getBoard(navigation.activeState.id);
+  }, [navigation.activeState.id]);
 
   return {
     board,

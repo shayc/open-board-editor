@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 
 import {
   Board,
@@ -17,10 +16,7 @@ function BoardViewer(props) {
   const { barEnd, barStart, ...other } = props;
 
   const settings = useSettings();
-  const { boardId } = useParams();
-  const { board, navigation, output, onButtonClick } = useBoardViewer({
-    boardId,
-  });
+  const { board, navigation, output, onButtonClick } = useBoardViewer();
 
   function renderTile(button) {
     const { board: boardSettings } = settings;

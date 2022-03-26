@@ -1,20 +1,47 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 
-export function useBoardNavigation(params = {}) {
-  const { navigate, history: initialHistory, index: initialIndex } = params;
+export function useBoardNavigation() {
+  const navigate = useNavigate();
+  const { boardId } = useParams();
+  const [rootBoardId, setRootBoardId] = useState(null);
 
-  const [rootBoard, setRootBoard] = useState({});
-  const [history, setHistory] = useState(initialHistory);
-  const [index, setIndex] = useState(initialIndex);
+  const [history, setHistory] = useState([{ id: boardId }]);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    async function getRootBoardId() {
+      const rootBoard = await boardRepo.getRoot();
+
+      if (rootBoard) {
+        setRootBoardId(rootBoard.id);
+      }
+    }
+    getRootBoardId();
+  }, []);
+
+  useEffect(() => {
+    async function getBoard(id) {
+      const board = await boardRepo.getById(id);
+
+      if (!board) {
+        navigate('./');
+      }
+    }
+
+    getBoard(boardId);
+  }, [boardId, navigate]);
 
   const navigation = useMemo(() => {
     const isBackDisabled = index <= 0;
     const isForwardDisabled = index >= history.length - 1;
 
     function goHome() {
-      const { id, name } = rootBoard;
-      reset({ id, name });
+      if (rootBoardId) {
+        const state = { id: rootBoardId };
+        reset(state);
+      }
     }
 
     function goBack() {
@@ -66,20 +93,9 @@ export function useBoardNavigation(params = {}) {
       onBackClick: goBack,
       onForwardClick: goForward,
       onHomeClick: goHome,
+      activeState: history[index],
     };
-  }, [index, history, navigate, rootBoard]);
-
-  useEffect(() => {
-    async function getRootBoard() {
-      const rootBoard = await boardRepo.getRoot();
-
-      if (rootBoard) {
-        setRootBoard(rootBoard);
-      }
-    }
-
-    getRootBoard();
-  }, []);
+  }, [index, history, navigate, rootBoardId]);
 
   return navigation;
 }

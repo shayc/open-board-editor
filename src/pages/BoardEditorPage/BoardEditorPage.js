@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Selection, DefaultButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
@@ -49,9 +49,7 @@ function BoardEditorPage(props) {
   const boardSetUrl = searchParams.get('boardSetUrl');
 
   const boardDB = useBoardDB();
-  const boardNav = useBoardNavigation({
-    navigate: useNavigate(),
-  });
+  const boardNav = useBoardNavigation();
 
   const forceUpdate = useForceUpdate();
 
@@ -257,18 +255,6 @@ function BoardEditorPage(props) {
     setSelectedBoards(boardSelection);
   }
 
-  function goBack() {
-    boardNav.goBack();
-  }
-
-  function goForward() {
-    boardNav.goForward();
-  }
-
-  function goHome() {
-    boardNav.reset({ id: boardDB.rootId });
-  }
-
   useEffect(() => {
     const getBoard = async (id) => {
       const board = await boardDB.getById(id);
@@ -355,11 +341,11 @@ function BoardEditorPage(props) {
                 barStart={
                   !isButtonSelected && (
                     <NavButtons
-                      backDisabled={boardNav.backDisabled}
-                      forwardDisabled={boardNav.forwardDisabled}
-                      onBackClick={goBack}
-                      onForwardClick={goForward}
-                      onHomeClick={goHome}
+                      backDisabled={boardNav.isBackDisabled}
+                      forwardDisabled={boardNav.isForwardDisabled}
+                      onBackClick={boardNav.onBackClick}
+                      onForwardClick={boardNav.onForwardClick}
+                      onHomeClick={boardNav.onHomeClick}
                     />
                   )
                 }
