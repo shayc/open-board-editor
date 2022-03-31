@@ -37,17 +37,9 @@ const selectionZoneProps = {
 };
 
 function BoardsList(props) {
-  const {
-    // activeId,
-    className,
-    boards,
-    onActiveIdChange,
-    onDeleteClick,
-    onInfoClick,
-    onRootIdChange,
-    onSelectionChange,
-    rootId,
-  } = props;
+  const { className } = props;
+
+  const { boards, rootBoardId, selection } = useBoardsList();
 
   const intl = useIntl();
 
@@ -76,21 +68,12 @@ function BoardsList(props) {
     if (filterValue) {
       return filteredBoards;
     } else {
-      return sortItems(boards, rootId);
+      return sortItems(boards, rootBoardId);
     }
-  }, [boards, rootId, filterValue, filteredBoards]);
+  }, [boards, rootBoardId, filterValue, filteredBoards]);
 
-  const selectionRef = useRef(
-    new Selection({
-      items,
-      onSelectionChanged: () => {
-        onSelectionChange(selectionRef.current);
-      },
-    })
-  );
-
-  const selectedCount = selectionRef.current.getSelectedCount();
-  const isAllSelected = selectionRef.current.isAllSelected();
+  const selectedCount = selection.getSelectedCount();
+  const isAllSelected = selection.isAllSelected();
 
   const title = filterValue
     ? intl.formatMessage(messages.results)
@@ -105,7 +88,7 @@ function BoardsList(props) {
   const rootClassName = clsx(className, styles.root);
 
   function handleToggleSelectAll() {
-    selectionRef.current.toggleAllSelected();
+    selection.toggleAllSelected();
   }
 
   function handleActiveItemChange(item, index, event) {
@@ -114,7 +97,7 @@ function BoardsList(props) {
     }
 
     if (item?.id) {
-      onActiveIdChange?.(item.id);
+      onActiveBoardChange?.(item.id);
     }
   }
 
@@ -151,7 +134,7 @@ function BoardsList(props) {
           ...item,
           name: (
             <Text styles={{ root: { lineHeight: '32px' } }}>
-              {item.id === rootId && <Icon iconName="Home" />}{' '}
+              {item.id === rootBoardId && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
                 searchWords={filteredWords}
@@ -178,16 +161,16 @@ function BoardsList(props) {
         key: 'setAsHomeBoard',
         text: intl.formatMessage(messages.setAsHomeBoard),
         iconProps: { iconName: 'Home' },
-        disabled: board.id === rootId,
+        disabled: board.id === rootBoardId,
         onClick: () => {
-          onRootIdChange(board.id);
+          onSetAsHomeClick(board.id);
         },
       },
       {
         key: 'delete',
         text: intl.formatMessage(messages.delete),
         iconProps: { iconName: 'Delete' },
-        disabled: board.id === rootId,
+        disabled: board.id === rootBoardId,
         onClick: () => {
           onDeleteClick(board.id);
         },
@@ -227,7 +210,7 @@ function BoardsList(props) {
           isHeaderVisible={false}
           columns={columns}
           items={items}
-          selection={selectionRef.current}
+          selection={selection}
           selectionMode={SelectionMode.multiple}
           selectionZoneProps={selectionZoneProps}
           checkboxCellClassName={styles.checkboxCell}
@@ -251,45 +234,7 @@ function BoardsList(props) {
   );
 }
 
-BoardsList.propTypes = {
-  /**
-   * Active board Id
-   */
-  activeId: PropTypes.string,
-  /**
-   * Boards to render
-   */
-  boards: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  /**
-   * Callback, fired when activeId changes
-   */
-  onActiveIdChange: PropTypes.func,
-  /**
-   * Callback, fired when delete button is clicked
-   */
-  onDeleteClick: PropTypes.func,
-  /**
-   * Callback, fired when info button is clicked
-   */
-  onInfoClick: PropTypes.func,
-  /**
-   * Callback, fired when rootId changes
-   */
-  onRootIdChange: PropTypes.func,
-  /**
-   *
-   */
-  onSelectionChange: PropTypes.func,
-  /**
-   * Root board Id
-   */
-  rootId: PropTypes.string,
-};
+BoardsList.propTypes = {};
 
 function sortItems(items, rootId) {
   if (!rootId) {

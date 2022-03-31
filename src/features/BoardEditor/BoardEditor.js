@@ -4,7 +4,6 @@ import { IconButton, Check } from '@fluentui/react';
 import { nanoid } from 'nanoid';
 import { useIntl } from 'react-intl';
 import { boardRepo } from '../../open-board-format/board/board.repo';
-import { boardService } from '../../open-board-format/board/board.service';
 import { useSettings } from '../../contexts/settings';
 import { Board, Tile, Pictogram, NavButtons } from '../../components';
 import {
@@ -51,7 +50,7 @@ function BoardEditor(props) {
     text: board.name,
   }));
 
-  const tileDraggable = true;
+  const isTileDraggable = true;
 
   const selectedCount = selection.getSelectedCount();
   const itemsSelectedMessage = intl.formatMessage(messages.itemsSelected, {
@@ -124,7 +123,7 @@ function BoardEditor(props) {
     const isSelected = selection?.isIndexSelected(index);
 
     const tileClassName = clsx(styles.tile, {
-      [styles.tileDraggable]: tileDraggable,
+      [styles.tileDraggable]: isTileDraggable,
     });
 
     const tileControlsClassName = clsx(styles.tileControls, {
@@ -213,7 +212,7 @@ function BoardEditor(props) {
         title={boardTitle}
         buttons={board.buttons}
         grid={board.grid}
-        draggable={tileDraggable}
+        draggable={isTileDraggable}
         renderButton={renderTile}
         renderButtonPlaceholder={renderTilePlaceholder}
         onButtonPositionChange={onButtonPositionChange}

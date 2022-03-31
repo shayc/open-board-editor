@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useForceUpdate } from '@fluentui/react-hooks';
+import { useEffect } from 'react';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
 import { boardService } from '../../open-board-format/board/board.service';
@@ -8,8 +7,6 @@ import useSelection from './useSelection';
 import { useBoardEditorHotKeys } from './useBoardEditorHotKeys';
 
 function useBoardEditor({ actionHandlers, locale } = {}) {
-  useBoardEditorHotKeys();
-
   const { board, setBoard, navigation, output, onButtonClick } = useBoardViewer(
     {
       actionHandlers,
@@ -19,15 +16,17 @@ function useBoardEditor({ actionHandlers, locale } = {}) {
 
   const selection = useSelection({ items: board.buttons });
 
+  useBoardEditorHotKeys({ del: deleteSelectedButtons });
+
   function deleteSelectedButtons() {
     const ids = selection
       .getSelection()
       .filter((id) => id)
       .map((item) => item.id);
 
-    const board = boardService.removeButton(ids);
-    boardRepo.update(board);
-    setBoard(board);
+    const b = boardService.removeButton(ids, board);
+    boardRepo.update(b);
+    setBoard(b);
   }
 
   function colorSelectedButtons(color) {

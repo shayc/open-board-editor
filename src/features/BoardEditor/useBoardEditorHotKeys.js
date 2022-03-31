@@ -1,5 +1,5 @@
 import { useHotkeys } from 'react-hotkeys-hook';
 
-export function useBoardEditorHotKeys({ onDelete }) {
-  useHotkeys('del', onDelete, [onDelete]);
+export function useBoardEditorHotKeys({ del }) {
+  useHotkeys('del', del, [del]);
 }
