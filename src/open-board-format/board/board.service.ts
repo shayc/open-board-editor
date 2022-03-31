@@ -31,6 +31,11 @@ export const boardService = {
     };
   },
 
+  buttonExists(id: string | string[], board: OBF.Board): boolean {
+    const exists = buttonService.exists(id, board.buttons);
+    return exists;
+  },
+
   addButton(button: OBF.Button | OBF.Button[], board: OBF.Board): OBF.Board {
     const buttons = buttonService.add(button, board.buttons);
 
@@ -79,10 +84,7 @@ export const boardService = {
     return { ...board, grid };
   },
 
-  getLocalizedBoard(
-    board: OBF.Board,
-    locale: string | undefined = board.locale
-  ) {
+  localizeBoard(locale: string, board: OBF.Board) {
     if (!locale) {
       return board;
     }

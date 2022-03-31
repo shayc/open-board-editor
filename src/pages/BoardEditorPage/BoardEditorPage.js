@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Selection, DefaultButton } from '@fluentui/react';
+import { DefaultButton } from '@fluentui/react';
 import { useForceUpdate } from '@fluentui/react-hooks';
-import { useHotkeys } from 'react-hotkeys-hook';
+
 import { useSearchParams } from 'react-router-dom';
 
 import * as OBF from '../../open-board-format';
@@ -20,7 +20,6 @@ import {
   BoardsList,
   DetailsPanel,
   DelayedRender,
-  NavButtons,
   BoardCommandBar,
   SelectedBoardsPage,
 } from '../../components';
@@ -29,14 +28,13 @@ import { defaultColors } from '../../open-board-format/color-codes';
 import globalSymbols from '../../api/pictograms/global-symbols';
 import { BoardEditor } from '../../features';
 import PanelToggle from './PanelToggle';
-import { openFileDialog, share, print } from './utils';
+import { openFileDialog } from './utils';
 import messages from './BoardEditorPage.messages';
 import styles from './BoardEditorPage.module.css';
 
 function BoardEditorPage(props) {
   const { onViewClick } = props;
 
-  const { locale } = useLocale();
   const intl = useIntl();
   const { boardId } = useParams();
   const [searchParams] = useSearchParams();
@@ -53,48 +51,9 @@ function BoardEditorPage(props) {
   const boardDB = useBoardDB();
   const boardNav = useBoardNavigation();
 
-  const forceUpdate = useForceUpdate();
-
-  const goToBoard = useCallback(
-    function goToBoard(id) {
-      boardNav.push({ id });
-    },
-    [boardNav]
-  );
-
-  const { board, boardCtrl } = useBoard({
-    requestBoard: goToBoard,
-    playAudio,
-    speak,
-  });
-
   const boardSelectionRef = useRef();
 
   const [selectedBoards, setSelectedBoards] = useState([]);
-
-  const buttonsSelection = useMemo(() => {
-    return new Selection({
-      onSelectionChanged: forceUpdate,
-      items: board.buttons,
-    });
-  }, [board, forceUpdate]);
-
-  const linkableBoards = boardDB.boardsList.filter((b) => b.id !== board.id);
-  const isButtonSelected = Boolean(buttonsSelection.getSelectedCount());
-  const isBoardSelected = Boolean(selectedBoards?.length);
-
-  const boardCommandContext =
-    (isButtonSelected && 'button-selected') ||
-    (isBoardSelected && 'board-selected') ||
-    (board?.id && 'board-active');
-
-  useHotkeys(
-    'del',
-    () => {
-      handleButtonDelete();
-    },
-    [buttonsSelection]
-  );
 
   const handleImagesRequest = useMemo(
     () =>
@@ -113,45 +72,6 @@ function BoardEditorPage(props) {
     setIsDetailsPanelOpen((isOpen) => !isOpen);
   }
 
-  function handleChangeRequested(board) {
-    boardNav.push(board);
-  }
-
-  function handleButtonColorChange(color) {
-    const ids = buttonsSelection.getSelection().map((b) => b.id);
-    const board = boardCtrl.setButtonColor(ids, { backgroundColor: color });
-    boardDB.update(board);
-  }
-
-  async function handleImportFile() {
-    const files = await openFileDialog({ accept: '.obz, .obf' });
-
-    setIsLoading(true);
-    boardCtrl.resetBoard();
-    const rootId = await boardDB.importFile(files[0]);
-    setIsLoading(false);
-
-    goToBoard(rootId);
-  }
-
-  async function handleExportFile() {
-    boardDB.exportFile();
-  }
-
-  async function handleNewBoard() {
-    const name = intl.formatMessage(messages.newBoard);
-    const id = await boardDB.add({
-      name,
-      grid: { columns: board.grid.columns, rows: board.grid.rows },
-    });
-
-    if (!boardDB.boardsList.length) {
-      boardDB.setRootId(id);
-    }
-
-    goToBoard(id);
-  }
-
   function deleteSelectedBoards() {
     const ids = selectedBoards.map((item) => item.id);
     boardDB.remove(ids);
@@ -163,16 +83,6 @@ function BoardEditorPage(props) {
 
   function setRootId(id) {
     boardDB.setRootId(id);
-  }
-
-  function handleButtonDelete() {
-    const ids = buttonsSelection
-      .getSelection()
-      .filter((id) => id)
-      .map((item) => item.id);
-
-    const board = boardCtrl.removeButton(ids);
-    boardDB.update(board);
   }
 
   const handleBoardDetails = useCallback(
@@ -192,69 +102,6 @@ function BoardEditorPage(props) {
     },
     [board, boardDB]
   );
-
-  function handleButtonChange(button, position) {
-    if (boardCtrl.buttonExists(button.id)) {
-      boardCtrl.updateButton(button);
-    } else {
-      boardCtrl.addButton(button);
-      boardCtrl.setButtonPosition(button.id, position);
-    }
-  }
-
-  async function handleButtonChangeDiscard() {
-    const b = await boardDB.getById(board.id);
-
-    if (b) {
-      boardCtrl.setBoard(b);
-    }
-
-    setImages([]);
-  }
-
-  async function handleButtonChangeSave(button, position) {
-    const { image } = button;
-
-    const shouldFetchImage = !image?.data && image?.url;
-    let newBoard = { ...board };
-
-    const boardFromDB = await boardDB.getById(newBoard.id);
-    const buttonFromDB = boardFromDB.buttons.find((b) => b.id === button.id);
-    if (newBoard.locale !== locale) {
-      const key = buttonFromDB.label;
-      newBoard = boardCtrl.setLocaleString(locale, key, button.label);
-      newBoard = boardCtrl.updateButton({
-        ...button,
-        label: buttonFromDB.label,
-      });
-    }
-
-    if (shouldFetchImage) {
-      try {
-        const { file, path } = await fetchImageData({
-          contentType: image.content_type,
-          fileName: image.ext_text,
-          url: image.url,
-        });
-
-        newBoard = boardCtrl.updateButton({
-          ...button,
-          image: { ...image, path },
-        });
-        boardDB.addFile(file, path);
-      } catch (error) {
-        console.log('failed to fetch image');
-      }
-    }
-
-    boardDB.update(newBoard);
-    setImages([]);
-  }
-
-  function handleButtonPositionChange(from, to) {
-    const board = boardCtrl.moveButtonPosition(from, to);
-    boardDB.update(board);
-  }
 
   function handleGridSizeChange({ columns, rows }) {
     boardCtrl.setColumns(columns);
@@ -310,21 +157,7 @@ function BoardEditorPage(props) {
 
       <div className={styles.commandBar}>
         <PanelToggle checked={isPanelOpen} onClick={togglePanel} />
-
-        <BoardCommandBar
-          commandContext={boardCommandContext}
-          colors={defaultColors}
-          onNewBoardClick={handleNewBoard}
-          onDetailsClick={handleBoardDetails}
-          onImportFileClick={handleImportFile}
-          onExportFileClick={handleExportFile}
-          onPrintClick={print}
-          onShareClick={share}
-          onColorClick={handleButtonColorChange}
-          onDeleteButtonClick={handleButtonDelete}
-          onDeleteBoardClick={deleteSelectedBoards}
-          onGridSizeChange={handleGridSizeChange}
-        />
+        <BoardCommandBar />
       </div>
 
       {isLoading ? (
@@ -349,48 +182,17 @@ function BoardEditorPage(props) {
           )}
 
           <div className={styles.main}>
-            {board?.id && selectedBoards.length < 2 && (
-              <BoardEditor
-                barStart={
-                  !isButtonSelected && (
-                    <NavButtons
-                      backDisabled={boardNav.isBackDisabled}
-                      forwardDisabled={boardNav.isForwardDisabled}
-                      onBackClick={boardNav.onBackClick}
-                      onForwardClick={boardNav.onForwardClick}
-                      onHomeClick={boardNav.onHomeClick}
-                    />
-                  )
-                }
-                barEnd={
-                  !isButtonSelected && (
-                    <DefaultButton
-                      style={{ margin: 'auto 8px' }}
-                      iconProps={{ iconName: 'View' }}
-                      onClick={onViewClick}
-                      title={intl.formatMessage(messages.viewBoard)}
-                      text={intl.formatMessage(messages.view)}
-                    />
-                  )
-                }
-                board={board}
-                linkableBoards={linkableBoards}
-                draggable={!isSmallScreen}
-                scrollSnap={true}
-                scrollDirection="vertical"
-                selection={buttonsSelection}
-                selectionEnabled={isButtonSelected}
-                buttonColors={defaultColors}
-                buttonImages={images}
-                onImagesRequested={handleImagesRequest}
-                onChangeRequested={handleChangeRequested}
-                onButtonClick={boardCtrl.handleButtonClick}
-                onButtonChange={handleButtonChange}
-                onButtonChangeDiscard={handleButtonChangeDiscard}
-                onButtonChangeSave={handleButtonChangeSave}
-                onButtonPositionChange={handleButtonPositionChange}
-              />
-            )}
+            <BoardEditor
+              barEnd={
+                <DefaultButton
+                  style={{ margin: 'auto 8px' }}
+                  iconProps={{ iconName: 'View' }}
+                  onClick={onViewClick}
+                  title={intl.formatMessage(messages.viewBoard)}
+                  text={intl.formatMessage(messages.view)}
+                />
+              }
+            />
 
             {selectedBoards.length > 1 && (
               <SelectedBoardsPage
@@ -420,20 +222,6 @@ function BoardEditorPage(props) {
       )}
     </div>
   );
-}
-
-async function fetchImageData({ contentType, fileName, url }) {
-  const fileExtension = contentType?.split('/')[1];
-  const isSVG = fileExtension?.toLowerCase() === 'svg';
-
-  const file = {
-    type: `${contentType}${isSVG ? '+xml' : ''}`,
-    data: await (await fetch(url)).arrayBuffer(),
-  };
-
-  const path = `images/${fileName}.${fileExtension}`;
-
-  return { file, path };
 }
 
 export default BoardEditorPage;

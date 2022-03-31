@@ -1,45 +1,38 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { IconButton, Check, Selection } from '@fluentui/react';
+import { IconButton, Check } from '@fluentui/react';
 import { nanoid } from 'nanoid';
 import { useIntl } from 'react-intl';
-
+import { boardRepo } from '../../open-board-format/board/board.repo';
+import { boardService } from '../../open-board-format/board/board.service';
 import { useSettings } from '../../contexts/settings';
-import * as OBF from '../../open-board-format';
-import * as utils from '../../utils';
-import { useSpeech } from '../../contexts/speech';
-import { Board, Tile, Pictogram } from '../../components';
+import { Board, Tile, Pictogram, NavButtons } from '../../components';
 import {
   ButtonCallout,
   useButtonCallout,
 } from '../../components/ButtonCallout';
+import useBoardEditor from './useBoardEditor';
 import messages from './BoardEditor.messages';
 import styles from './BoardEditor.module.css';
 
 function BoardEditor(props) {
+  const { className, barStart, barEnd } = props;
+
+  const intl = useIntl();
+
   const {
-    actionHandlers,
     board,
-    buttonColors,
-    buttonImages,
-    className,
-    draggable,
-    linkableBoards = [],
-    onChangeRequested,
+    navigation,
+    selection,
+    onButtonClick,
     onButtonChange,
     onButtonChangeDiscard,
     onButtonChangeSave,
-    onButtonClick,
     onButtonPositionChange,
-    onImagesRequested,
-    selection,
-    selectionEnabled,
-    ...other
-  } = props;
+  } = useBoardEditor();
+  const selectionEnabled = false;
 
-  const intl = useIntl();
   const { board: boardSettings } = useSettings();
-  const speech = useSpeech();
 
   const {
     button,
@@ -53,12 +46,12 @@ function BoardEditor(props) {
 
   const rootClassName = clsx(className, styles.root);
 
-  const boardsOptions = linkableBoards.map((board) => ({
+  const boardsOptions = boardRepo.getAll().map((board) => ({
     key: board.id,
     text: board.name,
   }));
 
-  const tileDraggable = draggable && !selectionEnabled;
+  const tileDraggable = true;
 
   const selectedCount = selection.getSelectedCount();
   const itemsSelectedMessage = intl.formatMessage(messages.itemsSelected, {
@@ -66,27 +59,6 @@ function BoardEditor(props) {
   });
 
   const boardTitle = selectedCount ? itemsSelectedMessage : board.name;
-
-  const handleTileClick = OBF.createButtonClickHandler({
-    speak,
-    playAudio,
-    actionHandlers,
-    changeBoard: onChangeRequested,
-    fetchBoard: (url) => {
-      console.log(`Fetch board: ${url}`);
-    },
-    redirect: (url) => {
-      console.log(`Redirect: ${url}`);
-    },
-  });
-
-  function speak(text) {
-    speech.speak(text);
-  }
-
-  function playAudio(url) {
-    utils.playAudio(url);
-  }
 
   function handleButtonDiscard() {
     resetButton();
@@ -108,7 +80,7 @@ function BoardEditor(props) {
   }
 
   function handleImagesRequested(query) {
-    onImagesRequested(query);
+    // onImagesRequested(query);
   }
 
   function handleShouldStartSelection(event) {
@@ -166,7 +138,7 @@ function BoardEditor(props) {
         return;
       }
 
-      handleTileClick(button);
+      onButtonClick(button);
     }
 
     function handleEditClick(event) {
@@ -247,15 +219,26 @@ function BoardEditor(props) {
         onButtonPositionChange={onButtonPositionChange}
         selection={selection}
         onShouldStartSelection={handleShouldStartSelection}
-        {...other}
+        barStart={
+          !false && (
+            <NavButtons
+              backDisabled={navigation.isBackDisabled}
+              forwardDisabled={navigation.isForwardDisabled}
+              onBackClick={navigation.onBackClick}
+              onForwardClick={navigation.onForwardClick}
+              onHomeClick={navigation.onHomeClick}
+            />
+          )
+        }
+        barEnd={barEnd}
       />
 
       {calloutTarget && (
         <ButtonCallout
           target={calloutTarget}
           button={button}
-          colors={buttonColors}
-          images={buttonImages}
+          colors={[]}
+          images={[]}
           boards={boardsOptions}
           onSave={handleButtonSave}
           onDiscard={handleButtonDiscard}
@@ -269,66 +252,13 @@ function BoardEditor(props) {
 
 BoardEditor.propTypes = {
   /**
-   * Board data
+   *
    */
-  board: PropTypes.shape({}),
+  barEnd: PropTypes.node,
   /**
-   * Colors for the button callout
+   *
    */
-  buttonColors: PropTypes.array,
-  /**
-   * Images for the button callout
-   */
-  buttonImages: PropTypes.array,
-  /**
-   * If `true` board is draggable
-   */
-  draggable: PropTypes.bool,
-  /**
-   * Linkable boards for button callout
-   */
-  linkableBoards: PropTypes.array,
-  /**
-   * Callback, fired when a button changes
-   */
-  onButtonChange: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when button change is discarded
-   */
-  onButtonChangeDiscard: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when button change is saved
-   */
-  onButtonChangeSave: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when button is clicked
-   */
-  onButtonClick: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when buttons position is changed
-   */
-  onButtonPositionChange: PropTypes.func.isRequired,
-  /**
-   * Callback, fired when drag ends
-   */
-  onDragEnd: PropTypes.func,
-  /**
-   * Callback, fired when drag starts
-   */
-  onDragStart: PropTypes.func,
-  /**
-   * Callback, fred when images are requested
-   */
-  onImagesRequested: PropTypes.func,
-  /**
-   * A store that maintains the selection state of items.
-   * https://developer.microsoft.com/en-us/fluentui#/controls/web/selection
-   */
-  selection: PropTypes.instanceOf(Selection),
-  /**
-   * If `true` buttons will be selectable
-   */
-  selectionEnabled: PropTypes.bool,
+  barStart: PropTypes.node,
 };
 
 function addFallbackId(obj) {

@@ -6,6 +6,11 @@ import {
   ContextualMenuItemType,
   SwatchColorPicker,
 } from '@fluentui/react';
+import {
+  openFileDialog,
+  share,
+  print,
+} from '../../pages/BoardEditorPage/utils';
 
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import messages from './BoardCommandBar.messages';
@@ -106,21 +111,7 @@ function createGridMenuProps(device, orientation, onGridSizeChange, intl) {
 }
 
 function BoardCommandBar(props) {
-  const {
-    className,
-    commandContext,
-    colors,
-    onImportFileClick,
-    onExportFileClick,
-    onDetailsClick,
-    onPrintClick,
-    onShareClick,
-    onNewBoardClick,
-    onDeleteButtonClick,
-    onDeleteBoardClick,
-    onGridSizeChange,
-    onColorClick,
-  } = props;
+  const { className } = props;
 
   const rootClassName = clsx(className, styles.root);
 
@@ -140,6 +131,43 @@ function BoardCommandBar(props) {
     },
     colors
   );
+
+  const isButtonSelected = false;
+  const isBoardSelected = Boolean(selectedBoards?.length);
+
+  const commandContext =
+    (isButtonSelected && 'button-selected') ||
+    (isBoardSelected && 'board-selected') ||
+    (board?.id && 'board-active');
+
+  async function handleImportFile() {
+    const files = await openFileDialog({ accept: '.obz, .obf' });
+
+    setIsLoading(true);
+    boardCtrl.resetBoard();
+    const rootId = await boardDB.importFile(files[0]);
+    setIsLoading(false);
+
+    goToBoard(rootId);
+  }
+
+  async function handleExportFile() {
+    boardDB.exportFile();
+  }
+
+  async function handleNewBoard() {
+    const name = intl.formatMessage(messages.newBoard);
+    const id = await boardDB.add({
+      name,
+      grid: { columns: board.grid.columns, rows: board.grid.rows },
+    });
+
+    if (!boardDB.boardsList.length) {
+      boardDB.setRootId(id);
+    }
+
+    goToBoard(id);
+  }
 
   const commandBarStyles = {
     root: {

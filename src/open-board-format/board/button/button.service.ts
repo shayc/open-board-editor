@@ -24,4 +24,10 @@ export const buttonService = {
       return newButton ? { ...b, ...newButton } : b;
     });
   },
+
+  exists(id: string | string[], buttons: OBF.Button[]): boolean {
+    const ids = Array.isArray(id) ? id : [id];
+
+    return ids.every((id) => buttons.some((b) => b.id === id));
+  },
 };

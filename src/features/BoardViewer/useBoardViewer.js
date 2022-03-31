@@ -54,8 +54,8 @@ function useBoardViewer({ actionHandlers, locale } = {}) {
       const board = await boardRepo.getById(id);
 
       if (board) {
-        const localizeBoard = boardService.getLocalizedBoard(board, locale);
-        const boardDTO = boardMap.toDTO(localizeBoard);
+        const localizedBoard = boardService.localizeBoard(locale, board);
+        const boardDTO = boardMap.toDTO(localizedBoard);
         setBoard(boardDTO);
       }
     }
@@ -67,6 +67,7 @@ function useBoardViewer({ actionHandlers, locale } = {}) {
 
   return {
     board,
+    setBoard,
     navigation,
     output,
     onButtonClick,
