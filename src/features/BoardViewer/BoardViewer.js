@@ -16,8 +16,9 @@ import styles from './BoardViewer.module.css';
 function BoardViewer(props) {
   const { barEnd, barStart, ...other } = props;
 
-  const { locale } = useLocale();
   const settings = useSettings();
+  const { locale } = useLocale();
+
   const { board, navigation, output, onButtonClick } = useBoardViewer({
     locale,
   });
