@@ -36,8 +36,7 @@ function useBoardViewer({ actionHandlers } = {}) {
   }
 
   function onChangeBoard(id) {
-    const state = { id };
-    navigation.push(state);
+    navigation.push({ id });
   }
 
   async function onFetchBoard(url) {
@@ -59,10 +58,10 @@ function useBoardViewer({ actionHandlers } = {}) {
       }
     }
 
-    if (navigation.activeState?.id) {
+    if (navigation.activeState.id) {
       getBoard(navigation.activeState.id);
     }
-  }, [navigation.activeState?.id]);
+  }, [navigation.activeState.id]);
 
   return {
     board,

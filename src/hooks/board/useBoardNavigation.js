@@ -4,6 +4,7 @@ import { boardRepo } from '../../open-board-format/board/board.repo';
 
 export function useBoardNavigation() {
   const navigate = useNavigate();
+
   const { boardId } = useParams();
   const [rootBoardId, setRootBoardId] = useState(null);
 
@@ -36,6 +37,7 @@ export function useBoardNavigation() {
   }, [boardId, navigate]);
 
   const navigation = useMemo(() => {
+    const activeState = history[index] || {};
     const isBackDisabled = index <= 0;
     const isForwardDisabled = index >= history.length - 1;
 
@@ -88,6 +90,7 @@ export function useBoardNavigation() {
     }
 
     return {
+      activeState,
       isBackDisabled,
       isForwardDisabled,
       reset,
@@ -95,7 +98,6 @@ export function useBoardNavigation() {
       onBackClick: goBack,
       onForwardClick: goForward,
       onHomeClick: goHome,
-      activeState: history[index],
     };
   }, [index, history, navigate, rootBoardId]);
 

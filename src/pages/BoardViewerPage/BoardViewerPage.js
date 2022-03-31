@@ -10,18 +10,8 @@ import messages from './BoardViewerPage.messages';
 
 function BoardViewerPage(props) {
   const { onEditClick } = props;
+
   const intl = useIntl();
-
-  const editButton = (
-    <DefaultButton
-      className={styles.editButton}
-      iconProps={{ iconName: 'Edit' }}
-      title={intl.formatMessage(messages.editBoard)}
-      text={intl.formatMessage(messages.edit)}
-      onClick={onEditClick}
-    />
-  );
-
   const { boardId } = useParams();
   const { board } = useBoardViewer({ boardId });
 
@@ -29,7 +19,17 @@ function BoardViewerPage(props) {
     <div className={styles.root}>
       <Seo title={board?.name} />
 
-      <BoardViewer barEnd={editButton} />
+      <BoardViewer
+        barEnd={
+          <DefaultButton
+            className={styles.editButton}
+            iconProps={{ iconName: 'Edit' }}
+            title={intl.formatMessage(messages.editBoard)}
+            text={intl.formatMessage(messages.edit)}
+            onClick={onEditClick}
+          />
+        }
+      />
     </div>
   );
 }
