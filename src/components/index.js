@@ -1,7 +1,7 @@
 /* PLOP_INJECT_IMPORT */
 import SettingsButton from './SettingsButton';
 import SelectedBoardsPage from './SelectedBoardsPage';
-import BoardCommandBar from './BoardCommandBar';
+import BoardCommandBar from '../features/BoardCommandBar';
 import ImagePicker from './ImagePicker';
 import BoardSetList from './BoardSetList';
 import Bar from './Board/Bar';
@@ -14,7 +14,6 @@ import Output from './Output';
 import { OutputButtons } from './Output';
 import Board from './Board';
 import AppBar from './AppBar';
-import BoardsList from './BoardsList';
 import SpinnerProgress from './SpinnerProgress';
 import NavButtons from './NavButtons';
 
@@ -35,7 +34,6 @@ export {
   OutputButtons,
   Board,
   AppBar,
-  BoardsList,
   SpinnerProgress,
   NavButtons,
 };
