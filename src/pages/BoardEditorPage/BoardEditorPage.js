@@ -10,6 +10,7 @@ import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { debounce, playAudio } from '../../utils';
 import { useSpeech } from '../../contexts/speech';
+import { useLocale } from '../../contexts/locale';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useBoard, useBoardDB, useBoardNavigation } from '../../hooks/board';
 
@@ -35,6 +36,7 @@ import styles from './BoardEditorPage.module.css';
 function BoardEditorPage(props) {
   const { onViewClick } = props;
 
+  const { locale } = useLocale();
   const intl = useIntl();
   const { boardId } = useParams();
   const [searchParams] = useSearchParams();
@@ -215,6 +217,17 @@ function BoardEditorPage(props) {
 
     const shouldFetchImage = !image?.data && image?.url;
     let newBoard = { ...board };
+
+    const boardFromDB = await boardDB.getById(newBoard.id);
+    const buttonFromDB = boardFromDB.buttons.find((b) => b.id === button.id);
+    if (newBoard.locale !== locale) {
+      const key = buttonFromDB.label;
+      newBoard = boardCtrl.setLocaleString(locale, key, button.label);
+      newBoard = boardCtrl.updateButton({
+        ...button,
+        label: buttonFromDB.label,
+      });
+    }
 
     if (shouldFetchImage) {
       try {

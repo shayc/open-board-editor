@@ -13,6 +13,18 @@ function useBoardState() {
       setBoardState(board);
     }
 
+    function setLocaleString(locale, key, value) {
+      const newBoard = boardService.setLocaleString(
+        locale,
+        key,
+        value,
+        boardRef.current
+      );
+      setBoard(newBoard);
+
+      return newBoard;
+    }
+
     function resetBoard() {
       setBoard(initialBoard);
     }
@@ -114,6 +126,7 @@ function useBoardState() {
     return {
       buttonExists,
       setName,
+      setLocaleString,
       setBoard,
       setButtonColor,
       setButtonPosition,

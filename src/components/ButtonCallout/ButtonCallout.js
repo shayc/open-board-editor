@@ -52,7 +52,7 @@ function ButtonCallout(props) {
 
   function handleLabelChange(event, label) {
     const semanticColor =
-      label.split(' ').length === 1 ? getSemanticColor(label) : '';
+      null && label.split(' ').length === 1 ? getSemanticColor(label) : '';
 
     onChange({
       ...button,

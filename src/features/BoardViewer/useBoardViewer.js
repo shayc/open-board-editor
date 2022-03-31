@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import * as OBF from '../../open-board-format';
 import { boardRepo } from '../../open-board-format/board/board.repo';
 import { boardMap } from '../../open-board-format/board/board.map';
+import { boardService } from '../../open-board-format/board/board.service';
 import * as utils from '../../utils';
 import { useSpeech } from '../../contexts/speech';
 import { useBoardOutput, useBoardNavigation } from '../../hooks/board';
 
-function useBoardViewer({ actionHandlers } = {}) {
+function useBoardViewer({ actionHandlers, locale } = {}) {
   const [board, setBoard] = useState({});
   const navigation = useBoardNavigation();
 
@@ -53,7 +54,8 @@ function useBoardViewer({ actionHandlers } = {}) {
       const board = await boardRepo.getById(id);
 
       if (board) {
-        const boardDTO = boardMap.toDTO(board);
+        const localizeBoard = boardService.getLocalizedBoard(board, locale);
+        const boardDTO = boardMap.toDTO(localizeBoard);
         setBoard(boardDTO);
       }
     }
@@ -61,7 +63,7 @@ function useBoardViewer({ actionHandlers } = {}) {
     if (navigation.activeState.id) {
       getBoard(navigation.activeState.id);
     }
-  }, [navigation.activeState.id]);
+  }, [navigation.activeState.id, locale]);
 
   return {
     board,

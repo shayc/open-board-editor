@@ -9,14 +9,18 @@ import {
 } from '../../components';
 import Tile, { TileVariant } from '../../components/Tile/Tile';
 import { useSettings } from '../../contexts/settings';
+import { useLocale } from '../../contexts/locale';
 import useBoardViewer from './useBoardViewer';
 import styles from './BoardViewer.module.css';
 
 function BoardViewer(props) {
   const { barEnd, barStart, ...other } = props;
 
+  const { locale } = useLocale();
   const settings = useSettings();
-  const { board, navigation, output, onButtonClick } = useBoardViewer();
+  const { board, navigation, output, onButtonClick } = useBoardViewer({
+    locale,
+  });
 
   function renderTile(button) {
     const { board: boardSettings } = settings;

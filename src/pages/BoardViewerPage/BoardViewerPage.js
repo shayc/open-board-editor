@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
 import { DefaultButton } from '@fluentui/react';
 import { useIntl } from 'react-intl';
 
+import { useLocale } from '../../contexts/locale';
 import { Seo } from '../../components';
 import BoardViewer from '../../features/BoardViewer';
 import useBoardViewer from '../../features/BoardViewer/useBoardViewer';
@@ -12,8 +12,7 @@ function BoardViewerPage(props) {
   const { onEditClick } = props;
 
   const intl = useIntl();
-  const { boardId } = useParams();
-  const { board } = useBoardViewer({ boardId });
+  const { board } = useBoardViewer();
 
   return (
     <div className={styles.root}>

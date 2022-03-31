@@ -7,6 +7,30 @@ export const boardService = {
     return { ...board, name };
   },
 
+  setLocale(locale: string, board: OBF.Board): OBF.Board {
+    return { ...board, locale };
+  },
+
+  setLocaleString(
+    locale: string,
+    key: string,
+    value: string,
+    board: OBF.Board
+  ): OBF.Board {
+    const strings = board.strings || {};
+
+    return {
+      ...board,
+      strings: {
+        ...strings,
+        [locale]: {
+          ...strings[locale],
+          [key]: value,
+        },
+      },
+    };
+  },
+
   addButton(button: OBF.Button | OBF.Button[], board: OBF.Board): OBF.Board {
     const buttons = buttonService.add(button, board.buttons);
 
@@ -63,32 +87,33 @@ export const boardService = {
       return board;
     }
 
-    const buttons = board.buttons.map(
-      async ({ label, vocalization, ...other }) => {
-        const localeLabel = label
-          ? getLocalizedMessage(label, locale, board.strings)
-          : '';
+    const buttons = board.buttons.map(({ label, vocalization, ...other }) => {
+      const localeLabel = label
+        ? getLocaleString(label, locale, board.strings)
+        : '';
 
-        const localeVocalization = vocalization
-          ? getLocalizedMessage(vocalization, locale, board.strings)
-          : '';
+      const localeVocalization = vocalization
+        ? getLocaleString(vocalization, locale, board.strings)
+        : '';
 
-        return {
-          ...other,
-          label: localeLabel,
-          vocalization: localeVocalization,
-        };
-      }
-    );
+      return {
+        ...other,
+        label: localeLabel,
+        vocalization: localeVocalization,
+      };
+    });
+
+    const name = getLocaleString(board.name, locale, board.strings);
 
     return {
       ...board,
+      name,
       buttons,
     };
   },
 };
 
-function getLocalizedMessage(
+function getLocaleString(
   message: string,
   locale: string,
   strings?: OBF.TranslationStrings
