@@ -1,7 +1,7 @@
 import DelayedRender from './DelayedRender';
 
 const story = {
-  title: 'Web App/Components/DelayedRender',
+  title: 'App/Components/DelayedRender',
   component: DelayedRender,
 };
 

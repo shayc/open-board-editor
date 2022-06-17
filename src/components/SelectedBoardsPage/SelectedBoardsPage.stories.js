@@ -1,7 +1,7 @@
 import SelectedBoardsPage from './SelectedBoardsPage';
 
 const story = {
-  title: 'Web App/Components/SelectedBoardsPage',
+  title: 'App/Components/SelectedBoardsPage',
   component: SelectedBoardsPage,
 };
 

@@ -7,7 +7,7 @@ import projectCore from '../../open-board-format/examples/project-core.json';
 const board = boardMap.toDTO(projectCore);
 
 const story = {
-  title: 'Web App/Features/BoardEditor',
+  title: 'App/Features/BoardEditor',
   component: BoardEditor,
 };
 export default story;

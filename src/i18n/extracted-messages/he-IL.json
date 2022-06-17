@@ -4,7 +4,7 @@
   "app.components.About.license": "רשיון",
   "app.components.About.sourceCode": "קוד מקור",
   "app.components.About.technologies": "טכנולוגיות",
-  "app.components.AppBar.appLauncher": "משגר אפליקציה",
+  "app.components.AppBar.home": "בית",
   "app.components.AppSettingsPanel.close": "סגור",
   "app.components.AppSettingsPanel.settings": "הגדרות",
   "app.components.BoardCommandBar.board": "לוח",
@@ -35,8 +35,8 @@
   "app.components.BoardsList.info": "",
   "app.components.BoardsList.moreActions": "",
   "app.components.BoardsList.results": "תוצאות",
-  "app.components.BoardsList.setAsHomeBoard": "",
-  "app.components.BoardsListFilterBox.filter": "",
+  "app.components.BoardsList.setAsHomeBoard": "קבע כלוח בית",
+  "app.components.BoardsListFilterBox.filter": "סינון",
   "app.components.BoardsListHeader.selectAllBoards": "בחר את כל הלוחות",
   "app.components.ButtonCallout.color": "צבע",
   "app.components.ButtonCallout.discard": "בטל",
@@ -96,6 +96,6 @@
   "app.pages.HomePage.blank": "ריק",
   "app.pages.HomePage.recentlyViewedBoardSets": "לוחות שנצפו לאחרונה",
   "app.pages.HomePage.startNewBoardSet": "התחל סט לוחות חדש",
-  "app.pages.PanelToggle.hideBoardsPanel": "",
-  "app.pages.PanelToggle.showBoardsPanel": ""
+  "app.pages.PanelToggle.hideBoardsPanel": "הסתר פאנל לוחות",
+  "app.pages.PanelToggle.showBoardsPanel": "הצג פאנל לוחות"
 }

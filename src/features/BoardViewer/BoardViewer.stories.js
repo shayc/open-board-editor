@@ -5,7 +5,7 @@ import BoardViewer from './BoardViewer';
 const board = boardMap.toDTO(projectCore);
 
 const story = {
-  title: 'Web App/Features/BoardViewer',
+  title: 'App/Features/BoardViewer',
   component: BoardViewer,
 };
 export default story;

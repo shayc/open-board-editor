@@ -1,7 +1,7 @@
 import BoardSetList from './BoardSetList';
 
 const story = {
-  title: 'Web App/Components/BoardSetList',
+  title: 'App/Components/BoardSetList',
   component: BoardSetList,
 };
 

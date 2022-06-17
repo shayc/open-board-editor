@@ -1,7 +1,7 @@
 import SettingsButton from './SettingsButton';
 
 const story = {
-  title: 'Web App/Components/SettingsButton',
+  title: 'App/Components/SettingsButton',
   component: SettingsButton,
 };
 

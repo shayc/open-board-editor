@@ -1,7 +1,7 @@
 import ButtonCallout from './ButtonCallout';
 
 const story = {
-  title: 'Web App/Components/ButtonCallout',
+  title: 'App/Components/ButtonCallout',
   component: ButtonCallout,
 };
 

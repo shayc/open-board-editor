@@ -1,7 +1,7 @@
 import SpinnerProgress from './SpinnerProgress';
 
 const story = {
-  title: 'Web App/Components/SpinnerProgress',
+  title: 'App/Components/SpinnerProgress',
   component: SpinnerProgress,
 };
 export default story;

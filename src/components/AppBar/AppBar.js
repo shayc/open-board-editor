@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { Stack, Text } from '@fluentui/react';
-import { Icon } from '@fluentui/react/lib/Icon';
+import { Stack, Text, Icon } from '@fluentui/react';
 import clsx from 'clsx';
 
 import messages from './AppBar.messages';
@@ -23,8 +22,8 @@ function AppBar(props) {
       >
         <Link
           to="/"
-          className={styles.appLauncherLink}
-          title={intl.formatMessage(messages.appLauncher)}
+          className={styles.homeLink}
+          title={intl.formatMessage(messages.home)}
         >
           <Icon iconName="Waffle" className={styles.icon} />
         </Link>
@@ -43,9 +42,13 @@ function AppBar(props) {
 
 AppBar.propTypes = {
   /**
-   * Action buttons to render
+   * Actions to render (e.g. `<Button>`s).
    */
   actions: PropTypes.node,
+  /**
+   * App name
+   */
+  name: PropTypes.string,
 };
 
 export default AppBar;
