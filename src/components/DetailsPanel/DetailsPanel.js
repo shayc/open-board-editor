@@ -23,7 +23,7 @@ function DetailsPanel(props) {
         {name}
       </Text>
 
-      <Text as="p" variant={'medium'} block>
+      <Text as="p" variant="medium" block>
         <FormattedMessage {...messages.author} />
         {': '}
         <Link href={license?.authorUrl} target="_blank" rel="noopener">
@@ -32,7 +32,7 @@ function DetailsPanel(props) {
       </Text>
 
       {license?.authorEmail && (
-        <Text as="p" variant={'medium'} block>
+        <Text as="p" variant="medium" block>
           <FormattedMessage {...messages.email} />
           {': '}
           <Link href={`mailto:${license.authorEmail}`}>
@@ -41,7 +41,7 @@ function DetailsPanel(props) {
         </Text>
       )}
 
-      <Text as="p" variant={'medium'} block>
+      <Text as="p" variant="medium" block>
         <FormattedMessage {...messages.license} />
         {': '}
         <Link href={license?.copyrightNoticeUrl} target="_blank" rel="noopener">
@@ -49,7 +49,7 @@ function DetailsPanel(props) {
         </Link>
       </Text>
 
-      <Text as="p" variant={'medium'} block>
+      <Text as="p" variant="medium" block>
         {description}
       </Text>
     </Panel>
@@ -67,11 +67,11 @@ DetailsPanel.propTypes = {
    */
   license: PropTypes.shape({
     type: PropTypes.string,
-    copyright_notice_url: PropTypes.string,
-    source_url: PropTypes.string,
-    author_name: PropTypes.string,
-    author_url: PropTypes.string,
-    author_email: PropTypes.string,
+    copyrightNoticeUrl: PropTypes.string,
+    sourceUrl: PropTypes.string,
+    authorName: PropTypes.string,
+    authorUrl: PropTypes.string,
+    authorEmail: PropTypes.string,
   }),
   /**
    * Callback, fired on panel dismiss
