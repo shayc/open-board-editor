@@ -68,7 +68,7 @@ function BoardsList(props) {
     {
       key: 'actions-column',
       minWidth: 34,
-      onRender: renderActions,
+      onRender: renderActionsColumn,
     },
   ];
 
@@ -118,16 +118,10 @@ function BoardsList(props) {
     }
   }
 
-  function renderRowFields(props) {
-    return (
-      <div data-selection-disabled>
-        <DetailsRowFields {...props} />
-      </div>
-    );
-  }
-
   function renderRow(props) {
     const { item, ...other } = props;
+
+    const isHome = item.id === rootId;
 
     const styles = {
       root: [
@@ -151,7 +145,7 @@ function BoardsList(props) {
           ...item,
           name: (
             <Text styles={{ root: { lineHeight: '32px' } }}>
-              {item.id === rootId && <Icon iconName="Home" />}{' '}
+              {isHome && <Icon iconName="Home" />}{' '}
               <Highlighter
                 autoEscape={true}
                 searchWords={filteredWords}
@@ -164,7 +158,15 @@ function BoardsList(props) {
     );
   }
 
-  function renderActions(board) {
+  function renderRowFields(props) {
+    return (
+      <div data-selection-disabled>
+        <DetailsRowFields {...props} />
+      </div>
+    );
+  }
+
+  function renderActionsColumn(board) {
     const items = [
       {
         key: 'info',
