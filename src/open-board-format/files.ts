@@ -34,7 +34,7 @@ export async function readFiles(files: File[]): Promise<OBF.BoardSet[]> {
 export async function saveAsOBZFile(
   boardSet: OBF.BoardSet,
   filename: string = 'board-set',
-  onUpdate?: (metadata: { percent: number; currentFile: string }) => void
+  onUpdate?: JSZipMetadata
 ) {
   const blob = await zipBoardSet(boardSet, { type: 'blob' }, onUpdate);
   saveAs(blob, `${filename}.obz`);
@@ -177,7 +177,7 @@ function stringifyBoardIds(board: OBF.Board): OBF.Board {
 function zipBoardSet<T extends JSZip.OutputType>(
   boardSet: OBF.BoardSet,
   options?: JSZip.JSZipGeneratorOptions<T>,
-  onUpdate?: (metadata: { percent: number; currentFile: string }) => void
+  onUpdate?: JSZipMetadata
 ) {
   const { manifest, boards, files } = boardSet;
   const zip = new JSZip();
@@ -194,3 +194,8 @@ function zipBoardSet<T extends JSZip.OutputType>(
 
   return zip.generateAsync(options, onUpdate);
 }
+
+type JSZipMetadata = (metadata: {
+  percent: number;
+  currentFile: string | null;
+}) => void;
